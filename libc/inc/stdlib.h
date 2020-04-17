@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020 Jordan DALCQ & Contributors 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,22 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_TYPES_H
-#define _NAVY_TYPES_H
+#ifndef _NAVY_STDLIB_H
+#define _NAVY_STDLIB_H
 
+#include <navy/types.h>
 
-typedef enum {false, true}      bool;
-
-typedef unsigned char           uint8_t;
-typedef char                    int8_t;
-
-typedef unsigned short          uint16_t;
-typedef short                   int16_t;
-
-typedef unsigned int            uint32_t;
-typedef int                     int32_t;
-
-typedef unsigned long           uint64_t;
-typedef long                    int64_t;
+char* itoa(int32_t value, char *buffer, uint8_t base);
 
 #endif

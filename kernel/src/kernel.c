@@ -18,10 +18,26 @@
 
 #include <navy/warning.h>
 #include <navy/vga.h>
+#include <stdlib.h>
 
 void
 kmain(void)
 {  
+    char buffer[5];
+    char negative[5];
+    itoa(1337, buffer, 10);
+    itoa(-1337, buffer, 10);
+
     term_init();
-    term_puts("Hello Navy", BLUE, BLACK);
+    term_puts("Hello Navy !\n", BLUE, BLACK);
+    term_puts(buffer, RED, BLACK);
+    term_putc('\n', BLACK, BLACK);
+    term_puts(negative, GREEN, BLACK);
+}
+
+void 
+err_cpuid(void)
+{
+    term_init();
+    term_puts("Your CPU is not compatible with Navy", RED, BLACK);
 }

@@ -14,12 +14,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 DESTDIR?=
-CFLAGS?=-felf32
-CC=nasm
+CC=i686-elf-gcc
+CFLAGS?=-ffreestanding -Wall -Wextra -Iinc/ -I../kernel/inc/
 
-.PHONY: all 
-.SUFFIXES: .o .asm
+.PHONY: all debug
+.SUFFIXES: .o .c .s
 
+debug: CFLAGS += -g -O0
+debug: all
 
 all:
-	$(CC) $(CFLAGS) -o $(DESTDIR)/multi.o ./multi.asm
+	for files in $$(ls ./src/); do \
+	    $(CC) $(CFLAGS) -o $(DESTDIR)/$${files%.*}.o -c ./src/$$files; \
+	done

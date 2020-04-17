@@ -15,7 +15,7 @@
 
 DESTDIR?=
 CC=i686-elf-gcc
-CFLAGS?=-ffreestanding -Wall -Wextra -Iinc/
+CFLAGS?=-ffreestanding -Wall -Wextra -Iinc/ -I../libc/inc
 
 .PHONY: all debug
 .SUFFIXES: .o .c .s
@@ -24,6 +24,6 @@ debug: CFLAGS += -g -O0
 debug: all
 
 all:
-	for files in $$(ls src/); do \
-	    $(CC) $(CFLAGS) -o $(DESTDIR)/$${files%.*}.o -c src/$$files; \
+	for files in $$(ls ./src/); do \
+	    $(CC) $(CFLAGS) -o $(DESTDIR)/$${files%.*}.o -c ./src/$$files; \
 	done

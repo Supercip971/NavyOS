@@ -91,11 +91,11 @@ term_putc(char c, Colors fg, Colors bg)
 void 
 term_puts(char *s, Colors fg, Colors bg)
 {
-    uint64_t iterator;
-    for(iterator = 0; s[iterator] != '\0'; iterator++) 
-        term_putc(s[iterator], fg, bg);
-    
+    while(*s != 0) {
+        term_putc(*s++, fg, bg);
+    }
 }
+
 
 void move_cursor(uint8_t x, uint8_t y)
 {
