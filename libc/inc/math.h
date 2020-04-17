@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2020  <name of copyright holder>
- * Author: Jordan DALCQ
+ * Copyright (C) 2020 Jordan DALCQ & Contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
