@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdlib.h>
 #include <math.h>
 
 char* itoa(int32_t value, char *buffer, uint8_t base)
@@ -43,6 +44,7 @@ char* itoa(int32_t value, char *buffer, uint8_t base)
 				buffer[length-i+negative] = (digit / (uint32_t)pow(10,i-1)) + '0';
 		}
 		
+		buffer[length+negative] = '\0';
 		return buffer;
 }
 
