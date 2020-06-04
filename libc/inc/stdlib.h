@@ -18,7 +18,7 @@
 #ifndef _NAVY_STDLIB_H
 #define _NAVY_STDLIB_H
 
-#include <navy/types.h>
+#include <stdint.h>
 
 char* itoa(int32_t value, char *buffer, uint8_t base);
 

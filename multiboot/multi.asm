@@ -15,8 +15,7 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 
-%include "cpu.asm"
-BITS 32
+[ BITS 32 ]
 
 section .multiboot
     MBALIGN  equ  1 << 0            
@@ -40,12 +39,6 @@ section .text
     global _start:function (_start.end - _start)
     _start:
 	mov esp, stack_top
-
-        ;Cpu checks
-        call can_cpuid
-        call check_long
-
-        ; Ok, compatible long mode
 
 	extern kmain
 	call kmain

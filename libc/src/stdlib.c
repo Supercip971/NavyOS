@@ -15,42 +15,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include <stdlib.h>
 #include <math.h>
 
 char* itoa(int32_t value, char *buffer, uint8_t base)
 {
-    bool        is_negative            = false;
-    uint32_t    sanitized_value        = value;
-    uint16_t    length                 = 1;
-    uint32_t    digit;
-    
-    if(base != 10) {
-        buffer[0] = '-';
-        buffer[1] = '1';
-        return buffer; // Yes I'm lazy
-    }
-    
-    if(value < 0) {
-        is_negative = true;
-        buffer[0] = '-';
-        sanitized_value *= -1;
-    }
+		uint8_t length = 0;
+		int32_t n = value;
+		bool negative = false;
 
-    while(sanitized_value >= (uint32_t)pow(10, length-1)) {
-        digit = sanitized_value % (uint32_t)pow(10, length) / (uint32_t)pow(10, length-1);
-        if(is_negative)
-            buffer[length-2] = digit + '0';
-        else
-            buffer[length-1] = digit + '0';
+		uint32_t digit;
 
-        length++;
-        sanitized_value -= digit;
-    }
+		do {
+				length++;
+				n /= base;
+		} while(n);
 
-    buffer[length - 1] = '\0';
-    
-    return buffer;
+		if(value < 0) {
+				negative = true;
+				buffer[0] = '-';
+				value *= -1;
+		}
+
+
+		for(uint8_t i = length; i > 0; i--) {
+				digit = (value - (value % (uint32_t)pow(10, i-1)));
+				value -= digit;
+				buffer[length-i+negative] = (digit / (uint32_t)pow(10,i-1)) + '0';
+		}
+		
+		return buffer;
 }
 

@@ -18,7 +18,7 @@
 #ifndef _NAVY_MATH_H
 #define _NAVY_MATH_H
 
-#include <navy/types.h>
+#include <stdint.h>
 
 double pow(double base, double power);
 

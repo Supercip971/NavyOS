@@ -18,7 +18,7 @@
 #ifndef _NAVY_VGA_H
 #define _NAVY_VGA_H
 
-#include <navy/types.h>         // We need our types
+#include <stdint.h>	         // We need our types
 #include <navy/io.h>            // That include is LITERALY for the cursor
 
 enum VGA_COLOR {
