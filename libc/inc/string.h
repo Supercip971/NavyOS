@@ -15,20 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_STRING_H
+#define _NAVY_STRING_H
 
-#include <navy/warning.h>
-#include <navy/vga.h>
-#include <navy/serial.h>
+#include <stdint.h>
 
-#include <stdlib.h>
+uint8_t strlen(char* s);
+char* strcat(char* dst, char* src);
 
-void
-kmain(void)
-{  
-	serial_init(COM1);
-	term_init();
-
-	term_puts("Hello Navy !\n", LIGHT_GREY, BLACK);
-	serial_println(COM1, "NAVY DEBUG LOG\n");
-}
-
+#endif

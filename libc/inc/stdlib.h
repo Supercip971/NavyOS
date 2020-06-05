@@ -20,6 +20,6 @@
 
 #include <stdint.h>
 
-char* itoa(int32_t value, char *buffer, uint8_t base);
+char* itoa(int32_t value, char *buffer, uint16_t base);
 
 #endif

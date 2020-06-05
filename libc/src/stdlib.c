@@ -15,9 +15,12 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
-char* itoa(int32_t value, char *buffer, uint8_t base)
+#include <navy/serial.h>
+
+char* itoa(int32_t value, char buffer[], uint16_t base)
 {
 		uint8_t length = 0;
 		int32_t n = value;
@@ -38,8 +41,10 @@ char* itoa(int32_t value, char *buffer, uint8_t base)
 
 		if(base != 10) {
 			if(base > 16 || base < 2) {
+				char error[12];
+				itoa(base, error, 10);
+				serial_println(COM1, strcat("[ STDLIB.H : ITOA() ] Unknown base : ", error));
 				return buffer;
-				// TODO: Serial port, ERROR unkown base
 			}
 			else {
 				uint8_t i = 0;
@@ -53,12 +58,12 @@ char* itoa(int32_t value, char *buffer, uint8_t base)
 						buffer[index++] = (value % base) + '0';
 					else
 						buffer[index++] = (value % base) + '7';
+
 					value /= base;
 				}
 
 				if(negative)
 					buffer[index++] = '-';
-
 
 				j = index-1;
 
@@ -85,6 +90,7 @@ char* itoa(int32_t value, char *buffer, uint8_t base)
 		}
 		
 		buffer[length+negative] = '\0';
+
 		return buffer;
 }
 
