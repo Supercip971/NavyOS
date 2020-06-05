@@ -1,8 +1,7 @@
 /*
  * Copyright (C) 2020 Jordan DALCQ & Contributors 
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -35,6 +34,47 @@ char* itoa(int32_t value, char *buffer, uint8_t base)
 				negative = true;
 				buffer[0] = '-';
 				value *= -1;
+		}
+
+		if(base != 10) {
+			if(base > 16 || base < 2) {
+				return buffer;
+				// TODO: Serial port, ERROR unkown base
+			}
+			else {
+				uint8_t i = 0;
+				uint8_t j = 0;
+				uint8_t index = 0;
+
+				char tmp;
+
+				while(value > 0) {
+					if((value % base) < 10)
+						buffer[index++] = (value % base) + '0';
+					else
+						buffer[index++] = (value % base) + '7';
+					value /= base;
+				}
+
+				if(negative)
+					buffer[index++] = '-';
+
+
+				j = index-1;
+
+				while(i < index) {
+					tmp = buffer[j];
+					buffer[j] = buffer[i];
+					buffer[i] = tmp;
+
+					i++;
+					j--;
+				}
+
+				buffer[index] = '\0';
+				return buffer;
+			}
+
 		}
 
 

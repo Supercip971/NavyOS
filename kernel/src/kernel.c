@@ -24,10 +24,17 @@ void
 kmain(void)
 {  
     char buffer[5];
-    itoa(-12345679, buffer, 10);
+	char bin[32];
+	char hex[5];
+
+    itoa(42, buffer, 10);
+	itoa(42, bin, 2);
+	itoa(42, hex, 16);
 
     term_init();
-    term_puts("Hello Navy !\n", WHITE, BLACK);
-    term_puts(buffer, GREEN, BLACK);
+    term_puts("Hello Navy !\n", LIGHT_GREY, BLACK);
+	term_puts(bin, GREEN, BLACK);
+	term_puts("\n", WHITE, BLACK);
+	term_puts(hex, RED, BLACK);
 }
 
