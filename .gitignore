@@ -2,6 +2,9 @@
 navy.bin
 obj/
 
-
 # Debug file from qemu
 debug.log
+
+# Iso 
+navy.iso
+isodir/
