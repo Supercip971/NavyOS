@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2020 Jordan DALCQ & contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,19 +16,23 @@
  */
 
 
-#include <navy/warning.h>
-#include <navy/vga.h>
-#include <navy/serial.h>
+#ifndef _NAVY_SERIAL_H
+#define _NAVY_SERIAL_H
 
-#include <stdlib.h>
+#include <stdint.h>
 
-void
-kmain(void)
-{  
-	serial_init(COM1);
-    term_init();
+enum SERIAL_COM {
+	COM1	=	0x3f8,
+	COM2	=	0x2f8,
+	COM3	=	0x3e8,
+	COM4	=	0x2e8,
+};
 
-    term_puts("Hello Navy !\n", LIGHT_GREY, BLACK);
-	serial_print(COM1, "NAVY DEBUG LOG\n\n");
-}
+typedef enum SERIAL_COM Com;
 
+void serial_init(Com com);
+void serial_putc(Com com, char c);
+void serial_print(Com com, char* s);
+int32_t is_transmit_empty(Com com);
+
+#endif
