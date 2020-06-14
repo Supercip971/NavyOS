@@ -19,7 +19,8 @@
 #include <navy/serial.h>
 #include <navy/io.h>
 
-void serial_init(Com com) 
+void 
+serial_init(Com com) 
 {
 	outb(com + 1, 0x00);    // Disable all interrupts
 	outb(com + 3, 0x80);    // Enable DLAB (set baud rate divisor)
@@ -30,25 +31,29 @@ void serial_init(Com com)
 	outb(com + 4, 0x0B);    // IRQs enabled, RTS/DSR set
 }
 
-int32_t is_transmit_empty(Com com) 
+int32_t 
+is_transmit_empty(Com com) 
 {
 	return inb(com + 5) & 0x20;
 }
 
-void serial_putc(Com com, char c) 
+void 
+serial_putc(Com com, char c) 
 {
 	while(is_transmit_empty(com) == 0);
 
 	outb(com, c);
 }
 
-void serial_print(Com com, char* s)
+void 
+serial_print(Com com, char* s)
 {
 	while(*s != 0)
 		serial_putc(com, *s++);
 }
 
-void serial_println(Com com, char* s)
+void 
+serial_println(Com com, char* s)
 {
 	serial_print(com, s);
 	serial_print(com, "\n");

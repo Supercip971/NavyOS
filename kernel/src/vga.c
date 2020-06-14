@@ -36,9 +36,9 @@ term_init(void)
     //
 
     default_color = DEFAULT_FGCOLOR | DEFAULT_BGCOLOR << 4;
-    for(col = 0; col < VGA_WIDTH; col++) {
-        for(row = 0; row < VGA_HEIGHT; row++) {
-            uint16_t index    = (VGA_WIDTH * row) + col;
+    for(col = 0; col < VGA_COL; col++) {
+        for(row = 0; row < VGA_ROW; row++) {
+            uint16_t index    = (VGA_COL * row) + col;
             vga_buffer[index] = ((uint16_t)default_color << 8) | ' ';
         }
     }
@@ -69,20 +69,19 @@ term_putc(char c, Colors fg, Colors bg)
             col = 0;
             break;
         default:
-            index = (VGA_WIDTH * row) + col;
+            index = (VGA_COL * row) + col;
             vga_buffer[index] = ((uint16_t)color << 8) | c;
             col++;
             break;
     }
 
-    if(col > VGA_WIDTH) {
+    if(col > VGA_COL) {
         col = 0;
         row++;
     }
     
-    if(row >= VGA_HEIGHT) {
-        row = 0;
-        col = 0;
+    if(row > VGA_ROW) {
+        term_shift();
     }
 
     movcur(col, row);
@@ -107,10 +106,29 @@ void move_cursor(uint8_t x, uint8_t y)
 
 void movcur(uint8_t x, uint8_t y)
 {
-    uint16_t pos = (y+1) * VGA_WIDTH + x;
+    uint16_t pos = (y+1) * VGA_COL + x;
     outb(0x3D4, 0x0F);
     outb(0x3D5, (uint8_t) (pos & 0xFF));
     outb(0x3D4, 0x0E);
     outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
 }
 
+void 
+term_shift(void)
+{
+    for(row = 0; row < VGA_ROW; row++) {
+        for(col = 0; col < VGA_COL; col++) {
+            uint16_t current_line = (VGA_COL * row) + col;
+            uint16_t next_line = (VGA_COL * (row+1)) + col;
+            vga_buffer[current_line] = vga_buffer[next_line];
+        }
+    }
+
+    for(col = 0; col < VGA_COL; col++) {
+        uint16_t index = (VGA_COL * VGA_ROW-1) + col;
+        vga_buffer[index] = ((uint16_t)default_color << 8) | ' ';
+    }
+
+    row = VGA_ROW-1;
+    col = 0;
+}

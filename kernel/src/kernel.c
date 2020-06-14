@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2020 Jordan DALCQ & contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,14 +21,27 @@
 #include <navy/serial.h>
 
 #include <stdlib.h>
+#include <math.h>
 
 void
 kmain(void)
-{  
-	serial_init(COM1);
-	term_init();
+{
+    char buffer[8];
 
-	term_puts("Hello Navy !\n", LIGHT_GREY, BLACK);
-	serial_println(COM1, "NAVY DEBUG LOG\n");
+    serial_init(COM1);
+    serial_println(COM1, "== NAVY DEBUG LOGS ==");
+    term_init();
+
+    term_puts("Hello Navy !\n", LIGHT_GREY, BLACK);
+
+    int32_t i = 0;
+    while(i < pow(2, 32)-1) {
+        serial_println(COM1, itoa(i, buffer, 10));
+        term_puts(itoa(i, buffer, 10), LIGHT_GREY, BLACK);
+        term_puts("\n", LIGHT_GREY, BLACK);
+        i++;
+    }
+
+    serial_println(COM1, "NAVY DEBUG LOG\n");
 }
 

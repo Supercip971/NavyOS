@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2020 Jordan DALCQ & contributors
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,23 +18,25 @@
 
 #include <string.h>
 
-uint8_t strlen(char* s)
+uint8_t 
+strlen(char* s)
 {
-	uint8_t i;
-	for(i = 0; s[i] != '\0'; i++);
-	return i;
+    uint8_t i;
+    for(i = 0; s[i] != '\0'; i++);
+    return i;
 }
 
-char* strcat(char* dst, char* src)
+char* 
+strcat(char* dst, char* src)
 {
-	uint8_t length = strlen(dst);
-	uint8_t i;
+    uint8_t length = strlen(dst);
+    uint8_t i;
 
-	for(i = 0; i < strlen(src); i++) {
-		dst[length+i] = src[i];
-	}
+    for(i = 0; i < strlen(src); i++) {
+        dst[length+i] = src[i];
+    }
 
-	dst[length+i] = '\0';
-	return dst;
+    dst[length+i] = '\0';
+    return dst;
 }
 

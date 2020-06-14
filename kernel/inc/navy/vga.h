@@ -42,15 +42,16 @@ enum VGA_COLOR {
 
 typedef enum VGA_COLOR Colors;
 
-static const uint8_t VGA_WIDTH          = 80;
-static const uint8_t VGA_HEIGHT         = 25; 
+static const uint8_t VGA_COL          = 80;
+static const uint8_t VGA_ROW         = 25;
 static const Colors  DEFAULT_FGCOLOR    = LIGHT_GREY;
 static const Colors  DEFAULT_BGCOLOR    = BLACK;
 
 void term_init(void);
 void term_clear(void);
-void term_putc(char c , Colors fg, Colors bg);    // This function allows to put a char 
+void term_putc(char c, Colors fg, Colors bg);     // This function allows to put a char
 void term_puts(char *s, Colors fg, Colors bg);    // That one for strings, x and y is the start position
+void term_shift(void);
 void move_cursor(uint8_t x, uint8_t y);
 void movcur(uint8_t x, uint8_t y);
 #endif

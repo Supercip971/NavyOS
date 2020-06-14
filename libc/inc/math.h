@@ -22,4 +22,4 @@
 
 double pow(double base, double power);
 
-#endif 
+#endif

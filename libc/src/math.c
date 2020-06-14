@@ -17,7 +17,7 @@
 
 #include <math.h>
 
-double 
+double
 pow(double base, double power)
 {
     // Ok, I'm also too lazy to make floating point numbers
@@ -26,6 +26,6 @@ pow(double base, double power)
 
     for(iterator = 0; iterator < power; iterator++)
         return_value *= base;
-    
+
     return return_value;
 }
