@@ -25,7 +25,7 @@
 #endif
 
 #if !defined(__i386__)
-#error "Please use a x86-elf compiler"
+#error "This architecture is not supported yet"
 #endif
 
 #endif

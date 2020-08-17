@@ -16,8 +16,9 @@
  */
 
 
-#include <navy/serial.h>
-#include <navy/io.h>
+#include "arch/x86/serial.h"
+#include "arch/x86/io.h" 
+
 
 void 
 serial_init(Com com) 
@@ -31,11 +32,13 @@ serial_init(Com com)
 	outb(com + 4, 0x0B);    // IRQs enabled, RTS/DSR set
 }
 
+
 int32_t 
 is_transmit_empty(Com com) 
 {
 	return inb(com + 5) & 0x20;
 }
+
 
 void 
 serial_putc(Com com, char c) 
@@ -45,6 +48,7 @@ serial_putc(Com com, char c)
 	outb(com, c);
 }
 
+
 void 
 serial_print(Com com, char* s)
 {
@@ -52,9 +56,11 @@ serial_print(Com com, char* s)
 		serial_putc(com, *s++);
 }
 
+
 void 
 serial_println(Com com, char* s)
 {
 	serial_print(com, s);
 	serial_print(com, "\n");
 }
+

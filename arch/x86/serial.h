@@ -15,22 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_TYPES_H
-#define _NAVY_TYPES_H
 
+#ifndef _NAVY_SERIAL_H
+#define _NAVY_SERIAL_H
 
-typedef enum {false, true}      bool;
+#include <stdint.h>
 
-typedef unsigned char           uint8_t;
-typedef char                    int8_t;
+enum SERIAL_COM {
+	COM1	=	0x3f8,
+	COM2	=	0x2f8,
+	COM3	=	0x3e8,
+	COM4	=	0x2e8,
+};
 
-typedef unsigned short          uint16_t;
-typedef short                   int16_t;
+typedef enum SERIAL_COM Com;
 
-typedef unsigned int            uint32_t;
-typedef int                     int32_t;
-
-typedef unsigned long           uint64_t;
-typedef long                    int64_t;
+void serial_init(Com);
+void serial_putc(Com, char);
+void serial_print(Com, char *);
+void serial_println(Com, char *);
+int32_t is_transmit_empty(Com);
 
 #endif

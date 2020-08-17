@@ -15,28 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_LIBC_STDINT_H
+#define _NAVY_LIBC_STDINT_H
 
-#include <string.h>
+typedef unsigned char           uint8_t;
+typedef char                    int8_t;
 
-uint8_t 
-strlen(char* s)
-{
-    uint8_t i;
-    for(i = 0; s[i] != '\0'; i++);
-    return i;
-}
+typedef unsigned short          uint16_t;
+typedef short                   int16_t;
 
-char* 
-strcat(char* dst, char* src)
-{
-    uint8_t length = strlen(dst);
-    uint8_t i;
+typedef unsigned int            uint32_t;
+typedef int                     int32_t;
 
-    for(i = 0; i < strlen(src); i++) {
-        dst[length+i] = src[i];
-    }
+typedef unsigned long           uint64_t;
+typedef long                    int64_t;
 
-    dst[length+i] = '\0';
-    return dst;
-}
-
+#endif

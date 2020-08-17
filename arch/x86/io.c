@@ -15,25 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "arch/x86/io.h"
 
-#ifndef _NAVY_SERIAL_H
-#define _NAVY_SERIAL_H
 
-#include <stdint.h>
+void
+outb(uint16_t port, uint8_t val)
+{
+    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
+}
 
-enum SERIAL_COM {
-	COM1	=	0x3f8,
-	COM2	=	0x2f8,
-	COM3	=	0x3e8,
-	COM4	=	0x2e8,
-};
 
-typedef enum SERIAL_COM Com;
-
-void serial_init(Com com);
-void serial_putc(Com com, char c);
-void serial_print(Com com, char* s);
-void serial_println(Com com, char* s);
-int32_t is_transmit_empty(Com com);
-
-#endif
+uint8_t
+inb(uint16_t port)
+{
+    uint8_t ret;
+    asm volatile ( "inb %1, %0": "=a"(ret): "Nd"(port) );
+    return ret;
+}

@@ -20,7 +20,8 @@
 
 #include <navy/serial.h>
 
-char*
+
+char *
 itoa(int32_t value, char buffer[], uint16_t base)
 {
     uint8_t length = 0;

@@ -15,18 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <navy/io.h>
+#ifndef _NAVY_STRING_H
+#define _NAVY_STRING_H
 
-void
-outb(uint16_t port, uint8_t val)
-{
-    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
-}
+#include <stdint.h>
 
-uint8_t
-inb(uint16_t port)
-{
-    uint8_t ret;
-    asm volatile ( "inb %1, %0": "=a"(ret): "Nd"(port) );
-    return ret;
-}
+uint8_t strlen(char *);
+char *strcat(char *dst, char *src);
+
+#endif

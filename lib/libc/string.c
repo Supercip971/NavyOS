@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & Contributors
+ * Copyright (C) 2020 Jordan DALCQ & contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_MATH_H
-#define _NAVY_MATH_H
 
-#include <stdint.h>
+#include <string.h>
 
-double pow(double base, double power);
 
-#endif
+uint8_t 
+strlen(char *s)
+{
+    uint8_t i;
+    for(i = 0; s[i] != '\0'; i++);
+    return i;
+}
+
+
+char * 
+strcat(char *dst, char *src)
+{
+    uint8_t length = strlen(dst);
+    uint8_t i;
+
+    for(i = 0; i < strlen(src); i++) {
+        dst[length+i] = src[i];
+    }
+
+    dst[length+i] = '\0';
+    return dst;
+}
+

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020 Jordan DALCQ & Contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_STRING_H
-#define _NAVY_STRING_H
+#ifndef _NAVY_LIBC_MATH_H
+#define _NAVY_LIBC_MATH_H
 
 #include <stdint.h>
 
-uint8_t strlen(char* s);
-char* strcat(char* dst, char* src);
+double pow(double, double);
 
 #endif

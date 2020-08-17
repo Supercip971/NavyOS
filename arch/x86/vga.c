@@ -15,13 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <navy/vga.h>
+
+#include "arch/x86/vga.h"
 
 uint8_t        col;
 uint8_t        row;
 uint8_t        default_color;
 
 uint16_t       *vga_buffer = (uint16_t *)0xB8000;
+
 
 void
 term_init(void)
@@ -48,11 +50,13 @@ term_init(void)
     movcur(col, row);
 }
 
+
 void 
 term_clear(void)
 {
     term_init();
 }
+
 
 void 
 term_putc(char c, Colors fg, Colors bg)
@@ -87,6 +91,7 @@ term_putc(char c, Colors fg, Colors bg)
     movcur(col, row);
 }
 
+
 void 
 term_puts(char *s, Colors fg, Colors bg)
 {
@@ -104,6 +109,7 @@ void move_cursor(uint8_t x, uint8_t y)
     movcur(x, y);
 }
 
+
 void movcur(uint8_t x, uint8_t y)
 {
     uint16_t pos = (y+1) * VGA_COL + x;
@@ -112,6 +118,7 @@ void movcur(uint8_t x, uint8_t y)
     outb(0x3D4, 0x0E);
     outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
 }
+
 
 void 
 term_shift(void)

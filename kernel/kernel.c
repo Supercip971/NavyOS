@@ -16,9 +16,12 @@
  */
 
 
-#include <navy/warning.h>
-#include <navy/vga.h>
-#include <navy/serial.h>
+#include "kernel/warning.h"
+
+#ifdef defined(__i386__)
+#include "arch/x86/serial.h"
+#include "arch/x86/vga.h"
+#endif
 
 #include <stdlib.h>
 #include <math.h>

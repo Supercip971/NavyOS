@@ -49,9 +49,10 @@ static const Colors  DEFAULT_BGCOLOR    = BLACK;
 
 void term_init(void);
 void term_clear(void);
-void term_putc(char c, Colors fg, Colors bg);     // This function allows to put a char
-void term_puts(char *s, Colors fg, Colors bg);    // That one for strings, x and y is the start position
+void term_putc(char, Colors, Colors);     // This function allows to put a char
+void term_puts(char, Colors, Colors);    // That one for strings, x and y is the start position
 void term_shift(void);
-void move_cursor(uint8_t x, uint8_t y);
-void movcur(uint8_t x, uint8_t y);
+void move_cursor(uint8_t, uint8_t);
+void movcur(uint8_t, uint8_t);
+
 #endif

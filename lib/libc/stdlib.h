@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors 
+ * Copyright (C) 2020 Jordan DALCQ & Contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_LIBC_STDLIB_H
+#define _NAVY_LIBC_STDLIB_H
+
 #include <stdint.h>
 
-void outb(uint16_t port, uint8_t val);
-uint8_t inb(uint16_t port);
+char *itoa(int32_t, char *, uint16_t);
+
+#endif
