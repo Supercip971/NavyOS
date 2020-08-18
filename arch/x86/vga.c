@@ -17,6 +17,7 @@
 
 
 #include "arch/x86/vga.h"
+#include "arch/x86/io.h"
 
 uint8_t        col;
 uint8_t        row;

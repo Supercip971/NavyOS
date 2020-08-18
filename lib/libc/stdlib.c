@@ -15,10 +15,9 @@
  */
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
-
-#include <navy/serial.h>
 
 
 char *
@@ -45,7 +44,6 @@ itoa(int32_t value, char buffer[], uint16_t base)
         if(base > 16 || base < 2) {
             char error[12];
             itoa(base, error, 10);
-            serial_println(COM1, strcat("[ STDLIB.H : ITOA() ] Unknown base : ", error));
             return buffer;
         }
         else {

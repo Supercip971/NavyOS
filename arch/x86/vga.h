@@ -19,7 +19,6 @@
 #define _NAVY_VGA_H
 
 #include <stdint.h>	         // We need our types
-#include <navy/io.h>            // That include is LITERALY for the cursor
 
 enum VGA_COLOR {
     BLACK         =     0x0,
@@ -50,7 +49,7 @@ static const Colors  DEFAULT_BGCOLOR    = BLACK;
 void term_init(void);
 void term_clear(void);
 void term_putc(char, Colors, Colors);     // This function allows to put a char
-void term_puts(char, Colors, Colors);    // That one for strings, x and y is the start position
+void term_puts(char *, Colors, Colors);    // That one for strings, x and y is the start position
 void term_shift(void);
 void move_cursor(uint8_t, uint8_t);
 void movcur(uint8_t, uint8_t);

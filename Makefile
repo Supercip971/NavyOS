@@ -1,15 +1,18 @@
+.SUFFIXES:
+.DEFAULT_GOAL := all
+
 BUILD_DIRECTORY = $(shell pwd)/build
+DIRECTORY_GUARD=@mkdir -p $(@D)
 
 CC := i686-elf-gcc
 CFLAGS := 		\
     -O0			\
-    -std=c99		\
-    -fno-rtti		\
     -fno-exceptions 	\
     -MD			\
     -Wall		\
     -Wextra		\
     -Werror		\
+    -I. \
     -Ilib/libc		\
     -ffreestanding	\
     -nostdlib		
@@ -22,6 +25,9 @@ ASFLAGS = -f elf32
 
 include kernel/.build.mk
 
+.PHONY: all
+all: $(KERNEL_BINARY)
 
-all:
-	$(KERNEL_SOURCES)
+.PHONY: run-qemu
+run-qemu: 
+	qemu-system-x86_64 -kernel kernel.bin -serial stdio

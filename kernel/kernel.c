@@ -17,8 +17,9 @@
 
 
 #include "kernel/warning.h"
+#include "kernel/log.h"
 
-#ifdef defined(__i386__)
+#if defined(__i386__)
 #include "arch/x86/serial.h"
 #include "arch/x86/vga.h"
 #endif
@@ -29,22 +30,10 @@
 void
 kmain(void)
 {
-    char buffer[8];
-
     serial_init(COM1);
-    serial_println(COM1, "== NAVY DEBUG LOGS ==");
+    klog(COM1, LOG, "Navy started");
+
     term_init();
-
     term_puts("Hello Navy !\n", LIGHT_GREY, BLACK);
-
-    int32_t i = 0;
-    while(i < pow(2, 32)-1) {
-        serial_println(COM1, itoa(i, buffer, 10));
-        term_puts(itoa(i, buffer, 10), LIGHT_GREY, BLACK);
-        term_puts("\n", LIGHT_GREY, BLACK);
-        i++;
-    }
-
-    serial_println(COM1, "NAVY DEBUG LOG\n");
 }
 

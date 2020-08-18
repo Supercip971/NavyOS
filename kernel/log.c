@@ -15,9 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_LIBC_STDBOOL
-#define NAVY_LIBC_STDBOOL
+#include "kernel/log.h"
 
-typedef enum {false, true}      bool;
-
-#endif
+void 
+klog(Com com, Level level, char *msg)
+{
+    serial_print(com, "[ ");
+    serial_print(com, LOG_MSG[level]);
+    serial_print(com, " ] ");
+    serial_println(com, msg);
+}

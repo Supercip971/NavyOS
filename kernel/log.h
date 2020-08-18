@@ -15,9 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_LIBC_STDBOOL
-#define NAVY_LIBC_STDBOOL
+#ifndef NAVY_LOG_H
+#define NAVY_LOG_H
 
-typedef enum {false, true}      bool;
+#if defined(__i386__)
+#include "arch/x86/serial.h"
+#endif
+
+enum LOG_LEVEL {
+    LOG,
+    ERROR,
+    WARNING
+};
+
+char *LOG_MSG[] = {
+    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m"
+};
+
+typedef enum LOG_LEVEL Level;
+
+void klog(Com, Level, char *);
 
 #endif

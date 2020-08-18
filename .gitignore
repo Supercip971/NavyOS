@@ -1,6 +1,6 @@
 # kernel binary
-navy.bin
-obj/
+kernel.bin
+build/
 
 # Debug file from qemu
 debug.log
