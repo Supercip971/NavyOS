@@ -15,6 +15,7 @@ CFLAGS := 		\
     -I. \
     -Ilib/libc		\
     -ffreestanding	\
+    -g			\
     -nostdlib		
 
 LD := i686-elf-ld

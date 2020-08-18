@@ -50,17 +50,8 @@ serial_putc(Com com, char c)
 
 
 void 
-serial_print(Com com, char* s)
+serial_print(Com com, const char* s)
 {
 	while(*s != 0)
 		serial_putc(com, *s++);
 }
-
-
-void 
-serial_println(Com com, char* s)
-{
-	serial_print(com, s);
-	serial_print(com, "\n");
-}
-

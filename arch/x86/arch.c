@@ -15,18 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "kernel/warning.h"
-#include "kernel/log.h"
 #include "arch/arch.h"
+#include "arch/x86/serial.h"
 
-#include <stdlib.h>
-#include <math.h>
-
-void
-kmain(void)
+void 
+debug_print(const char *msg) 
 {
-    init_arch();
-    klog(LOG, "Navy started");
+    serial_print(COM1, msg);
 }
 
+void 
+init_arch(void)
+{
+    serial_init(COM1);
+}

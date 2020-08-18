@@ -15,18 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef NAVY_ARCH_H
+#define NAVY_ARCH_H
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
+void debug_print(const char *);
+void init_arch(void);
 
-#include <stdlib.h>
-#include <math.h>
-
-void
-kmain(void)
-{
-    init_arch();
-    klog(LOG, "Navy started");
-}
-
+#endif 

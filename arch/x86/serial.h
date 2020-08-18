@@ -32,8 +32,7 @@ typedef enum SERIAL_COM Com;
 
 void serial_init(Com);
 void serial_putc(Com, char);
-void serial_print(Com, char *);
-void serial_println(Com, char *);
+void serial_print(Com, const char *);
 int32_t is_transmit_empty(Com);
 
 #endif

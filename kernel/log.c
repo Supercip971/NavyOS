@@ -17,11 +17,16 @@
 
 #include "kernel/log.h"
 
+static const char *LOG_MSG[] = {
+    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m"
+};
+
 void 
-klog(Com com, Level level, char *msg)
+klog(Level level, char *msg)
 {
-    serial_print(com, "[ ");
-    serial_print(com, LOG_MSG[level]);
-    serial_print(com, " ] ");
-    serial_println(com, msg);
+    debug_print("[ ");
+    debug_print(LOG_MSG[level]);
+    debug_print(" ] ");
+    debug_print(msg);
+    debug_print("\n");
 }

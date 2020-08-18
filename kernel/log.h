@@ -18,9 +18,7 @@
 #ifndef NAVY_LOG_H
 #define NAVY_LOG_H
 
-#if defined(__i386__)
-#include "arch/x86/serial.h"
-#endif
+#include "arch/arch.h"
 
 enum LOG_LEVEL {
     LOG,
@@ -28,12 +26,8 @@ enum LOG_LEVEL {
     WARNING
 };
 
-char *LOG_MSG[] = {
-    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m"
-};
-
 typedef enum LOG_LEVEL Level;
 
-void klog(Com, Level, char *);
+void klog(Level, char *);
 
 #endif

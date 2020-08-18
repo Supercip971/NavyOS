@@ -21,6 +21,7 @@
 #include <stdint.h>
 
 uint8_t strlen(char *);
-char *strcat(char *dst, char *src);
+char *strcat(char *, char *);
+void *memcpy(char *, char *, int);
 
 #endif

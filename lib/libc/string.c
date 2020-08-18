@@ -28,7 +28,7 @@ strlen(char *s)
 }
 
 
-char * 
+char *
 strcat(char *dst, char *src)
 {
     uint8_t length = strlen(dst);
@@ -42,3 +42,12 @@ strcat(char *dst, char *src)
     return dst;
 }
 
+void *
+memcpy(char *dst, char *src, int n)
+{
+    char *p = dst;
+    while(n--) 
+        *dst++ = *src++;
+    
+    return p;
+}
