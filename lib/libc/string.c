@@ -41,13 +41,3 @@ strcat(char *dst, char *src)
     dst[length+i] = '\0';
     return dst;
 }
-
-void *
-memcpy(char *dst, char *src, int n)
-{
-    char *p = dst;
-    while(n--) 
-        *dst++ = *src++;
-    
-    return p;
-}

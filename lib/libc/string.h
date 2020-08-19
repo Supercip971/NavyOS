@@ -15,13 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_STRING_H
-#define _NAVY_STRING_H
+#ifndef _NAVY_LIBC_STRING_H
+#define _NAVY_LIBC_STRING_H
 
 #include <stdint.h>
 
 uint8_t strlen(char *);
 char *strcat(char *, char *);
-void *memcpy(char *, char *, int);
 
 #endif

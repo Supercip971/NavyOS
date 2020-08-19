@@ -16,6 +16,7 @@
  */
 
 #include "arch/arch.h"
+#include "arch/x86/vga.h"
 #include "arch/x86/serial.h"
 
 void 
@@ -27,5 +28,6 @@ debug_print(const char *msg)
 void 
 init_arch(void)
 {
+    term_init();
     serial_init(COM1);
 }
