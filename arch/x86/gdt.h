@@ -28,14 +28,13 @@ struct gdtdesc {    // https://wiki.osdev.org/File:Gdtr.png
 } __attribute__((packed));
 
 struct gdtentry {   // https://wiki.osdev.org/File:GDT_Entry.png
-    uint16_t base0_15;
     uint16_t limit0_15;
-    uint8_t base24_31;
-    uint8_t limit16_19;
+    uint16_t base0_15;
     uint8_t base16_23;
-
     uint8_t access;
-    uint8_t flags;
+    uint8_t limit16_19 : 4;
+    uint8_t flags: 4;
+    uint8_t base24_31;
 } __attribute__((packed));
 
 

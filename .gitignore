@@ -2,8 +2,9 @@
 kernel.bin
 build/
 
-# Debug file from qemu
-debug.log
+# Debug files
+*.log
+*.sym
 
 # Iso 
 navy.iso
