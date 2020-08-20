@@ -18,6 +18,9 @@
 #include "arch/arch.h"
 #include "arch/x86/vga.h"
 #include "arch/x86/serial.h"
+#include "arch/x86/gdt.h"
+
+#include "kernel/log.h"
 
 void 
 debug_print(const char *msg) 
@@ -30,4 +33,7 @@ init_arch(void)
 {
     term_init();
     serial_init(COM1);
+    init_gdt();
+    klog(LOG, "GDT Loaded !");
+    
 }

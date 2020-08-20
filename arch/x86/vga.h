@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_VGA_H
-#define _NAVY_VGA_H
+#ifndef _NAVY_X86_VGA_H
+#define _NAVY_X86_VGA_H
+#define GDTSIZE 5
 
 #include <stdint.h>	         // We need our types
 

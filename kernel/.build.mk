@@ -1,12 +1,14 @@
+CONFIG_KEYBOARD_LAYOUT?=en_us
+
 KERNEL_SOURCES = \
 	$(wildcard kernel/*.c) \
 	$(wildcard arch/x86/*.c)
 
 KERNEL_ASSEMBLY_SOURCES = \
-	$(wildcard arch/x86/*.asm)
+	$(wildcard arch/*/*.asm)
 
 KERNEL_LIBRARIES_SOURCES = \
-	$(wildcard lib/libc/*.c)
+	$(wildcard libraries/libc/*.c) \
 	
 
 KERNEL_BINARY = kernel.bin
@@ -18,7 +20,7 @@ KERNEL_OBJECTS = \
 
 OBJECTS += $(KERNEL_OBJECTS)
 
-$(BUILD_DIRECTORY)/kernel/%.o: lib/%.c
+$(BUILD_DIRECTORY)/kernel/%.o: libraries/%.c
 	$(DIRECTORY_GUARD)
 	@echo [KERNEL] [CC] $<
 	@$(CC) $(CFLAGS) -ffreestanding -nostdlib -c -o $@ $<
@@ -26,7 +28,7 @@ $(BUILD_DIRECTORY)/kernel/%.o: lib/%.c
 $(BUILD_DIRECTORY)/kernel/%.o: kernel/%.c
 	$(DIRECTORY_GUARD)
 	@echo [KERNEL] [CC] $<
-	@$(CC) -DCONFIG_KEYBOARD_LAYOUT=\""${CONFIG_KEYBOARD_LAYOUT}"\" $(CFLAGS) -ffreestanding -nostdlib -c -o $@ $<
+	@$(CC) $(CFLAGS) -ffreestanding -nostdlib -c -o $@ $<
 
 $(BUILD_DIRECTORY)/arch/%.o: arch/%.c
 	$(DIRECTORY_GUARD)

@@ -23,7 +23,8 @@
 enum LOG_LEVEL {
     LOG,
     ERROR,
-    WARNING
+    WARNING,
+    OK
 };
 
 typedef enum LOG_LEVEL Level;

@@ -41,3 +41,15 @@ strcat(char *dst, char *src)
     dst[length+i] = '\0';
     return dst;
 }
+
+char * 
+memcpy(void *dst, void *src, uint32_t count)
+{
+    char *s = (char *) src;
+    char *d = (char *) dst;
+
+    while(count-- > 0)
+        *s++ = *d++;
+    
+    return dst;
+}

@@ -15,7 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_X86_IO_H
+#define _NAVY_X86_IO_H 
+
 #include <stdint.h>
 
 void outb(uint16_t, uint8_t);
 uint8_t inb(uint16_t);
+
+#endif

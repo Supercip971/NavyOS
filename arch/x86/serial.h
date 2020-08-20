@@ -16,8 +16,8 @@
  */
 
 
-#ifndef _NAVY_SERIAL_H
-#define _NAVY_SERIAL_H
+#ifndef _NAVY_X86_SERIAL_H
+#define _NAVY_X86_SERIAL_H
 
 #include <stdint.h>
 
