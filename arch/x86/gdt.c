@@ -17,11 +17,12 @@
 
 #include "arch/x86/gdt.h"
 #include "arch/arch.h"
+
 #include <string.h>
 
 struct gdtentry gdtentry[GDT_SIZE];
 struct gdtdesc gdtdesc;
-
+struct tssentry tss;
 
 void
 init_gdt_desc(uint32_t base, uint32_t limit, uint8_t access, uint8_t flags, struct gdtentry *desc)
@@ -44,11 +45,23 @@ init_gdt(void)
 
     init_gdt_desc(0, 0, 0, 0, &gdtentry[0]);    // NULL Segment
 
-    init_gdt_desc(0, 0xffffffff, PRESENT | CODE_SEQ | EXECUTABLE | READ_WRITE, PAGE_GR | BITS32, &gdtentry[1]); // CODE Segment
-    init_gdt_desc(0, 0xffffffff, PRESENT | DATA_SEQ | READ_WRITE , PAGE_GR | BITS32, &gdtentry[2]); // DATA Segment
+    init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | EXECUTABLE | READ_WRITE, PAGE_GR | BITS32, &gdtentry[1]); // CODE Segment
+    init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | READ_WRITE , PAGE_GR | BITS32, &gdtentry[2]); // DATA Segment
 
-    init_gdt_desc(0, 0xffffffff, PRESENT | CODE_SEQ | USER_PRIV | EXECUTABLE | READ_WRITE, PAGE_GR | BITS32, &gdtentry[3]); // User CODE Segment
-    init_gdt_desc(0, 0xffffffff, PRESENT | DATA_SEQ | USER_PRIV | READ_WRITE, PAGE_GR | BITS32, &gdtentry[4]); //User DATA Segment
+    init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | USER_PRIV | EXECUTABLE | READ_WRITE, PAGE_GR | BITS32, &gdtentry[3]); // User CODE Segment
+    init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | USER_PRIV | READ_WRITE, PAGE_GR | BITS32, &gdtentry[4]); //User DATA Segment
+
+    tss.ss0 = 0x10;
+    tss.esp0 = 0;
+
+    init_gdt_desc((uint32_t)&tss, sizeof(struct tssentry), PRESENT | USER_PRIV | EXECUTABLE | ACCESSED, BYTE_GR | BITS16, &gdtentry[5]); // TSS
 
     gdt_flush((uint32_t) &gdtdesc);
+    tss_flush();
+}
+
+void 
+set_kernel_stack(uint32_t stack)
+{
+    tss.esp0 = stack;
 }
