@@ -25,4 +25,6 @@ isr_default_int(void)
 {
     klog(LOG, "Got an interrupt !\n");
     term_puts("Got an interrupt !\n", GREEN, BLACK);
+
+    PIC_sendEOI();
 }

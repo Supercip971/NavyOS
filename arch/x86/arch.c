@@ -46,8 +46,4 @@ init_arch(void)
 
     init_idt();
     klog(LOG, "IDT loaded !");
-
-    for(;;) {
-        asm("hlt");
-    }
 }

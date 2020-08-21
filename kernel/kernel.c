@@ -28,5 +28,6 @@ kmain(void)
 {
     init_arch();
     klog(LOG, "Navy started");
+    while(1);
 }
 
