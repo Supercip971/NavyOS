@@ -36,7 +36,7 @@ init_arch(void)
 {
     term_init();
     serial_init(COM1);
-	serial_print(COM1, "\033c");
+    serial_print(COM1, "\033c");
 
     init_gdt();
     klog(LOG, "GDT loaded !");
@@ -46,4 +46,8 @@ init_arch(void)
 
     init_idt();
     klog(LOG, "IDT loaded !");
+
+    for(;;) {
+        asm("hlt");
+    }
 }

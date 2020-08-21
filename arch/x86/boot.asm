@@ -85,10 +85,6 @@ _asm_default_int:
     extern isr_default_int
     call isr_default_int
 
-    ;; Send EOI to the PIC (just for testing, will use the C function later)
-    mov al, 0x20
-    out 0x20, al
-
     popa
     iret
 

@@ -21,12 +21,6 @@
 void 
 init_pic(void)
 {
-    uint8_t mask_master;
-    uint8_t mask_slave;
-
-    mask_master = inb(MASTER_DATA);
-    mask_slave = inb(SLAVE_DATA);
-
     outb(MASTER_CMD,  0x10 | 0x01);
     io_wait();
     outb(SLAVE_CMD,  0x10 | 0x01);
@@ -46,16 +40,15 @@ init_pic(void)
     io_wait();
     outb(SLAVE_DATA, 0x01);
 
-    outb(MASTER_DATA, mask_master);
-    outb(SLAVE_DATA, mask_slave);
+    outb(MASTER_DATA, 0);
+    io_wait();
+    outb(SLAVE_DATA, 0);
+    io_wait();
 }
 
 void 
-PIC_sendEOI(uint8_t irq)
+PIC_sendEOI(void)
 {
-    if(irq >= 8) {
-        outb(SLAVE_CMD, 0x20);
-    }
-
+    outb(SLAVE_CMD, 0x20);
     outb(MASTER_CMD, 0x20);
 }
