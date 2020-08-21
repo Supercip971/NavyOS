@@ -15,6 +15,8 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 
+;=== MULTIBOOT ===
+
 [ BITS 32 ]
 
 section .multiboot
@@ -48,6 +50,9 @@ section .text
 	jmp .hang
 .end:
 
+;; === MULTIBOOT ===
+
+;; === GDT ===
 
 [ GLOBAL gdt_flush ]    ; Allows the C code to call gdt_flush().
 
@@ -70,3 +75,22 @@ tss_flush:
     mov ax, 0x2B
     ltr ax 
     ret
+
+; === GDT ===
+
+; === IDT ===
+[ GLOBAL _asm_default_int ]
+_asm_default_int:
+    extern isr_default_int
+    call isr_default_int
+    mov al, 0x20
+    out 0x20, al 
+    iret
+
+[ GLOBAL idt_flush ]
+idt_flush:
+    mov edx, [esp + 4]
+    lidt [eax]
+    sti 
+    ret
+; === IDT ===

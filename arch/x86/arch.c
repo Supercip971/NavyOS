@@ -19,6 +19,7 @@
 #include "arch/x86/vga.h"
 #include "arch/x86/serial.h"
 #include "arch/x86/gdt.h"
+#include "arch/x86/idt.h"
 
 #include "kernel/log.h"
 
@@ -33,7 +34,11 @@ init_arch(void)
 {
     term_init();
     serial_init(COM1);
+	serial_print(COM1, "\033c");
+
     init_gdt();
     klog(LOG, "GDT Loaded !");
-    
+
+    init_idt();
+    klog(LOG, "IDT Loaded !");
 }

@@ -23,7 +23,7 @@ uint8_t        col;
 uint8_t        row;
 uint8_t        default_color;
 
-uint16_t       *vga_buffer = (uint16_t *)0xB8000;
+uint16_t       *vga_buffer = (uint16_t *) 0xB8000;
 
 
 void
@@ -42,7 +42,7 @@ term_init(void)
     for(col = 0; col < VGA_COL; col++) {
         for(row = 0; row < VGA_ROW; row++) {
             uint16_t index    = (VGA_COL * row) + col;
-            vga_buffer[index] = ((uint16_t)default_color << 8) | ' ';
+            vga_buffer[index] = ((uint16_t) default_color << 8) | ' ';
         }
     }
 
@@ -75,7 +75,7 @@ term_putc(char c, Colors fg, Colors bg)
             break;
         default:
             index = (VGA_COL * row) + col;
-            vga_buffer[index] = ((uint16_t)color << 8) | c;
+            vga_buffer[index] = ((uint16_t) color << 8) | c;
             col++;
             break;
     }
@@ -134,7 +134,7 @@ term_shift(void)
 
     for(col = 0; col < VGA_COL; col++) {
         uint16_t index = (VGA_COL * VGA_ROW-1) + col;
-        vga_buffer[index] = ((uint16_t)default_color << 8) | ' ';
+        vga_buffer[index] = ((uint16_t) default_color << 8) | ' ';
     }
 
     row = VGA_ROW-1;

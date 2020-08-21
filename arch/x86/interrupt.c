@@ -15,19 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/io.h"
 
-void
-outb(uint16_t port, uint8_t val)
+#include "kernel/log.h"
+#include "arch/x86/vga.h"
+
+void 
+isr_default_int(void)
 {
-    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
-}
-
-
-uint8_t
-inb(uint16_t port)
-{
-    uint8_t ret;
-    asm volatile ( "inb %1, %0": "=a"(ret): "Nd"(port) );
-    return ret;
+    klog(LOG, "Got an interrupt !\n");
+    term_puts("Got an interrupt !\n", GREEN, BLACK);
 }

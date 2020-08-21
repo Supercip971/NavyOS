@@ -30,8 +30,6 @@ serial_init(Com com)
 	outb(com + 3, 0x03);    // 8 bits, no parity, one stop bit
 	outb(com + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold
 	outb(com + 4, 0x0B);    // IRQs enabled, RTS/DSR set
-
-	serial_print(com, "\033c");
 }
 
 

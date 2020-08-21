@@ -86,7 +86,7 @@ itoa(int32_t value, char buffer[], uint16_t base)
     for(uint8_t i = length; i > 0; i--) {
         digit = (value - (value % (uint32_t)pow(10, i-1)));
         value -= digit;
-        buffer[length-i+negative] = (digit / (uint32_t)pow(10,i-1)) + '0';
+        buffer[length-i+negative] = (digit / (uint32_t) pow(10,i-1)) + '0';
     }
 
     buffer[length+negative] = '\0';

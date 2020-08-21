@@ -41,7 +41,7 @@ void
 init_gdt(void)
 {
     gdtdesc.size = sizeof(struct gdtentry) * GDT_SIZE;
-    gdtdesc.offset = (uint32_t)&gdtentry[0];
+    gdtdesc.offset = (uint32_t) &gdtentry[0];
 
     init_gdt_desc(0, 0, 0, 0, &gdtentry[0]);    // NULL Segment
 
@@ -54,7 +54,7 @@ init_gdt(void)
     tss.ss0 = 0x10;
     tss.esp0 = 0;
 
-    init_gdt_desc((uint32_t)&tss, sizeof(struct tssentry), PRESENT | USER_PRIV | EXECUTABLE | ACCESSED, BYTE_GR | BITS16, &gdtentry[5]); // TSS
+    init_gdt_desc((uint32_t) &tss, sizeof(struct tssentry), PRESENT | USER_PRIV | EXECUTABLE | ACCESSED, BYTE_GR | BITS16, &gdtentry[5]); // TSS
 
     gdt_flush((uint32_t) &gdtdesc);
     tss_flush();

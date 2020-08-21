@@ -15,19 +15,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "arch/x86/idt.h"
 #include "arch/x86/io.h"
+#include <string.h>
+
+struct idtdesc kidt[256];
+struct idtr kidtr;
 
 void
-outb(uint16_t port, uint8_t val)
+init_idt_desc(uint16_t selector, uint32_t offset, uint8_t type_attr, struct idtdesc *desc)
 {
-    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
+    desc->offset0_15 = (offset & 0xffff);
+    desc->selector = selector;
+    desc->zero = 0;
+    desc->type_attr = type_attr;
+    desc->offset16_31 = (offset & 0xffff0000) >> 16;
 }
 
-
-uint8_t
-inb(uint16_t port)
+void 
+init_idt(void)
 {
-    uint8_t ret;
-    asm volatile ( "inb %1, %0": "=a"(ret): "Nd"(port) );
-    return ret;
+    uint16_t i;
+    for(i = 0; i < 256; i++)
+        init_idt_desc(0x08, (uint32_t) _asm_default_int, INTGATE, &kidt[i]);
+
+    kidtr.limite = sizeof(struct idtdesc) * 256;
+    kidtr.base = (uint32_t) &kidt[0];
+
+    idt_flush((uint32_t) &kidtr);
 }

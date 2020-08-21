@@ -8,7 +8,7 @@ KERNEL_ASSEMBLY_SOURCES = \
 	$(wildcard arch/*/*.asm)
 
 KERNEL_LIBRARIES_SOURCES = \
-	$(wildcard libraries/libc/*.c) \
+	$(wildcard lib/libc/*.c) 
 	
 
 KERNEL_BINARY = kernel.bin
@@ -20,7 +20,7 @@ KERNEL_OBJECTS = \
 
 OBJECTS += $(KERNEL_OBJECTS)
 
-$(BUILD_DIRECTORY)/kernel/%.o: libraries/%.c
+$(BUILD_DIRECTORY)/kernel/%.o: lib/%.c
 	$(DIRECTORY_GUARD)
 	@echo [KERNEL] [CC] $<
 	@$(CC) $(CFLAGS) -ffreestanding -nostdlib -c -o $@ $<
