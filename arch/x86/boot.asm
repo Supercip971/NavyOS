@@ -81,10 +81,10 @@ tss_flush:
 ; === IDT ===
 [ GLOBAL _asm_default_int ]
 _asm_default_int:
+    pusha
     extern isr_default_int
     call isr_default_int
-    mov al, 0x20
-    out 0x20, al 
+    popa
     iret
 
 [ GLOBAL idt_flush ]
