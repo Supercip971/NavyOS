@@ -18,8 +18,10 @@
 #include "arch/arch.h"
 #include "arch/x86/vga.h"
 #include "arch/x86/serial.h"
+
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
+#include "arch/x86/pic.h"
 
 #include "kernel/log.h"
 
@@ -37,8 +39,11 @@ init_arch(void)
 	serial_print(COM1, "\033c");
 
     init_gdt();
-    klog(LOG, "GDT Loaded !");
+    klog(LOG, "GDT loaded !");
+
+    init_pic();
+    klog(LOG, "PIC initialised !");
 
     init_idt();
-    klog(LOG, "IDT Loaded !");
+    klog(LOG, "IDT loaded !");
 }

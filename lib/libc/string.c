@@ -48,8 +48,9 @@ memcpy(void *dst, void *src, uint32_t count)
     char *s = (char *) src;
     char *d = (char *) dst;
 
-    while(count-- > 0)
+    while(count-- > 0){
         *s++ = *d++;
+    }
     
     return dst;
 }

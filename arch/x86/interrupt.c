@@ -18,6 +18,7 @@
 
 #include "kernel/log.h"
 #include "arch/x86/vga.h"
+#include "arch/x86/pic.h"
 
 void 
 isr_default_int(void)

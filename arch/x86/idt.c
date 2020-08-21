@@ -36,8 +36,9 @@ void
 init_idt(void)
 {
     uint16_t i;
-    for(i = 0; i < 256; i++)
+    for(i = 0; i < 256; i++) {
         init_idt_desc(0x08, (uint32_t) _asm_default_int, INTGATE, &kidt[i]);
+    }
 
     kidtr.limite = sizeof(struct idtdesc) * 256;
     kidtr.base = (uint32_t) &kidt[0];

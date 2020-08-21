@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020 Jordan DALCQ & contributors 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,18 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <math.h>
+#ifndef _NAVY_X86_PIC_H 
+#define _NAVY_X86_PIC_H 
 
-double
-pow(double base, double power)
-{
-    // Ok, I'm also too lazy to make floating point numbers
-    uint64_t iterator;
-    double return_value = 1;
+#define MASTER_CMD      0x20
+#define MASTER_DATA     0x21
+#define MASTER_OFFSET   0x20
 
-    for(iterator = 0; iterator < power; iterator++) {
-        return_value *= base;
-    }
+#define SLAVE_CMD       0xa0
+#define SLAVE_DATA      0xa1
+#define SLAVE_OFFSET    0x28
 
-    return return_value;
-}
+#include <stdint.h>
+
+void init_pic(void);
+void PIC_sendEOI(uint8_t irq);   // Send end of Interrupt
+
+#endif

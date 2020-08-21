@@ -54,16 +54,18 @@ itoa(int32_t value, char buffer[], uint16_t base)
             char tmp;
 
             while(value > 0) {
-                if((value % base) < 10)
+                if((value % base) < 10){
                     buffer[index++] = (value % base) + '0';
-                else
+                } else{
                     buffer[index++] = (value % base) + '7';
+                }
 
                 value /= base;
             }
 
-            if(negative)
+            if(negative) {
                 buffer[index++] = '-';
+            }
 
             j = index-1;
 

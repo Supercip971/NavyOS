@@ -52,6 +52,7 @@ serial_putc(Com com, char c)
 void 
 serial_print(Com com, const char* s)
 {
-	while(*s != 0)
+	while(*s != 0) {
 		serial_putc(com, *s++);
+	}
 }
