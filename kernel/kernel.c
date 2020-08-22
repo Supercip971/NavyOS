@@ -20,6 +20,7 @@
 #include "kernel/log.h"
 #include "arch/arch.h"
 
+#include <macro.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -28,6 +29,12 @@ kmain(void)
 {
     init_arch();
     klog(LOG, "Navy started");
+
+    uint8_t a = 0;
+    uint8_t test = 9 / a;
+
+    __unused(test);
+
     while(1);
 }
 

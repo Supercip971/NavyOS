@@ -17,10 +17,14 @@
 
 #include "arch/x86/idt.h"
 #include "arch/x86/io.h"
+
 #include <string.h>
+#include <stdint.h>
 
 struct idtdesc kidt[256];
 struct idtr kidtr;
+
+extern uint32_t __interrupt_vector[];
 
 void
 init_idt_desc(uint16_t selector, uint32_t offset, uint8_t type_attr, struct idtdesc *desc)
@@ -36,7 +40,10 @@ void
 init_idt(void)
 {
     uint16_t i;
-    for(i = 0; i < 256; i++) {
+
+    init_idt_desc(0x08, __interrupt_vector[0], INTGATE, &kidt[0]);
+
+    for(i = 1; i < 256; i++) {
         init_idt_desc(0x08, (uint32_t) _asm_default_int, INTGATE, &kidt[i]);
     }
 

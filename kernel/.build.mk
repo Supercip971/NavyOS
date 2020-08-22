@@ -1,5 +1,3 @@
-CONFIG_KEYBOARD_LAYOUT?=en_us
-
 KERNEL_SOURCES = \
 	$(wildcard kernel/*.c) \
 	$(wildcard arch/x86/*.c)
@@ -15,7 +13,7 @@ KERNEL_BINARY = kernel.bin
 
 KERNEL_OBJECTS = \
 	$(patsubst %.c, $(BUILD_DIRECTORY)/%.o, $(KERNEL_SOURCES)) \
-	$(patsubst %.asm, $(BUILD_DIRECTORY)/%.o, $(KERNEL_ASSEMBLY_SOURCES)) \
+	$(patsubst %.asm, $(BUILD_DIRECTORY)/%.asm.o, $(KERNEL_ASSEMBLY_SOURCES)) \
 	$(patsubst lib/%.c, $(BUILD_DIRECTORY)/kernel/%.o, $(KERNEL_LIBRARIES_SOURCES))
 
 OBJECTS += $(KERNEL_OBJECTS)
@@ -35,7 +33,7 @@ $(BUILD_DIRECTORY)/arch/%.o: arch/%.c
 	@echo [KERNEL] [CC] $<
 	@$(CC) $(CFLAGS) -ffreestanding -nostdlib -c -o $@ $<
 
-$(BUILD_DIRECTORY)/arch/%.o: arch/%.asm
+$(BUILD_DIRECTORY)/arch/%.asm.o: arch/%.asm
 	$(DIRECTORY_GUARD)
 	@echo [KERNEL] [AS] $<
 	@$(AS) $(ASFLAGS) $^ -o $@

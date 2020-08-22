@@ -15,27 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_X86_MACRO_H
+#define _NAVY_X86_MACRO_H 
 
-#include "kernel/log.h"
-#include "arch/x86/vga.h"
-#include "arch/x86/pic.h"
-#include "arch/x86/interrupt.h"
+#define __unused(__stuff)(void)(__stuff)
 
-#include <macro.h>
-#include <stdint.h>
-#include <stdlib.h>
-
-void 
-isr_default_int(void)
-{
-    PIC_sendEOI();
-}
-
-void 
-interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
-{
-    __unused(esp);
-    __unused(stackframe);
-
-    PIC_sendEOI();
-}
+#endif

@@ -15,27 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_x86_INTERRUPT_H
+#define _NAVY_x86_INTERRUPT_H
 
-#include "kernel/log.h"
-#include "arch/x86/vga.h"
-#include "arch/x86/pic.h"
-#include "arch/x86/interrupt.h"
+struct InterruptStackFrame {
+    uint32_t gs, fs, es, ds;
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+    uint32_t intno, err;
+    uint32_t eip, cs, eflags;
+} __attribute__((packed));
 
-#include <macro.h>
-#include <stdint.h>
-#include <stdlib.h>
-
-void 
-isr_default_int(void)
-{
-    PIC_sendEOI();
-}
-
-void 
-interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
-{
-    __unused(esp);
-    __unused(stackframe);
-
-    PIC_sendEOI();
-}
+#endif 

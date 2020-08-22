@@ -31,4 +31,4 @@ all: $(KERNEL_BINARY)
 
 .PHONY: run-qemu
 run-qemu: 
-	qemu-system-x86_64 -s -kernel kernel.bin -serial stdio -d int 
+	qemu-system-x86_64 -s -kernel kernel.bin -serial stdio 

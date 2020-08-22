@@ -15,8 +15,6 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 
-;=== MULTIBOOT ===
-
 [ BITS 32 ]
 
 section .multiboot
@@ -49,49 +47,3 @@ section .text
 .hang:	hlt
 	jmp .hang
 .end:
-
-;; === MULTIBOOT ===
-
-;; === GDT ===
-
-[ GLOBAL gdt_flush ]    ; Allows the C code to call gdt_flush().
-
-gdt_flush:
-   mov eax, [esp+4]  ; Get the pointer to the GDT, passed as a parameter.
-   lgdt [eax]        ; Load the new GDT pointer
-
-   mov ax, 0x10      ; 0x10 is the offset in the GDT to our data segment
-   mov ds, ax        ; Load all data segment selectors
-   mov es, ax
-   mov fs, ax
-   mov gs, ax
-   mov ss, ax
-   jmp 0x08:.flush   ; 0x08 is the offset to our code segment: Far jump!
-.flush:
-   ret
-
-[ GLOBAL tss_flush ]
-tss_flush:
-    mov ax, 0x2B
-    ltr ax 
-    ret
-
-; === GDT ===
-
-; === IDT ===
-[ GLOBAL _asm_default_int ]
-_asm_default_int:
-    pusha
-    extern isr_default_int
-    call isr_default_int
-
-    popa
-    iret
-
-[ GLOBAL idt_flush ]
-idt_flush:
-    mov edx, [esp + 4]
-    lidt [eax]
-    sti 
-    ret
-; === IDT ===
