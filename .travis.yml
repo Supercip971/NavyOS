@@ -9,6 +9,7 @@ before_install:
 
 script:
   - wget https://raw.githubusercontent.com/lordmilko/i686-elf-tools/master/i686-elf-tools.sh
-  - bash ./i686-elf-tools
+  - chmod ./i686-elf-tools.sh
+  - ./i686-elf-tools.sh
   - make all
 
