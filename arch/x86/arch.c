@@ -32,6 +32,12 @@ debug_print(const char *msg)
 }
 
 void 
+debug_clear(void)
+{
+    debug_print("\033c");
+}
+
+void 
 init_arch(void)
 {
     term_init();

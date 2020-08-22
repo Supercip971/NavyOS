@@ -40,7 +40,6 @@ enum type_attr {
 void init_idt_desc(uint16_t, uint32_t, uint8_t, struct idtdesc *);
 void init_idt(void);
 
-extern void _asm_default_int(void);
 extern void idt_flush(uint32_t);
 
 #endif

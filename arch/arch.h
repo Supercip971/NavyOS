@@ -19,6 +19,7 @@
 #define NAVY_ARCH_H
 
 void debug_print(const char *);
+void debug_clear(void);
 void init_arch(void);
 
 #endif 

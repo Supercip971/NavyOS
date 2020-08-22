@@ -20,22 +20,57 @@
 #include "arch/x86/vga.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/interrupt.h"
+#include "arch/arch.h"
 
 #include <macro.h>
 #include <stdint.h>
 #include <stdlib.h>
 
-void 
-isr_default_int(void)
-{
-    PIC_sendEOI();
-}
+char *exceptions[32] = {
+    "Division by zero",
+    "Debug",
+    "Non-maskable Interrupt",
+    "Overflow",
+    "Bound Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack-Stegment Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Reserved",
+    "x87 Floating-Point Exception",
+    "Aligment Check",
+    "Machine Check",
+    "SIMD Floating-Point Exception",
+    "Alignment Check",
+    "Virtualization Exception",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Security Exception",
+    "Reserved"
+};
 
 void 
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
     __unused(esp);
-    __unused(stackframe);
+
+    if(stackframe.intno < 32) {
+        debug_clear();
+        klog(ERROR, exceptions[stackframe.intno]);
+        asm("hlt");
+    }
 
     PIC_sendEOI();
 }
