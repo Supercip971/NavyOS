@@ -31,14 +31,7 @@ kmain(void)
     klog(LOG, "Navy started");
 
     uint8_t a = 0;
-    uint8_t b = 6;
-    //uint8_t b = 8 / a;
-
-    char *c = "Hello";
-    char *d = "World";
-
-    klog(LOG, "%d & %d", a, b);
-    klog(LOG, "%s %s", c, d);
+    uint8_t b = 8 / a;
 
     __unused(b);
 

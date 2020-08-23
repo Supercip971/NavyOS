@@ -22,6 +22,7 @@ __interrupt%1:
     jmp _asm_interrupts_handler
 %endmacro
 
+
 [ EXTERN interrupts_handler ]
 
 _asm_interrupts_handler:

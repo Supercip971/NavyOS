@@ -25,11 +25,12 @@ enum LOG_LEVEL {
     LOG,
     ERROR,
     WARNING,
-    OK
+    OK,
+    NONE
 };
 
 typedef enum LOG_LEVEL Level;
 
-int32_t klog(Level, char *, ...);
+void klog(Level, char * __restrict, ...);
 
 #endif

@@ -61,14 +61,24 @@ char *exceptions[32] = {
 };
 
 void 
+register_dump(struct InterruptStackFrame stackframe)
+{  
+    klog(NONE, "CS=%x DS=%x ES=%x FS=%x GS=%x", stackframe.cs, stackframe.ds, stackframe.es, stackframe.fs, stackframe.gs);
+    klog(NONE, "EAX=%x EBX=%x ECX=%x EDX=%x", stackframe.eax, stackframe.ebx, stackframe.ecx, stackframe.edx);
+    klog(NONE, "EDI=%x ESI=%x EBP=%x ESP=%x", stackframe.edi, stackframe.esi, stackframe.ebp, stackframe.esp);
+    klog(NONE, "INT=%x ERR=%x EIP=%x FLG=%x", stackframe.intno, stackframe.err, stackframe.eip, stackframe.eflags);
+}
+
+void 
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
     __unused(esp);
     
     if(stackframe.intno < 32) {
         debug_clear();
-        klog(ERROR, exceptions[stackframe.intno]);
-
+        klog(ERROR, "%s (INT: %d, ERR: %d)", exceptions[stackframe.intno], stackframe.intno, stackframe.err);
+        klog(NONE, "\n\n === CPU DUMP === \n");
+        register_dump(stackframe);
         asm("hlt");
     }
 

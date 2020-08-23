@@ -32,6 +32,12 @@ debug_print(const char *msg)
 }
 
 void 
+debug_putc(const char c)
+{
+    serial_putc(COM1, c);
+}
+
+void 
 debug_clear(void)
 {
     debug_print("\033c");
