@@ -19,6 +19,7 @@
 #define NAVY_LOG_H
 
 #include "arch/arch.h"
+#include <stdint.h>
 
 enum LOG_LEVEL {
     LOG,
@@ -29,6 +30,6 @@ enum LOG_LEVEL {
 
 typedef enum LOG_LEVEL Level;
 
-void klog(Level, char *);
+int32_t klog(Level, char *, ...);
 
 #endif

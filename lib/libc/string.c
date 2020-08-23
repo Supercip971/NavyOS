@@ -20,7 +20,7 @@
 
 
 uint8_t 
-strlen(char *s)
+strlen(const char *s)
 {
     uint8_t i;
     for(i = 0; s[i] != '\0'; i++);

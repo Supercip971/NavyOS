@@ -24,7 +24,6 @@
 
 #include <macro.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 char *exceptions[32] = {
     "Division by zero",
@@ -65,10 +64,11 @@ void
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
     __unused(esp);
-
+    
     if(stackframe.intno < 32) {
         debug_clear();
         klog(ERROR, exceptions[stackframe.intno]);
+
         asm("hlt");
     }
 

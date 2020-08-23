@@ -44,10 +44,8 @@ void
 serial_putc(Com com, char c) 
 {
 	while(is_transmit_empty(com) == 0);
-
 	outb(com, c);
 }
-
 
 void 
 serial_print(Com com, const char* s)

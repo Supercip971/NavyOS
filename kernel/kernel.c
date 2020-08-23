@@ -31,9 +31,16 @@ kmain(void)
     klog(LOG, "Navy started");
 
     uint8_t a = 0;
-    uint8_t test = 9 / a;
+    uint8_t b = 6;
+    //uint8_t b = 8 / a;
 
-    __unused(test);
+    char *c = "Hello";
+    char *d = "World";
+
+    klog(LOG, "%d & %d", a, b);
+    klog(LOG, "%s %s", c, d);
+
+    __unused(b);
 
     while(1);
 }

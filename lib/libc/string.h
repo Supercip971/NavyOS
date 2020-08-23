@@ -20,7 +20,7 @@
 
 #include <stdint.h>
 
-uint8_t strlen(char *);
+uint8_t strlen(const char *);
 char *strcat(char *, char *);
 char *memcpy(void *, void *, uint32_t);
 
