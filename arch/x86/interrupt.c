@@ -25,10 +25,11 @@
 #include <macro.h>
 #include <stdint.h>
 
-char *exceptions[32] = {
-    "Division by zero",
-    "Debug",
+const char *exceptions[32] = {
+    "Division by zero", 
+    "Debug", 
     "Non-maskable Interrupt",
+    "Breakpoint",
     "Overflow",
     "Bound Range Exceeded",
     "Invalid Opcode",
@@ -37,7 +38,7 @@ char *exceptions[32] = {
     "Coprocessor Segment Overrun",
     "Invalid TSS",
     "Segment Not Present",
-    "Stack-Stegment Fault",
+    "Stack-Segment Fault",
     "General Protection Fault",
     "Page Fault",
     "Reserved",
@@ -45,8 +46,7 @@ char *exceptions[32] = {
     "Aligment Check",
     "Machine Check",
     "SIMD Floating-Point Exception",
-    "Alignment Check",
-    "Virtualization Exception",
+    "Virtualization Exception"
     "Reserved",
     "Reserved",
     "Reserved",

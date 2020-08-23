@@ -24,16 +24,13 @@
 #include <stdlib.h>
 #include <math.h>
 
+extern void test_div();
+
 void
 kmain(void)
 {
     init_arch();
     klog(LOG, "Navy started");
-
-    uint8_t a = 0;
-    uint8_t b = 8 / a;
-
-    __unused(b);
 
     while(1);
 }
