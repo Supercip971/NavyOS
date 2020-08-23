@@ -21,5 +21,6 @@
 #include <stdint.h>
 
 char *itoa(int32_t, char *, uint16_t);
+int32_t atoi(const char *);
 
 #endif

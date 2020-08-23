@@ -21,16 +21,20 @@
 #include "arch/arch.h"
 
 #include <macro.h>
+#include <string.h>
 #include <stdlib.h>
-#include <math.h>
 
-extern void test_div();
 
 void
 kmain(void)
 {
     init_arch();
-    klog(LOG, "Navy started");
+    klog(LOG, "Navy started\n");
+
+    uint8_t a = 0;
+    uint8_t b = 9 / a;
+    __unused(b);
+
 
     while(1);
 }

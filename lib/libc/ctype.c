@@ -15,13 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
+#include <ctype.h>
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
-void init_arch(void);
-void breakpoint(void);
-
-#endif 
+int 
+isdigit(char c)
+{
+    return c >= '0' && c <= '9';
+}

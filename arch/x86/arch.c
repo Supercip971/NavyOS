@@ -51,11 +51,17 @@ init_arch(void)
     serial_print(COM1, "\033c");
 
     init_gdt();
-    klog(LOG, "GDT loaded !");
+    klog(LOG, "GDT loaded !\n");
 
     init_pic();
-    klog(LOG, "PIC initialised !");
+    klog(LOG, "PIC initialised !\n");
 
     init_idt();
-    klog(LOG, "IDT loaded !");
+    klog(LOG, "IDT loaded !\n");
+}
+
+void 
+breakpoint(void)
+{
+    asm volatile("1: jmp 1b");
 }

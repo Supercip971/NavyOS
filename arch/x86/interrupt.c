@@ -63,10 +63,10 @@ const char *exceptions[32] = {
 void 
 register_dump(struct InterruptStackFrame stackframe)
 {  
-    klog(NONE, "CS=%x DS=%x ES=%x FS=%x GS=%x", stackframe.cs, stackframe.ds, stackframe.es, stackframe.fs, stackframe.gs);
-    klog(NONE, "EAX=%x EBX=%x ECX=%x EDX=%x", stackframe.eax, stackframe.ebx, stackframe.ecx, stackframe.edx);
-    klog(NONE, "EDI=%x ESI=%x EBP=%x ESP=%x", stackframe.edi, stackframe.esi, stackframe.ebp, stackframe.esp);
-    klog(NONE, "INT=%x ERR=%x EIP=%x FLG=%x", stackframe.intno, stackframe.err, stackframe.eip, stackframe.eflags);
+    klog(NONE, " CS=%08x  DS=%08x  ES=%08x  FS=%08x   GS=%08x\n", stackframe.cs, stackframe.ds, stackframe.es, stackframe.fs, stackframe.gs);
+    klog(NONE, "EAX=%08x EBX=%08x ECX=%08x EDX=%08x\n", stackframe.eax, stackframe.ebx, stackframe.ecx, stackframe.edx);
+    klog(NONE, "EDI=%08x ESI=%08x EBP=%08x ESP=%08x\n", stackframe.edi, stackframe.esi, stackframe.ebp, stackframe.esp);
+    klog(NONE, "INT=%08x ERR=%08x EIP=%08x FLG=%08x\n", stackframe.intno, stackframe.err, stackframe.eip, stackframe.eflags);
 }
 
 void 
@@ -76,8 +76,8 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
     
     if(stackframe.intno < 32) {
         debug_clear();
-        klog(ERROR, "%s (INT: %d, ERR: %d)", exceptions[stackframe.intno], stackframe.intno, stackframe.err);
-        klog(NONE, "\n\n === CPU DUMP === \n");
+        klog(ERROR, "%s (INT: %d, ERR: %d)\n", exceptions[stackframe.intno], stackframe.intno, stackframe.err);
+        klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);
         asm("hlt");
     }

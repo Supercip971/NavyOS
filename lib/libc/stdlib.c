@@ -21,78 +21,57 @@
 
 
 char *
-itoa(int32_t value, char buffer[], uint16_t base)
+itoa(int32_t value, char *str, uint16_t base) // Took from OSDEV, my implementation was not good
 {
-    uint8_t length = 0;
-    int32_t n = value;
-    bool negative = false;
-
-    uint32_t digit;
-
-    do {
-        length++;
-        n /= base;
-    } while(n);
-
-    if(value < 0) {
-        negative = true;
-        buffer[0] = '-';
-        value *= -1;
+    char * rc;
+    char * ptr;
+    char * low;
+    if ( base < 2 || base > 36 )
+    {
+        *str = '\0';
+        return str;
     }
-
-    if(base != 10) {
-        if(base > 16 || base < 2) {
-            char error[12];
-            itoa(base, error, 10);
-            return buffer;
-        }
-        else {
-            uint8_t i = 0;
-            uint8_t j = 0;
-            uint8_t index = 0;
-
-            char tmp;
-
-            while(value > 0) {
-                if((value % base) < 10){
-                    buffer[index++] = (value % base) + '0';
-                } else{
-                    buffer[index++] = (value % base) + '7';
-                }
-
-                value /= base;
-            }
-
-            if(negative) {
-                buffer[index++] = '-';
-            }
-
-            j = index-1;
-
-            while(i < index) {
-                tmp = buffer[j];
-                buffer[j] = buffer[i];
-                buffer[i] = tmp;
-
-                i++;
-                j--;
-            }
-
-            buffer[index] = '\0';
-            return buffer;
-        }
-
+    rc = ptr = str;
+    if ( value < 0 && base == 10 ) {
+        *ptr++ = '-';
     }
-
-
-    for(uint8_t i = length; i > 0; i--) {
-        digit = (value - (value % (uint32_t)pow(10, i-1)));
-        value -= digit;
-        buffer[length-i+negative] = (digit / (uint32_t) pow(10,i-1)) + '0';
+    low = ptr;
+    do
+    {
+        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + value % base];
+        value /= base;
+    } while ( value );
+    *ptr-- = '\0';
+    while ( low < ptr )
+    {
+        char tmp = *low;
+        *low++ = *ptr;
+        *ptr-- = tmp;
     }
-
-    buffer[length+negative] = '\0';
-
-    return buffer;
+    return rc;
 }
 
+int32_t 
+atoi(const char *nptr)
+{
+    bool is_negative = false;
+    int32_t return_value = 0;
+    size_t index = 0;
+
+    if(nptr[index] == '-') {
+        is_negative = true;
+        nptr++;
+    }
+
+    while(nptr[index] != '\0') {
+        uint16_t power = strlen(nptr) - index - 1;
+        return_value += (nptr[index] - '0') * (uint32_t) pow(10, power);
+        index++;
+    }
+
+    if(is_negative) {
+        return_value *= -1;
+    }
+
+    return return_value;
+}

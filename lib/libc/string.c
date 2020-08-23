@@ -29,7 +29,7 @@ strlen(const char *s)
 
 
 char *
-strcat(char *dst, char *src)
+strcat(char *dst, const char *src)
 {
     uint8_t length = strlen(dst);
     uint8_t i;

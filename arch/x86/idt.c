@@ -41,7 +41,7 @@ init_idt(void)
 {
     uint16_t i;
 
-    for(i = 1; i < 256; i++) {
+    for(i = 0; i < 256; i++) {
         init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
     }
 

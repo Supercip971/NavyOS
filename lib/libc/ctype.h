@@ -15,13 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
+#ifndef _NAVY_LIBC_CTYPE_H 
+#define _NAVY_LIBC_CTYPE_H
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
-void init_arch(void);
-void breakpoint(void);
+int isdigit(char);
 
-#endif 
+#endif

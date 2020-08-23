@@ -16,6 +16,7 @@
  */
 
 #include "kernel/log.h"
+#include "arch/arch.h"
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -23,7 +24,7 @@
 #include <stdlib.h>
 
 static const char *LOG_MSG[] = {
-    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m"
+    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m", "\e[35mOK\e[39m"
 };
 
 void
@@ -37,23 +38,47 @@ klog(Level level, char *restrict format, ...)
 
     va_list ap;
     va_start(ap, format);
+
+    char pad[2];
+
     char *ptr = format;
     char nbr[64];
+    uint32_t padding = 0;
 
     while(*ptr) {
         if(*ptr == '%') {
             ptr++;
 
             switch(*ptr++) {
+                case '0':
+                    pad[0] = *ptr++;
+                    pad[1] = '\0';
+                    padding = atoi(pad);
+                    *--ptr = '%';
+                    break;
+
                 case 's':
-                    debug_print(va_arg(ap, char *));
+                    debug_print(va_arg(ap, char *)); // TODO: Need fix
                     break;
                 case 'd':
                     itoa(va_arg(ap, int), nbr, 10);
+
+                    while(padding && padding-strlen(nbr) > 0) {
+                        debug_print("0");
+                        padding--;
+                    }
+                    
+
                     debug_print(nbr);
                     break;
                 case 'x':
                     itoa(va_arg(ap, int), nbr, 16);
+
+                    while(padding-strlen(nbr) > 0) {
+                        debug_print("0");
+                        padding--;
+                    }
+    
                     debug_print(nbr);
                     break;
                 case '%':
@@ -65,5 +90,4 @@ klog(Level level, char *restrict format, ...)
         }
     }
 
-    debug_print("\n");
 }
