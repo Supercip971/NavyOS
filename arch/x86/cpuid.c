@@ -15,25 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
-
-#include <macro.h>
-#include <string.h>
-#include <stdlib.h>
-
-#include <cpuid.h>
+#include <stdint.h>
+#include "arch/x86/cpuid.h"
 
 void
-kmain(void)
-{
-    init_arch();
-    klog(LOG, "Navy started\n");
-
-
-    asm("int $0");
-    while(1);
+cpuid(int32_t code, uint32_t *a, uint32_t *d) {
+  asm volatile("cpuid":"=a"(*a),"=d"(*d):"a"(code):"ecx","ebx");
 }
 
+int32_t 
+cpuid_string(int32_t code, uint32_t where[4]) {
+  asm volatile("cpuid":"=a"(*where),"=b"(*(where+1)),
+               "=c"(*(where+2)),"=d"(*(where+3)):"a"(code));
+
+  return (int32_t)where[0];
+}
+
+void
+cpuGetMSR(uint32_t msr, uint32_t *lo, uint32_t *hi)
+{
+  asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+}
+
+void cpuSetMSR(uint32_t msr, uint32_t lo, uint32_t hi)
+{
+  asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
+}

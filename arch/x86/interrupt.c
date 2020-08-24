@@ -19,6 +19,7 @@
 #include "kernel/log.h"
 #include "arch/x86/vga.h"
 #include "arch/x86/pic.h"
+#include "arch/x86/apic.h"
 #include "arch/x86/interrupt.h"
 #include "arch/arch.h"
 
@@ -104,5 +105,9 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
         hlt();
     }
 
-    PIC_sendEOI();
+    if(check_apic()) {
+        APIC_sendEOI();
+    } else {
+        PIC_sendEOI();
+    }
 }

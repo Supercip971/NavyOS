@@ -12,12 +12,11 @@ CFLAGS := 		\
     -MD			\
     -Wall		\
     -Wextra		\
-    -Werror		\
     -I. \
     -Ilib/libc		\
     -ffreestanding	\
     -g			\
-    -nostdlib		
+    -nostdlib			
 
 LD := i686-elf-ld
 LDFLAGS :=

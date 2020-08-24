@@ -15,25 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_x86_APIC_H 
+#define _NAVY_x86_APIC_H
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
+#ifdef __PHYSICAL_MEMORY_EXTENSION__
+#define MEM_EXT 1
+#else
+#define MEM_EXT 0
+#endif
+#define IA32_APIC_BASE_MSR 0x1B
+#define IA32_APIC_BASE_MSR_BSP 0x100 // Processor is a BSP
+#define IA32_APIC_BASE_MSR_ENABLE 0x800
 
-#include <macro.h>
-#include <string.h>
-#include <stdlib.h>
+#include <stdbool.h>
+#include <stdint.h>
 
-#include <cpuid.h>
+bool check_apic(void);
+uint32_t cpu_get_apic_base(void);
+void cpu_set_apic_base(uint32_t *);
 
-void
-kmain(void)
-{
-    init_arch();
-    klog(LOG, "Navy started\n");
+uint32_t APIC_reg_read(uint32_t);
+void APIC_reg_write(uint32_t, uint32_t);
 
+void init_apic(void);
+void APIC_sendEOI();
 
-    asm("int $0");
-    while(1);
-}
-
+#endif

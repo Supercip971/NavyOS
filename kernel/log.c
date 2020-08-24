@@ -58,7 +58,7 @@ klog(Level level, char *restrict format, ...)
                     break;
 
                 case 's':
-                    debug_print(va_arg(ap, char *)); // TODO: Need fix
+                    debug_print(va_arg(ap, char *)); 
                     break;
                 case 'd':
                     itoa(va_arg(ap, int), nbr, 10);

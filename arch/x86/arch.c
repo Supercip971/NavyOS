@@ -21,6 +21,7 @@
 
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
+#include "arch/x86/apic.h"
 #include "arch/x86/pic.h"
 
 #include "kernel/log.h"
@@ -53,8 +54,13 @@ init_arch(void)
     init_gdt();
     klog(LOG, "GDT loaded !\n");
 
-    init_pic();
-    klog(LOG, "PIC initialised !\n");
+    if(check_apic()) {
+        init_apic();
+        klog(LOG, "APIC initialised !\n");
+    } else {
+        init_pic();
+        klog(LOG, "PIC initialised !\n");
+    }
 
     init_idt();
     klog(LOG, "IDT loaded !\n");

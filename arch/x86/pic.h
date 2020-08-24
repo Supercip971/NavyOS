@@ -29,6 +29,7 @@
 #include <stdint.h>
 
 void init_pic(void);
+extern void disable_pic(void);
 void PIC_sendEOI(void);   // Send end of Interrupt
 
 #endif
