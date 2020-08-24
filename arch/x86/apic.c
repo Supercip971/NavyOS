@@ -44,7 +44,8 @@ cpu_get_apic_base()
     }
 }
 
-void cpu_set_apic_base(uint32_t *apic)
+void 
+cpu_set_apic_base(uint32_t *apic)
 {
     uint32_t edx = 0;
     uint32_t eax = (*apic & 0xfffff000) | IA32_APIC_BASE_MSR_ENABLE;
