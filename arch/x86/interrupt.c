@@ -22,8 +22,10 @@
 #include "arch/x86/interrupt.h"
 #include "arch/arch.h"
 
+
 #include <macro.h>
 #include <stdint.h>
+
 
 const char *exceptions[32] = {
     "Division by zero", 
@@ -70,16 +72,36 @@ register_dump(struct InterruptStackFrame stackframe)
 }
 
 void 
+backtrace()
+{
+    uint32_t *ebp;
+    uint32_t *eip;
+
+    asm volatile("mov %%ebp, %0" : "=r"(ebp));
+
+    while(ebp) {
+        eip = ebp + 1;
+        if(*eip) {
+            klog(NONE, "[ 0x%x ]\n", *eip);
+        }
+
+        ebp = (uint32_t *) *ebp;
+    }
+}
+
+void 
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
     __unused(esp);
     
     if(stackframe.intno < 32) {
         debug_clear();
-        klog(ERROR, "%s (INT: 0x%x)\n", exceptions[stackframe.intno], stackframe.intno);
+        klog(ERROR, "%s (INT: %x)\n", exceptions[stackframe.intno], stackframe.intno);
         klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);
-        asm("hlt");
+        klog(NONE, "\n\n=== BACKTRACE ===\n\n");
+        backtrace();
+        hlt();
     }
 
     PIC_sendEOI();

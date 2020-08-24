@@ -31,10 +31,7 @@ kmain(void)
     init_arch();
     klog(LOG, "Navy started\n");
 
-    uint8_t a = 0;
-    uint8_t b = 9 / a;
-    __unused(b);
-
+    asm("int $0");
 
     while(1);
 }

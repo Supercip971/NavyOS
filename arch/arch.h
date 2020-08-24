@@ -23,5 +23,7 @@ void debug_putc(const char);
 void debug_clear(void);
 void init_arch(void);
 void breakpoint(void);
+void hlt(void);
+
 
 #endif 

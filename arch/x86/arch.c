@@ -65,3 +65,9 @@ breakpoint(void)
 {
     asm volatile("1: jmp 1b");
 }
+
+void 
+hlt(void)
+{
+    asm("hlt");
+}
