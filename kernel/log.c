@@ -74,7 +74,7 @@ klog(Level level, char *restrict format, ...)
                 case 'x':
                     itoa(va_arg(ap, int), nbr, 16);
 
-                    while(padding-strlen(nbr) > 0) {
+                    while(padding && padding-strlen(nbr) > 0) {
                         debug_print("0");
                         padding--;
                     }

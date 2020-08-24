@@ -76,7 +76,7 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
     
     if(stackframe.intno < 32) {
         debug_clear();
-        klog(ERROR, "%s (INT: %d, ERR: %d)\n", exceptions[stackframe.intno], stackframe.intno, stackframe.err);
+        klog(ERROR, "%s (INT: 0x%x)\n", exceptions[stackframe.intno], stackframe.intno);
         klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);
         asm("hlt");
