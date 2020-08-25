@@ -19,10 +19,10 @@
 #include <string.h>
 
 
-uint8_t 
+size_t 
 strlen(const char *s)
 {
-    uint8_t i;
+    size_t i;
     for(i = 0; s[i] != '\0'; i++);
     return i;
 }
@@ -43,7 +43,7 @@ strcat(char *dst, const char *src)
 }
 
 char * 
-memcpy(void *dst, void *src, uint32_t count)
+memcpy(const void *dst, const void *src, size_t count)
 {
     char *s = (char *) src;
     char *d = (char *) dst;
@@ -53,4 +53,17 @@ memcpy(void *dst, void *src, uint32_t count)
     }
     
     return dst;
+}
+
+int 
+memcmp(const void* aptr, const void* bptr, size_t size) {
+	const unsigned char* a = (const unsigned char*) aptr;
+	const unsigned char* b = (const unsigned char*) bptr;
+	for (size_t i = 0; i < size; i++) {
+		if (a[i] < b[i])
+			return -1;
+		else if (b[i] < a[i])
+			return 1;
+	}
+	return 0;
 }

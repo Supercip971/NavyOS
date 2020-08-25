@@ -20,8 +20,8 @@
 
 #include <stdint.h>
 
-uint8_t strlen(const char *);
+size_t strlen(const char *);
 char *strcat(char *, const char *);
-char *memcpy(void *, void *, uint32_t);
-
+char *memcpy(const void *, const void *, size_t);
+int memcmp(const void *, const void *, size_t);
 #endif

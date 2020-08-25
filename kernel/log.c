@@ -24,7 +24,7 @@
 #include <stdlib.h>
 
 static const char *LOG_MSG[] = {
-    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m", "\e[35mOK\e[39m"
+    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m", "\e[35mOK\e[39m "
 };
 
 void

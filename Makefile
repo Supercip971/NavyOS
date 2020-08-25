@@ -13,6 +13,7 @@ CFLAGS := 		\
     -Wall		\
     -Wextra		\
     -I. \
+    -Ilib/multiboot \
     -Ilib/libc		\
     -ffreestanding	\
     -g			\
@@ -31,4 +32,4 @@ all: $(KERNEL_BINARY)
 
 .PHONY: run-qemu
 run-qemu: 
-	qemu-system-x86_64 -s -kernel kernel.bin -serial stdio 
+	qemu-system-x86_64 -s -kernel kernel.bin -serial stdio --enable-kvm

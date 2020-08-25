@@ -15,19 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "arch/x86/rsdt.h"
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
-#include <macro.h>
-
-
-#include "arch/x86/rsdp.h"
-
-void
-kmain()
+bool 
+rsdt_checksum(struct ACPISDTHeader *tableHeader)
 {
-    init_arch();
-    klog(LOG, "Navy started\n");
-}
+    uint8_t sum = 0;
+    size_t i;
 
+    for(i = 0; i < tableHeader->Length; i++) {
+        sum += ((uint8_t *)tableHeader)[i];
+    }
+
+    return sum == 0;
+}

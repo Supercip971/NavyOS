@@ -15,19 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_x86_RSDP_H 
+#define _NAVY_x86_RSDP_H
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
-#include <macro.h>
+#include <stdint.h>
 
+struct RSDPDescriptor {
+    char Signature[8];
+    uint8_t Checksum;
+    char OEMID[6];
+    uint8_t Revision;
+    uint32_t RsdtAddress;
+} __attribute__ ((packed));
 
-#include "arch/x86/rsdp.h"
+struct RSDPDescriptor20 {
+    struct RSDPDescriptor firstPart;
+ 
+    uint32_t Length;
+    uint64_t XsdtAddress;
+    uint8_t ExtendedChecksum;
+    uint8_t reserved[3];
+} __attribute__ ((packed));
 
-void
-kmain()
-{
-    init_arch();
-    klog(LOG, "Navy started\n");
-}
+uint64_t find_rsdp();
+uint8_t check_rsdp(uint64_t);
 
+#endif

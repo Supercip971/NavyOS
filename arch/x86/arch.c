@@ -22,6 +22,8 @@
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
 #include "arch/x86/apic.h"
+#include "arch/x86/rsdp.h"
+#include "arch/x86/rsdt.h"
 #include "arch/x86/pic.h"
 
 #include "kernel/log.h"
@@ -54,8 +56,28 @@ init_arch(void)
     init_gdt();
     klog(LOG, "GDT loaded !\n");
 
-    if(check_apic()) {
-        init_apic();
+    uint32_t rsdp_addr = find_rsdp();
+
+    if(check_apic() && rsdp_addr > 0) {
+        klog(OK, "RSDP found on 0x%x\n", rsdp_addr);
+        struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *)rsdp_addr;
+        klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
+
+        if(rsdp->Revision == 2) {
+            // TODO XSDT
+            klog(ERROR, "Not coded yet !\n");
+            hlt();
+        } else {
+            klog(LOG, "Using RSDT\n");
+            struct ACPISDTHeader *rsdt = (struct ACPISDTHeader *)rsdp->RsdtAddress;
+
+            if(!rsdt_checksum(rsdt)) {
+                klog(ERROR, "RSDT table invalid !");
+                hlt();
+            }
+            breakpoint();
+        }
+
         klog(LOG, "APIC initialised !\n");
     } else {
         init_pic();
