@@ -21,16 +21,17 @@
 #include "arch/arch.h"
 #include <stdint.h>
 
-enum LOG_LEVEL {
-    LOG,
-    ERROR,
-    WARNING,
-    OK,
-    NONE
+enum LOG_LEVEL
+{
+	LOG,
+	ERROR,
+	WARNING,
+	OK,
+	NONE
 };
 
 typedef enum LOG_LEVEL Level;
 
-void klog(Level, char * __restrict, ...);
+void klog(Level, char *__restrict, ...);
 
 #endif

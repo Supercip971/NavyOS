@@ -49,19 +49,23 @@ init_gdt(void)
 	init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | EXECUTABLE | READ_WRITE, PAGE_GR | BITS32, &gdtentry[1]);	// CODE 
 																												// 
 	// 
+	// 
 	// Segment
 	init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | READ_WRITE, PAGE_GR | BITS32, &gdtentry[2]);	// DATA 
 																									// 
+	// 
 	// 
 	// Segment
 
 	init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | USER_PRIV | EXECUTABLE | READ_WRITE, PAGE_GR | BITS32, &gdtentry[3]);	// User 
 																															// 
 	// 
+	// 
 	// CODE 
 	// Segment
 	init_gdt_desc(0, 0xffffffff, PRESENT | SYSTEM | USER_PRIV | READ_WRITE, PAGE_GR | BITS32, &gdtentry[4]);	// User 
 																												// 
+	// 
 	// 
 	// DATA 
 	// Segment

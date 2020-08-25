@@ -16,7 +16,7 @@
  */
 
 #ifndef _NAVY_X86_MACRO_H
-#define _NAVY_X86_MACRO_H 
+#define _NAVY_X86_MACRO_H
 
 #define __unused(__stuff)(void)(__stuff)
 

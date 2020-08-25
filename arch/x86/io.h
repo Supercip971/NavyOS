@@ -16,7 +16,7 @@
  */
 
 #ifndef _NAVY_X86_IO_H
-#define _NAVY_X86_IO_H 
+#define _NAVY_X86_IO_H
 
 #include <stdint.h>
 

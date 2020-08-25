@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_LIBC_CTYPE_H 
+#ifndef _NAVY_LIBC_CTYPE_H
 #define _NAVY_LIBC_CTYPE_H
 
 int isdigit(char);

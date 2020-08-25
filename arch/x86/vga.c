@@ -70,18 +70,18 @@ term_putc(char c, Colors fg, Colors bg)
 
 	switch (c)
 	{
-	 case '\t':
-		 col += 4;
-		 break;
-	 case '\n':
-		 row++;
-		 col = 0;
-		 break;
-	 default:
-		 index = (VGA_COL * row) + col;
-		 vga_buffer[index] = ((uint16_t) color << 8) | c;
-		 col++;
-		 break;
+		case '\t':
+			col += 4;
+			break;
+		case '\n':
+			row++;
+			col = 0;
+			break;
+		default:
+			index = (VGA_COL * row) + col;
+			vga_buffer[index] = ((uint16_t) color << 8) | c;
+			col++;
+			break;
 	}
 
 	if (col > VGA_COL)

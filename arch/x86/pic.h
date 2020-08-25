@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_X86_PIC_H 
-#define _NAVY_X86_PIC_H 
+#ifndef _NAVY_X86_PIC_H
+#define _NAVY_X86_PIC_H
 
 #define MASTER_CMD      0x20
 #define MASTER_DATA     0x21
@@ -30,6 +30,6 @@
 
 void init_pic(void);
 extern void disable_pic(void);
-void PIC_sendEOI(void);   // Send end of Interrupt
+void PIC_sendEOI(void);			// Send end of Interrupt
 
 #endif

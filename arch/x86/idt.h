@@ -16,25 +16,28 @@
  */
 
 #ifndef _NAVY_X86_IDT_H
-#define _NAVY_X86_IDT_H 
+#define _NAVY_X86_IDT_H
 
 #include <stdint.h>
 
-struct idtdesc {
-    uint16_t offset0_15;    // Offset bits 0..15
-    uint16_t selector;       // code seg in GDT or LDT
-    uint8_t zero;
-    uint8_t type_attr;      // type and attr
-    uint16_t offset16_31;  // Offset bits 16..31
+struct idtdesc
+{
+	uint16_t offset0_15;		// Offset bits 0..15
+	uint16_t selector;			// code seg in GDT or LDT
+	uint8_t zero;
+	uint8_t type_attr;			// type and attr
+	uint16_t offset16_31;		// Offset bits 16..31
 } __attribute__((packed));
 
-struct idtr {
-    uint16_t limite;
-    uint32_t base;
+struct idtr
+{
+	uint16_t limite;
+	uint32_t base;
 } __attribute__((packed));
 
-enum type_attr {
-    INTGATE = 0x8e,
+enum type_attr
+{
+	INTGATE = 0x8e,
 };
 
 void init_idt_desc(uint16_t, uint32_t, uint8_t, struct idtdesc *);

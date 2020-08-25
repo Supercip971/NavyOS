@@ -11,4 +11,4 @@ navy.iso
 isodir/
 
 # GNU Indent Backup
-*.c~
+*~

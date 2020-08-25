@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_x86_APIC_H 
+#ifndef _NAVY_x86_APIC_H
 #define _NAVY_x86_APIC_H
 
 #ifdef __PHYSICAL_MEMORY_EXTENSION__
@@ -24,7 +24,7 @@
 #define MEM_EXT 0
 #endif
 #define IA32_APIC_BASE_MSR 0x1B
-#define IA32_APIC_BASE_MSR_BSP 0x100 // Processor is a BSP
+#define IA32_APIC_BASE_MSR_BSP 0x100	// Processor is a BSP
 #define IA32_APIC_BASE_MSR_ENABLE 0x800
 
 #include <stdbool.h>

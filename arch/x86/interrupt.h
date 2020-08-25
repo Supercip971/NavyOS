@@ -20,17 +20,19 @@
 
 extern void stack_dump(void);
 
-struct InterruptStackFrame {
-    uint32_t gs, fs, es, ds;
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    uint32_t intno, err;
-    uint32_t eip, cs, eflags;
+struct InterruptStackFrame
+{
+	uint32_t gs, fs, es, ds;
+	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+	uint32_t intno, err;
+	uint32_t eip, cs, eflags;
 } __attribute__((packed));
 
 
-struct stackframe {
-  struct stackframe *ebp;
-  uint32_t eip;
+struct stackframe
+{
+	struct stackframe *ebp;
+	uint32_t eip;
 };
 
-#endif 
+#endif

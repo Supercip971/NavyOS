@@ -24,70 +24,81 @@
 #include <stdlib.h>
 
 static const char *LOG_MSG[] = {
-    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m", "\e[35mOK\e[39m "
+	"\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m",
+		"\e[35mOK\e[39m "
 };
 
 void
 klog(Level level, char *restrict format, ...)
 {
-    if(level != NONE) {
-        debug_print("[ ");
-        debug_print(LOG_MSG[level]);
-        debug_print(" ] ");
-    }
+	if (level != NONE)
+	{
+		debug_print("[ ");
+		debug_print(LOG_MSG[level]);
+		debug_print(" ] ");
+	}
 
-    va_list ap;
-    va_start(ap, format);
+	va_list ap;
 
-    char pad[2];
+	va_start(ap, format);
 
-    char *ptr = format;
-    char nbr[64];
-    uint32_t padding = 0;
+	char pad[2];
 
-    while(*ptr) {
-        if(*ptr == '%') {
-            ptr++;
+	char *ptr = format;
+	char nbr[64];
+	uint32_t padding = 0;
 
-            switch(*ptr++) {
-                case '0':
-                    pad[0] = *ptr++;
-                    pad[1] = '\0';
-                    padding = atoi(pad);
-                    *--ptr = '%';
-                    break;
+	while (*ptr)
+	{
+		if (*ptr == '%')
+		{
+			ptr++;
 
-                case 's':
-                    debug_print(va_arg(ap, char *)); 
-                    break;
-                case 'd':
-                    itoa(va_arg(ap, int), nbr, 10);
+			switch (*ptr++)
+			{
+				case '0':
+					pad[0] = *ptr++;
+					pad[1] = '\0';
+					padding = atoi(pad);
+					*--ptr = '%';
+					break;
 
-                    while(padding && padding-strlen(nbr) > 0) {
-                        debug_print("0");
-                        padding--;
-                    }
-                    
+				case 's':
+					debug_print(va_arg(ap, char *));
 
-                    debug_print(nbr);
-                    break;
-                case 'x':
-                    itoa(va_arg(ap, int), nbr, 16);
+					break;
+				case 'd':
+					itoa(va_arg(ap, int), nbr, 10);
 
-                    while(padding && padding-strlen(nbr) > 0) {
-                        debug_print("0");
-                        padding--;
-                    }
-    
-                    debug_print(nbr);
-                    break;
-                case '%':
-                    debug_putc('%');
-                    break;
-            }
-        } else {
-            debug_putc(*ptr++);
-        }
-    }
+					while (padding && padding - strlen(nbr) > 0)
+					{
+						debug_print("0");
+						padding--;
+					}
+
+
+					debug_print(nbr);
+					break;
+				case 'x':
+					itoa(va_arg(ap, int), nbr, 16);
+
+					while (padding && padding - strlen(nbr) > 0)
+					{
+						debug_print("0");
+						padding--;
+					}
+
+					debug_print(nbr);
+					break;
+				case '%':
+					debug_putc('%');
+					break;
+			}
+		}
+		else
+		{
+			debug_putc(*ptr++);
+		}
+	}
 
 }

@@ -22,68 +22,72 @@
 
 #include <stdint.h>
 
-struct gdtdesc {    // https://wiki.osdev.org/File:Gdtr.png
-    uint16_t size;
-    uint32_t offset;
+struct gdtdesc
+{								// https://wiki.osdev.org/File:Gdtr.png
+	uint16_t size;
+	uint32_t offset;
 } __attribute__((packed));
 
-struct gdtentry {   // https://wiki.osdev.org/File:GDT_Entry.png
-    uint16_t limit0_15;
-    uint16_t base0_15;
-    uint8_t base16_23;
-    uint8_t access;
-    uint8_t limit16_19 : 4;
-    uint8_t flags: 4;
-    uint8_t base24_31;
+struct gdtentry
+{								// https://wiki.osdev.org/File:GDT_Entry.png
+	uint16_t limit0_15;
+	uint16_t base0_15;
+	uint8_t base16_23;
+	uint8_t access;
+	uint8_t limit16_19:4;
+	uint8_t flags:4;
+	uint8_t base24_31;
 } __attribute__((packed));
 
 
-enum gdtbit {   // https://wiki.osdev.org/File:Gdt_bits_fixed.png
-    // Access Byte
-    PRESENT     = 0b10000000,
-    SYSTEM      = 0b00010000,
-    USER_PRIV   = 0b01100000,
-    EXECUTABLE  = 0b00001000,
-    GROWS_DOWN  = 0b00000100,
-    READ_WRITE  = 0b00000010,
-    ACCESSED     = 0b00000001,
+enum gdtbit
+{								// https://wiki.osdev.org/File:Gdt_bits_fixed.png
+	// Access Byte
+	PRESENT = 0 b10000000,
+	SYSTEM = 0 b00010000,
+	USER_PRIV = 0 b01100000,
+	EXECUTABLE = 0 b00001000,
+	GROWS_DOWN = 0 b00000100,
+	READ_WRITE = 0 b00000010,
+	ACCESSED = 0 b00000001,
 
-    // Flag
-    BYTE_GR     = 0b0000,
-    PAGE_GR     = 0b1000,
-    BITS16      = 0b0000,
-    BITS32      = 0b0100,
+	// Flag
+	BYTE_GR = 0 b0000,
+	PAGE_GR = 0 b1000,
+	BITS16 = 0 b0000,
+	BITS32 = 0 b0100,
 };
 
-struct tssentry { // https://wiki.osdev.org/Getting_to_Ring_3#The_TSS
-   uint32_t prev_tss;   
-   uint32_t esp0;       
-   uint32_t ss0;        
-   uint32_t esp1;       
-   uint32_t ss1;
-   uint32_t esp2;
-   uint32_t ss2;
-   uint32_t cr3;
-   uint32_t eip;
-   uint32_t eflags;
-   uint32_t eax;
-   uint32_t ecx;
-   uint32_t edx;
-   uint32_t ebx;
-   uint32_t esp;
-   uint32_t ebp;
-   uint32_t esi;
-   uint32_t edi;
-   uint32_t es;         
-   uint32_t cs;        
-   uint32_t ss;        
-   uint32_t ds;        
-   uint32_t fs;       
-   uint32_t gs;         
-   uint32_t ldt;      
-   uint16_t trap;
-   uint16_t iomap_base;
-} __attribute__((packed)); 
+struct tssentry
+{								// https://wiki.osdev.org/Getting_to_Ring_3#The_TSS
+	uint32_t prev_tss;
+	uint32_t esp0;
+	uint32_t ss0;
+	uint32_t esp1;
+	uint32_t ss1;
+	uint32_t esp2;
+	uint32_t ss2;
+	uint32_t cr3;
+	uint32_t eip;
+	uint32_t eflags;
+	uint32_t eax;
+	uint32_t ecx;
+	uint32_t edx;
+	uint32_t ebx;
+	uint32_t esp;
+	uint32_t ebp;
+	uint32_t esi;
+	uint32_t edi;
+	uint32_t es;
+	uint32_t cs;
+	uint32_t ss;
+	uint32_t ds;
+	uint32_t fs;
+	uint32_t gs;
+	uint32_t ldt;
+	uint16_t trap;
+	uint16_t iomap_base;
+} __attribute__((packed));
 
 
 void init_gdt_desc(uint32_t, uint32_t, uint8_t, uint8_t, struct gdtentry *);
