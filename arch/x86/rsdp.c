@@ -23,42 +23,50 @@
 uint8_t
 check_rsdp(uint64_t addr)
 {
-    uint8_t sum = 0;
-    size_t i;
+	uint8_t sum = 0;
+	size_t i;
 
-    for(i = 0; i < 20; i++) {
-        sum += *(uint8_t *)(addr + i);
-    }
+	for (i = 0; i < 20; i++)
+	{
+		sum += *(uint8_t *) (addr + i);
+	}
 
-    return sum;
+	return sum;
 
 }
 
-uint64_t 
+uint64_t
 find_rsdp()
 {
-    uint64_t location;
-    uint64_t ebda_start = (*(uint16_t *)(0x40e)) << 4;
+	uint64_t location;
+	uint64_t ebda_start = (*(uint16_t *) (0x40e)) << 4;
 
-    for(location = 0; location < 0x400; location += 16) {
-        if(!memcmp((char *) ebda_start + location, tofind, sizeof(tofind) - 1)) {
-            if(check_rsdp(ebda_start + location)) {
-                continue;
-            }
+	for (location = 0; location < 0x400; location += 16)
+	{
+		if (!memcmp
+			((char *) ebda_start + location, tofind, sizeof(tofind) - 1))
+		{
+			if (check_rsdp(ebda_start + location))
+			{
+				continue;
+			}
 
-            return ebda_start + location;
-        }
-    }
+			return ebda_start + location;
+		}
+	}
 
-    for(location = 0; location < 0x20000; location += 16) {
-        if(!memcmp((char *) 0xe0000 + location, tofind, sizeof(tofind) - 1)){ 
-            if(check_rsdp(0xe0000 + location)) {
-                continue;
-            }
+	for (location = 0; location < 0x20000; location += 16)
+	{
+		if (!memcmp((char *) 0xe0000 + location, tofind, sizeof(tofind) - 1))
+		{
+			if (check_rsdp(0xe0000 + location))
+			{
+				continue;
+			}
 
-            return 0xe0000 + location;
-        }
-    }
+			return 0xe0000 + location;
+		}
+	}
 
-    return 0;
+	return 0;
 }

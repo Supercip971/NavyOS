@@ -30,6 +30,10 @@ include kernel/.build.mk
 .PHONY: all
 all: $(KERNEL_BINARY) 
 
+.PHONY: format 
+format:
+	indent -bad -bap -bl -blf -bli0 -bbo -i4 -l79 -lp -ppi1 -psl -c33 -cd33 -cdb -nce -cli1 -cp33  -fc1 -fca -npcs -nprs -saf -sai -saw -sc -ts4 -nsob -nss */*/*.c
+
 .PHONY: run-qemu
 run-qemu: 
 	qemu-system-x86_64 -s -kernel kernel.bin -serial stdio --enable-kvm

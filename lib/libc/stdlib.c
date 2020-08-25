@@ -21,57 +21,68 @@
 
 
 char *
-itoa(int32_t value, char *str, uint16_t base) // Took from OSDEV, my implementation was not good
+itoa(int32_t value, char *str, uint16_t base)	// Took from OSDEV, my
+												// implementation was not good
 {
-    char * rc;
-    char * ptr;
-    char * low;
-    if ( base < 2 || base > 36 )
-    {
-        *str = '\0';
-        return str;
-    }
-    rc = ptr = str;
-    if ( value < 0 && base == 10 ) {
-        *ptr++ = '-';
-    }
-    low = ptr;
-    do
-    {
-        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"[35 + value % base];
-        value /= base;
-    } while ( value );
-    *ptr-- = '\0';
-    while ( low < ptr )
-    {
-        char tmp = *low;
-        *low++ = *ptr;
-        *ptr-- = tmp;
-    }
-    return rc;
+	char *rc;
+	char *ptr;
+	char *low;
+
+	if (base < 2 || base > 36)
+	{
+		*str = '\0';
+		return str;
+	}
+	rc = ptr = str;
+	if (value < 0 && base == 10)
+	{
+		*ptr++ = '-';
+	}
+	low = ptr;
+	do
+	{
+		*ptr++ =
+			"zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
+			[35 + value % base];
+		value /= base;
+	}
+	while (value);
+	*ptr-- = '\0';
+	while (low < ptr)
+	{
+		char tmp = *low;
+
+		*low++ = *ptr;
+		*ptr-- = tmp;
+	}
+	return rc;
 }
 
-int32_t 
+int32_t
 atoi(const char *nptr)
 {
-    bool is_negative = false;
-    int32_t return_value = 0;
-    size_t index = 0;
+	bool is_negative = false;
+	int32_t return_value = 0;
+	size_t index = 0;
 
-    if(nptr[index] == '-') {
-        is_negative = true;
-        nptr++;
-    }
+	if (nptr[index] == '-')
+	{
+		is_negative = true;
+		nptr++;
+	}
 
-    while(nptr[index] != '\0') {
-        uint16_t power = strlen(nptr) - index - 1;
-        return_value += (nptr[index] - '0') * (uint32_t) pow(10, power);
-        index++;
-    }
+	while (nptr[index] != '\0')
+	{
+		uint16_t power = strlen(nptr) - index - 1;
 
-    if(is_negative) {
-        return_value *= -1;
-    }
+		return_value += (nptr[index] - '0') * (uint32_t) pow(10, power);
+		index++;
+	}
 
-    return return_value;
+	if (is_negative)
+	{
+		return_value *= -1;
+	}
+
+	return return_value;
 }

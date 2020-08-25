@@ -21,15 +21,19 @@
 struct multiboot_tag *
 get_tag(uint32_t type, uint32_t addr)
 {
-    struct multiboot_tag *tag = (struct multiboot_tag *) addr + 8;
+	struct multiboot_tag *tag = (struct multiboot_tag *) addr + 8;
 
-    while(tag->type != MULTIBOOT_TAG_TYPE_END) {
-        if(tag->type == type) {
-            return tag;
-        }
+	while (tag->type != MULTIBOOT_TAG_TYPE_END)
+	{
+		if (tag->type == type)
+		{
+			return tag;
+		}
 
-        tag = (struct multiboot_tag *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
-    }
+		tag =
+			(struct multiboot_tag *) ((uint8_t *) tag +
+									  ((tag->size + 7) & ~7));
+	}
 
-    return MULTIBOOT_HEADER_TAG_END;
+	return MULTIBOOT_HEADER_TAG_END;
 }

@@ -9,3 +9,6 @@ build/
 # Iso 
 navy.iso
 isodir/
+
+# GNU Indent Backup
+*.c~

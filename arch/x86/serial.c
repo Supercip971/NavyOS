@@ -17,40 +17,42 @@
 
 
 #include "arch/x86/serial.h"
-#include "arch/x86/io.h" 
+#include "arch/x86/io.h"
 
 
-void 
-serial_init(Com com) 
+void
+serial_init(Com com)
 {
-	outb(com + 1, 0x00);    // Disable all interrupts
-	outb(com + 3, 0x80);    // Enable DLAB (set baud rate divisor)
-	outb(com + 0, 0x03);    // Set divisor to 3 (lo byte) 38400 baud
-	outb(com + 1, 0x00);    //                  (hi byte)
-	outb(com + 3, 0x03);    // 8 bits, no parity, one stop bit
-	outb(com + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold
-	outb(com + 4, 0x0B);    // IRQs enabled, RTS/DSR set
+	outb(com + 1, 0x00);		// Disable all interrupts
+	outb(com + 3, 0x80);		// Enable DLAB (set baud rate divisor)
+	outb(com + 0, 0x03);		// Set divisor to 3 (lo byte) 38400 baud
+	outb(com + 1, 0x00);		// (hi byte)
+	outb(com + 3, 0x03);		// 8 bits, no parity, one stop bit
+	outb(com + 2, 0xC7);		// Enable FIFO, clear them, with 14-byte
+	// threshold
+	outb(com + 4, 0x0B);		// IRQs enabled, RTS/DSR set
 }
 
 
-int32_t 
-is_transmit_empty(Com com) 
+int32_t
+is_transmit_empty(Com com)
 {
 	return inb(com + 5) & 0x20;
 }
 
 
-void 
-serial_putc(Com com, char c) 
+void
+serial_putc(Com com, char c)
 {
-	while(is_transmit_empty(com) == 0);
+	while (is_transmit_empty(com) == 0);
 	outb(com, c);
 }
 
-void 
-serial_print(Com com, const char* s)
+void
+serial_print(Com com, const char *s)
 {
-	while(*s != 0) {
+	while (*s != 0)
+	{
 		serial_putc(com, *s++);
 	}
 }
