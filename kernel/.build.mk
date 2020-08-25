@@ -6,7 +6,8 @@ KERNEL_ASSEMBLY_SOURCES = \
 	$(wildcard arch/*/*.asm)
 
 KERNEL_LIBRARIES_SOURCES = \
-	$(wildcard lib/libc/*.c) 
+	$(wildcard lib/libc/*.c) \
+	$(wildcard lib/multiboot/*.c)
 	
 
 KERNEL_BINARY = kernel.bin

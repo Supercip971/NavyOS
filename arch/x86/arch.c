@@ -27,6 +27,8 @@
 #include "arch/x86/pic.h"
 
 #include "kernel/log.h"
+#include <multiboot2.h>
+
 
 void 
 debug_print(const char *msg) 
@@ -47,7 +49,7 @@ debug_clear(void)
 }
 
 void 
-init_arch(void)
+init_arch(uint32_t addr)
 {
     term_init();
     serial_init(COM1);
@@ -56,30 +58,40 @@ init_arch(void)
     init_gdt();
     klog(LOG, "GDT loaded !\n");
 
-    uint32_t rsdp_addr = find_rsdp();
 
-    if(check_apic() && rsdp_addr > 0) {
+    uint32_t rsdp_addr = find_rsdp();
+    get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
+
+    if(check_apic() && rsdp_addr > 0) 
+    {
         klog(OK, "RSDP found on 0x%x\n", rsdp_addr);
         struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *)rsdp_addr;
         klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
 
-        if(rsdp->Revision == 2) {
+        if(rsdp->Revision == 2) 
+        {
             // TODO XSDT
             klog(ERROR, "Not coded yet !\n");
             hlt();
-        } else {
+        } 
+        
+        else 
+        {
             klog(LOG, "Using RSDT\n");
             struct ACPISDTHeader *rsdt = (struct ACPISDTHeader *)rsdp->RsdtAddress;
 
-            if(!rsdt_checksum(rsdt)) {
+            if(!rsdt_checksum(rsdt)) 
+            {
                 klog(ERROR, "RSDT table invalid !");
                 hlt();
             }
-            breakpoint();
         }
 
         klog(LOG, "APIC initialised !\n");
-    } else {
+    } 
+    
+    else 
+    {
         init_pic();
         klog(LOG, "PIC initialised !\n");
     }

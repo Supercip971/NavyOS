@@ -96,7 +96,7 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
     __unused(esp);
     
     if(stackframe.intno < 32) {
-        debug_clear();
+        //debug_clear();
         klog(ERROR, "%s (INT: %x)\n", exceptions[stackframe.intno], stackframe.intno);
         klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);

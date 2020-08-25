@@ -15,30 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
-#include <macro.h>
 #include <multiboot2.h>
+#include <stdint.h>
 
-
-#include "arch/x86/rsdp.h"
-
-void
-kmain(uint32_t addr, uint32_t magic)
+struct multiboot_tag *
+get_tag(uint32_t type, uint32_t addr)
 {
-    init_arch(addr);
+    struct multiboot_tag *tag = (struct multiboot_tag *) addr + 8;
 
-    if(magic != MULTIBOOT2_BOOTLOADER_MAGIC) {
-        klog(ERROR, "Invalid magic number: 0x%x\n", magic);
-        hlt();
+    while(tag->type != MULTIBOOT_TAG_TYPE_END) {
+        if(tag->type == type) {
+            return tag;
+        }
+
+        tag = (struct multiboot_tag *) ((uint8_t *) tag + ((tag->size + 7) & ~7));
     }
 
-
-    klog(LOG, "Navy started\n");
-    __unused(addr);
-
-    hlt();
+    return MULTIBOOT_HEADER_TAG_END;
 }
-

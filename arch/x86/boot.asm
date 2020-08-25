@@ -17,25 +17,11 @@
 
 [ BITS 32 ]
 
-;; Multiboot 1
-section .multiboot
-    MBALIGN  equ  1 << 0            
-    MEMINFO  equ  1 << 1            
-    FLAGS    equ  MBALIGN | MEMINFO 
-    MAGIC    equ  0x1BADB002       
-    CHECKSUM equ -(MAGIC + FLAGS) 
- 
-    align 4
-    dd MAGIC
-    dd FLAGS
-    dd CHECKSUM
-;;
-
 ;; Multiboot 2
 MULTIBOOT2_HEADER_MAGIC                 equ 0xe85250d6
 MULTIBOOT_ARCHITECTURE_I386             equ 0
 HEADER_LENGTH                           equ multiboot_end - multiboot_start
-CHECKSUM2                               equ -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH) 
+CHECKSUM                                equ -(MULTIBOOT2_HEADER_MAGIC + MULTIBOOT_ARCHITECTURE_I386 + HEADER_LENGTH) 
 MULTIBOOT_HEADER_TAG_ADDRESS            equ 2
 MULTIBOOT_HEADER_TAG_OPTIONAL           equ 1
 MULTIBOOT_TAG_TYPE_FRAMEBUFFER          equ 8
@@ -47,17 +33,19 @@ multiboot_start:
     dd MULTIBOOT2_HEADER_MAGIC
     dd MULTIBOOT_ARCHITECTURE_I386
     dd HEADER_LENGTH
-    dd CHECKSUM2
+    dd CHECKSUM
 
 align 8
 framebuffer_tag_start:	
     dw MULTIBOOT_TAG_TYPE_FRAMEBUFFER
     dw MULTIBOOT_HEADER_TAG_OPTIONAL
     dd framebuffer_tag_start - framebuffer_tag_stop 
-    dd 1024
-    dd 768
+    dd 20
+    dd 0
+    dd 0
     dd 32
 framebuffer_tag_stop:
+
 align 8
     dw MULTIBOOT_HEADER_TAG_END
     dw 0
@@ -76,8 +64,16 @@ section .text
     _start:
 	cli
     cld
+
+
 	mov esp, stack_top
     xor ebp, ebp
+
+    ; Push the pointer to the Multiboot information struct
+    push eax
+
+    ; Push the magic value 
+    push ebx
 
 	extern kmain
 	call kmain
