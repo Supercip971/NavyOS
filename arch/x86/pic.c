@@ -21,34 +21,34 @@
 void
 init_pic(void)
 {
-	outb(MASTER_CMD, 0x10 | 0x01);
-	io_wait();
-	outb(SLAVE_CMD, 0x10 | 0x01);
-	io_wait();
+    outb(MASTER_CMD, 0x10 | 0x01);
+    io_wait();
+    outb(SLAVE_CMD, 0x10 | 0x01);
+    io_wait();
 
-	outb(MASTER_DATA, MASTER_OFFSET);
-	io_wait();
-	outb(SLAVE_DATA, SLAVE_OFFSET);
-	io_wait();
+    outb(MASTER_DATA, MASTER_OFFSET);
+    io_wait();
+    outb(SLAVE_DATA, SLAVE_OFFSET);
+    io_wait();
 
-	outb(MASTER_DATA, 4);
-	io_wait();
-	outb(SLAVE_DATA, 2);
-	io_wait();
+    outb(MASTER_DATA, 4);
+    io_wait();
+    outb(SLAVE_DATA, 2);
+    io_wait();
 
-	outb(MASTER_DATA, 0x01);
-	io_wait();
-	outb(SLAVE_DATA, 0x01);
+    outb(MASTER_DATA, 0x01);
+    io_wait();
+    outb(SLAVE_DATA, 0x01);
 
-	outb(MASTER_DATA, 0);
-	io_wait();
-	outb(SLAVE_DATA, 0);
-	io_wait();
+    outb(MASTER_DATA, 0);
+    io_wait();
+    outb(SLAVE_DATA, 0);
+    io_wait();
 }
 
 void
 PIC_sendEOI(void)
 {
-	outb(SLAVE_CMD, 0x20);
-	outb(MASTER_CMD, 0x20);
+    outb(SLAVE_CMD, 0x20);
+    outb(MASTER_CMD, 0x20);
 }

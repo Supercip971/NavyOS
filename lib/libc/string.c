@@ -22,54 +22,54 @@
 size_t
 strlen(const char *s)
 {
-	size_t i;
+    size_t i;
 
-	for (i = 0; s[i] != '\0'; i++);
-	return i;
+    for (i = 0; s[i] != '\0'; i++);
+    return i;
 }
 
 
 char *
 strcat(char *dst, const char *src)
 {
-	uint8_t length = strlen(dst);
-	uint8_t i;
+    uint8_t length = strlen(dst);
+    uint8_t i;
 
-	for (i = 0; i < strlen(src); i++)
-	{
-		dst[length + i] = src[i];
-	}
+    for (i = 0; i < strlen(src); i++)
+    {
+        dst[length + i] = src[i];
+    }
 
-	dst[length + i] = '\0';
-	return dst;
+    dst[length + i] = '\0';
+    return dst;
 }
 
 char *
-memcpy(const void *dst, const void *src, size_t count)
+memcpy(void *dst, const void *src, size_t count)
 {
-	char *s = (char *) src;
-	char *d = (char *) dst;
+    char *s = (char *) src;
+    char *d = (char *) dst;
 
-	while (count-- > 0)
-	{
-		*s++ = *d++;
-	}
+    while (count-- > 0)
+    {
+        *s++ = *d++;
+    }
 
-	return dst;
+    return dst;
 }
 
 int
 memcmp(const void *aptr, const void *bptr, size_t size)
 {
-	const unsigned char *a = (const unsigned char *) aptr;
-	const unsigned char *b = (const unsigned char *) bptr;
+    const unsigned char *a = (const unsigned char *) aptr;
+    const unsigned char *b = (const unsigned char *) bptr;
 
-	for (size_t i = 0; i < size; i++)
-	{
-		if (a[i] < b[i])
-			return -1;
-		else if (b[i] < a[i])
-			return 1;
-	}
-	return 0;
+    for (size_t i = 0; i < size; i++)
+    {
+        if (a[i] < b[i])
+            return -1;
+        else if (b[i] < a[i])
+            return 1;
+    }
+    return 0;
 }

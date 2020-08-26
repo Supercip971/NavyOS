@@ -22,6 +22,6 @@
 
 size_t strlen(const char *);
 char *strcat(char *, const char *);
-char *memcpy(const void *, const void *, size_t);
+char *memcpy(void *, const void *, size_t);
 int memcmp(const void *, const void *, size_t);
 #endif

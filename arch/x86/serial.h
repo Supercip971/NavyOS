@@ -23,10 +23,10 @@
 
 enum SERIAL_COM
 {
-	COM1 = 0x3f8,
-	COM2 = 0x2f8,
-	COM3 = 0x3e8,
-	COM4 = 0x2e8,
+    COM1 = 0x3f8,
+    COM2 = 0x2f8,
+    COM3 = 0x3e8,
+    COM4 = 0x2e8,
 };
 
 typedef enum SERIAL_COM Com;

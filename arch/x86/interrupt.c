@@ -29,96 +29,94 @@
 
 
 const char *exceptions[32] = {
-	"Division by zero",
-	"Debug",
-	"Non-maskable Interrupt",
-	"Breakpoint",
-	"Overflow",
-	"Bound Range Exceeded",
-	"Invalid Opcode",
-	"Device Not Available",
-	"Double Fault",
-	"Coprocessor Segment Overrun",
-	"Invalid TSS",
-	"Segment Not Present",
-	"Stack-Segment Fault",
-	"General Protection Fault",
-	"Page Fault",
-	"Reserved",
-	"x87 Floating-Point Exception",
-	"Aligment Check",
-	"Machine Check",
-	"SIMD Floating-Point Exception",
-	"Virtualization Exception" "Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Security Exception",
-	"Reserved"
+    "Division by zero",
+    "Debug",
+    "Non-maskable Interrupt",
+    "Breakpoint",
+    "Overflow",
+    "Bound Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack-Segment Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Reserved",
+    "x87 Floating-Point Exception",
+    "Aligment Check",
+    "Machine Check",
+    "SIMD Floating-Point Exception",
+    "Virtualization Exception" "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Security Exception",
+    "Reserved"
 };
 
 void
 register_dump(struct InterruptStackFrame stackframe)
 {
-	klog(NONE, " CS=%08x  DS=%08x  ES=%08x  FS=%08x   GS=%08x\n",
-		 stackframe.cs, stackframe.ds, stackframe.es, stackframe.fs,
-		 stackframe.gs);
-	klog(NONE, "EAX=%08x EBX=%08x ECX=%08x EDX=%08x\n", stackframe.eax,
-		 stackframe.ebx, stackframe.ecx, stackframe.edx);
-	klog(NONE, "EDI=%08x ESI=%08x EBP=%08x ESP=%08x\n", stackframe.edi,
-		 stackframe.esi, stackframe.ebp, stackframe.esp);
-	klog(NONE, "INT=%08x ERR=%08x EIP=%08x FLG=%08x\n", stackframe.intno,
-		 stackframe.err, stackframe.eip, stackframe.eflags);
+    klog(NONE, " CS=%08x  DS=%08x  ES=%08x  FS=%08x   GS=%08x\n",
+         stackframe.cs, stackframe.ds, stackframe.es, stackframe.fs, stackframe.gs);
+    klog(NONE, "EAX=%08x EBX=%08x ECX=%08x EDX=%08x\n", stackframe.eax,
+         stackframe.ebx, stackframe.ecx, stackframe.edx);
+    klog(NONE, "EDI=%08x ESI=%08x EBP=%08x ESP=%08x\n", stackframe.edi,
+         stackframe.esi, stackframe.ebp, stackframe.esp);
+    klog(NONE, "INT=%08x ERR=%08x EIP=%08x FLG=%08x\n", stackframe.intno,
+         stackframe.err, stackframe.eip, stackframe.eflags);
 }
 
 void
 backtrace()
 {
-	uint32_t *ebp;
-	uint32_t *eip;
+    uint32_t *ebp;
+    uint32_t *eip;
 
-	asm volatile ("mov %%ebp, %0":"=r" (ebp));
+    asm volatile ("mov %%ebp, %0":"=r" (ebp));
 
-	while (ebp)
-	{
-		eip = ebp + 1;
-		if (*eip)
-		{
-			klog(NONE, "[ 0x%x ]\n", *eip);
-		}
+    while (ebp)
+    {
+        eip = ebp + 1;
+        if (*eip)
+        {
+            klog(NONE, "[ 0x%x ]\n", *eip);
+        }
 
-		ebp = (uint32_t *) * ebp;
-	}
+        ebp = (uint32_t *) * ebp;
+    }
 }
 
 void
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
-	__unused(esp);
+    __unused(esp);
 
-	if (stackframe.intno < 32)
-	{
-		// debug_clear();
-		klog(ERROR, "%s (INT: %x)\n", exceptions[stackframe.intno],
-			 stackframe.intno);
-		klog(NONE, "\n\n === CPU DUMP === \n\n");
-		register_dump(stackframe);
-		klog(NONE, "\n\n=== BACKTRACE ===\n\n");
-		backtrace();
-		hlt();
-	}
+    if (stackframe.intno < 32)
+    {
+        // debug_clear();
+        klog(ERROR, "%s (INT: %x)\n", exceptions[stackframe.intno], stackframe.intno);
+        klog(NONE, "\n\n === CPU DUMP === \n\n");
+        register_dump(stackframe);
+        klog(NONE, "\n\n=== BACKTRACE ===\n\n");
+        backtrace();
+        hlt();
+    }
 
-	if (check_apic())
-	{
-		APIC_sendEOI();
-	}
-	else
-	{
-		PIC_sendEOI();
-	}
+    if (check_apic())
+    {
+        APIC_sendEOI();
+    }
+    else
+    {
+        PIC_sendEOI();
+    }
 }

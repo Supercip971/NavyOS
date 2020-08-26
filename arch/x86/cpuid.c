@@ -21,26 +21,26 @@
 void
 cpuid(int32_t code, uint32_t * a, uint32_t * d)
 {
-	asm volatile ("cpuid":"=a" (*a), "=d"(*d):"a"(code):"ecx", "ebx");
+    asm volatile ("cpuid":"=a" (*a), "=d"(*d):"a"(code):"ecx", "ebx");
 }
 
 int32_t
 cpuid_string(int32_t code, uint32_t where[4])
 {
-	asm volatile ("cpuid":"=a" (*where), "=b"(*(where + 1)),
-				  "=c"(*(where + 2)), "=d"(*(where + 3)):"a"(code));
+    asm volatile ("cpuid":"=a" (*where), "=b"(*(where + 1)),
+                  "=c"(*(where + 2)), "=d"(*(where + 3)):"a"(code));
 
-	return (int32_t) where[0];
+    return (int32_t) where[0];
 }
 
 void
 cpuGetMSR(uint32_t msr, uint32_t * lo, uint32_t * hi)
 {
-	asm volatile ("rdmsr":"=a" (*lo), "=d"(*hi):"c"(msr));
+    asm volatile ("rdmsr":"=a" (*lo), "=d"(*hi):"c"(msr));
 }
 
 void
 cpuSetMSR(uint32_t msr, uint32_t lo, uint32_t hi)
 {
-	asm volatile ("wrmsr"::"a" (lo), "d"(hi), "c"(msr));
+    asm volatile ("wrmsr"::"a" (lo), "d"(hi), "c"(msr));
 }

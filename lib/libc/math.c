@@ -20,14 +20,14 @@
 double
 pow(double base, double power)
 {
-	// Ok, I'm also too lazy to make floating point numbers
-	uint64_t iterator;
-	double return_value = 1;
+    // Ok, I'm also too lazy to make floating point numbers
+    uint64_t iterator;
+    double return_value = 1;
 
-	for (iterator = 0; iterator < power; iterator++)
-	{
-		return_value *= base;
-	}
+    for (iterator = 0; iterator < power; iterator++)
+    {
+        return_value *= base;
+    }
 
-	return return_value;
+    return return_value;
 }

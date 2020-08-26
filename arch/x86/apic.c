@@ -22,66 +22,15 @@
 bool
 check_apic(void)
 {
-	uint32_t eax;
-	uint32_t edx;
+    uint32_t eax;
+    uint32_t edx;
 
-	cpuid(1, &eax, &edx);
-	return (bool) edx & CPUID_FEAT_EDX_APIC;
-}
-
-uint32_t
-cpu_get_apic_base()
-{
-	uint32_t eax;
-	uint32_t edx;
-
-	cpuGetMSR(IA32_APIC_BASE_MSR, &eax, &edx);
-
-	if (MEM_EXT)
-	{
-		return (eax & 0xfffff000) | ((edx & 0x0f) << 32);
-	}
-	else
-	{
-		return (eax & 0xfffff000);
-	}
-}
-
-void
-cpu_set_apic_base(uint32_t * apic)
-{
-	uint32_t edx = 0;
-	uint32_t eax = (*apic & 0xfffff000) | IA32_APIC_BASE_MSR_ENABLE;
-
-	if (MEM_EXT)
-	{
-		edx = (*apic >> 32 & 0x0f);
-	}
-
-	cpuSetMSR(IA32_APIC_BASE_MSR, eax, edx);
-}
-
-uint32_t
-APIC_reg_read(uint32_t reg)
-{
-	return *((uint32_t *) (cpu_get_apic_base() + reg));
-}
-
-void
-APIC_reg_write(uint32_t reg, uint32_t data)
-{
-	*((uint32_t *) (cpu_get_apic_base() + reg)) = data;
-}
-
-void
-init_apic(void)
-{
-	disable_pic();
-	APIC_reg_write(0xf0, APIC_reg_read(0xf0) | 0x100);
+    cpuid(1, &eax, &edx);
+    return (bool) edx & CPUID_FEAT_EDX_APIC;
 }
 
 void
 APIC_sendEOI(void)
 {
-	APIC_reg_write(0xb0, 0);
+    return;
 }

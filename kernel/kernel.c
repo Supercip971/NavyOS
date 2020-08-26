@@ -28,17 +28,17 @@
 void
 kmain(uint32_t addr, uint32_t magic)
 {
-	init_arch(addr);
+    init_arch(addr);
 
-	if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
-	{
-		klog(ERROR, "Invalid magic number: 0x%x\n", magic);
-		hlt();
-	}
+    if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
+    {
+        klog(ERROR, "Invalid magic number: 0x%x\n", magic);
+        hlt();
+    }
 
 
-	klog(LOG, "Navy started\n");
-	__unused(addr);
+    klog(LOG, "Navy started\n");
+    __unused(addr);
 
-	hlt();
+    hlt();
 }

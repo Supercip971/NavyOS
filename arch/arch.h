@@ -18,6 +18,8 @@
 #ifndef NAVY_ARCH_H
 #define NAVY_ARCH_H
 
+#include <stdint.h>
+
 void debug_print(const char *);
 void debug_putc(const char);
 void debug_clear(void);

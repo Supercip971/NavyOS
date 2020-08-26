@@ -27,28 +27,27 @@ struct idtr kidtr;
 extern uint32_t __interrupt_vector[];
 
 void
-init_idt_desc(uint16_t selector, uint32_t offset, uint8_t type_attr,
-			  struct idtdesc *desc)
+init_idt_desc(uint16_t selector, uint32_t offset, uint8_t type_attr, struct idtdesc *desc)
 {
-	desc->offset0_15 = (offset & 0xffff);
-	desc->selector = selector;
-	desc->zero = 0;
-	desc->type_attr = type_attr;
-	desc->offset16_31 = (offset & 0xffff0000) >> 16;
+    desc->offset0_15 = (offset & 0xffff);
+    desc->selector = selector;
+    desc->zero = 0;
+    desc->type_attr = type_attr;
+    desc->offset16_31 = (offset & 0xffff0000) >> 16;
 }
 
 void
 init_idt(void)
 {
-	uint16_t i;
+    uint16_t i;
 
-	for (i = 0; i < 256; i++)
-	{
-		init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
-	}
+    for (i = 0; i < 256; i++)
+    {
+        init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
+    }
 
-	kidtr.limite = sizeof(struct idtdesc) * 256;
-	kidtr.base = (uint32_t) & kidt[0];
+    kidtr.limite = sizeof(struct idtdesc) * 256;
+    kidtr.base = (uint32_t) & kidt[0];
 
-	idt_flush((uint32_t) & kidtr);
+    idt_flush((uint32_t) & kidtr);
 }

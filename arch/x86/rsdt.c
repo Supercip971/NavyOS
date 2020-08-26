@@ -20,13 +20,13 @@
 bool
 rsdt_checksum(struct ACPISDTHeader *tableHeader)
 {
-	uint8_t sum = 0;
-	size_t i;
+    uint8_t sum = 0;
+    size_t i;
 
-	for (i = 0; i < tableHeader->Length; i++)
-	{
-		sum += ((uint8_t *) tableHeader)[i];
-	}
+    for (i = 0; i < tableHeader->Length; i++)
+    {
+        sum += ((uint8_t *) tableHeader)[i];
+    }
 
-	return sum == 0;
+    return sum == 0;
 }

@@ -33,84 +33,82 @@
 void
 debug_print(const char *msg)
 {
-	serial_print(COM1, msg);
+    serial_print(COM1, msg);
 }
 
 void
 debug_putc(const char c)
 {
-	serial_putc(COM1, c);
+    serial_putc(COM1, c);
 }
 
 void
 debug_clear(void)
 {
-	debug_print("\033c");
+    debug_print("\033c");
 }
 
 void
 init_arch(uint32_t addr)
 {
-	term_init();
-	serial_init(COM1);
-	serial_print(COM1, "\033c");
+    term_init();
+    serial_init(COM1);
+    serial_print(COM1, "\033c");
 
-	init_gdt();
-	klog(LOG, "GDT loaded !\n");
+    init_gdt();
+    klog(LOG, "GDT loaded !\n");
 
+    struct multiboot_tag_old_acpi *acpi =
+        (struct multiboot_tag_old_acpi *) get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
 
-	uint32_t rsdp_addr = find_rsdp();
+    if (check_apic())
+    {
+        klog(OK, "RSDP found on 0x%x\n", acpi->rsdp);
+        struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) acpi->rsdp;
 
-	get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
+        klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
 
-	if (check_apic() && rsdp_addr > 0)
-	{
-		klog(OK, "RSDP found on 0x%x\n", rsdp_addr);
-		struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) rsdp_addr;
+        if (rsdp->Revision == 2)
+        {
+            // TODO XSDT
+            klog(ERROR, "Not coded yet !\n");
+            hlt();
+        }
 
-		klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
+        else
+        {
+            klog(LOG, "Using RSDT\n");
+            struct ACPISDTHeader *rsdt = (struct ACPISDTHeader *) rsdp->RsdtAddress;
 
-		if (rsdp->Revision == 2)
-		{
-			// TODO XSDT
-			klog(ERROR, "Not coded yet !\n");
-			hlt();
-		}
+            if (!rsdt_checksum(rsdt))
+            {
+                klog(ERROR, "RSDT table invalid !");
+                hlt();
+            }
+        }
 
-		else
-		{
-			klog(LOG, "Using RSDT\n");
-			struct ACPISDTHeader *rsdt =
-				(struct ACPISDTHeader *) rsdp->RsdtAddress;
+        klog(LOG, "APIC initialised !\n");
+        hlt();
+    }
 
-			if (!rsdt_checksum(rsdt))
-			{
-				klog(ERROR, "RSDT table invalid !");
-				hlt();
-			}
-		}
+    else
+    {
+        init_pic();
+        klog(LOG, "PIC initialised !\n");
+    }
 
-		klog(LOG, "APIC initialised !\n");
-	}
-
-	else
-	{
-		init_pic();
-		klog(LOG, "PIC initialised !\n");
-	}
-
-	init_idt();
-	klog(LOG, "IDT loaded !\n");
+    init_idt();
+    klog(LOG, "IDT loaded !\n");
 }
 
 void
 breakpoint(void)
 {
-	asm volatile ("1: jmp 1b");
+    asm volatile ("1: jmp 1b");
 }
 
 void
 hlt(void)
 {
-	asm("hlt");
+    asm("hlt");
 }
