@@ -21,6 +21,7 @@
 #define GDT_SIZE 6
 
 #include <stdint.h>
+#include <stddef.h>
 
 struct gdtdesc
 {                               // https://wiki.osdev.org/File:Gdtr.png

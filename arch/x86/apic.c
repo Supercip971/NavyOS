@@ -26,7 +26,7 @@ check_apic(void)
     uint32_t edx;
 
     cpuid(1, &eax, &edx);
-    return (bool) edx & CPUID_FEAT_EDX_APIC;
+    return edx & CPUID_FEAT_EDX_APIC;
 }
 
 void

@@ -19,6 +19,7 @@
 #define _NAVY_X86_IDT_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 struct idtdesc
 {

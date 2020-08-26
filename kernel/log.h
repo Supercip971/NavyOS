@@ -20,6 +20,7 @@
 
 #include "arch/arch.h"
 #include <stdint.h>
+#include <stddef.h>
 
 enum LOG_LEVEL
 {
