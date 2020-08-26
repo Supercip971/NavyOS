@@ -16,6 +16,7 @@
  */
 
 #include "arch/x86/rsdt.h"
+#include <string.h>
 
 bool
 rsdt_checksum(struct ACPISDTHeader *tableHeader)
@@ -29,4 +30,21 @@ rsdt_checksum(struct ACPISDTHeader *tableHeader)
     }
 
     return sum == 0;
+}
+
+void *
+find_FACP(void *rootSDT)
+{
+    struct RSDT *rsdt = (struct RSDT *) rootSDT;
+    int entries = (rsdt->h.Length - sizeof(rsdt->h)) / 4;
+
+    for (int i = 0; i < entries; i++)
+    {
+        struct ACPISDTHeader *h = (struct ACPISDTHeader *) rsdt->PointerToOtherSDT[i];
+
+        if (!strncmp(h->Signature, "FACP", 4))
+            return (void *) h;
+    }
+
+    return NULL;
 }

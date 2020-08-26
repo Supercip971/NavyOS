@@ -35,7 +35,13 @@ struct ACPISDTHeader
     uint32_t CreatorRevision;
 };
 
+struct RSDT
+{
+    struct ACPISDTHeader h;
+    uint32_t PointerToOtherSDT[];
+};
 
 bool rsdt_checksum(struct ACPISDTHeader *);
+void *find_FACP(void *);
 
 #endif
