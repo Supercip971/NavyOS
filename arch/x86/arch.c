@@ -21,10 +21,7 @@
 
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
-#include "arch/x86/apic.h"
-#include "arch/x86/rsdp.h"
-#include "arch/x86/rsdt.h"
-#include "arch/x86/fadt.h"
+#include "arch/x86/acpi.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
 
@@ -60,62 +57,11 @@ init_arch(uint32_t addr)
     init_gdt();
     klog(LOG, "GDT loaded\n");
 
-    struct multiboot_tag_old_acpi *acpi =
-        (struct multiboot_tag_old_acpi *) get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
+    init_acpi(addr);
+    klog(LOG, "ACPI initialised\n");
 
-    if (check_apic())
-    {
-        klog(OK, "RSDP found on 0x%x\n", acpi->rsdp);
-        struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) acpi->rsdp;
-        struct FADT *fadt;
-
-        klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
-
-        if (rsdp->Revision == 2)
-        {
-            // TODO XSDT
-            klog(ERROR, "Not coded yet !\n");
-            hlt();
-        }
-
-        else
-        {
-            klog(LOG, "Using RSDT\n");
-            struct ACPISDTHeader *rsdt = (struct ACPISDTHeader *) rsdp->RsdtAddress;
-
-            if (!rsdt_checksum(rsdt))
-            {
-                klog(ERROR, "RSDT table invalid !");
-                hlt();
-            }
-
-            fadt = (struct FADT *) find_FACP(rsdt);
-
-        }
-
-        if (fadt->SMI_CommandPort == 0
-            || (fadt->AcpiEnable == 0 && fadt->AcpiDisable == 0))
-        {
-            klog(OK, "ACPI was already enabled !\n");
-            klog(WARNING, "%x", fadt->PM1aControlBlock);
-        }
-
-        else
-        {
-            outb(fadt->SMI_CommandPort, fadt->AcpiEnable);
-            while ((inw(fadt->PM1aControlBlock) & 1) == 0);
-            klog(LOG, "ACPI enabled\n");
-        }
-
-        klog(LOG, "APIC initialised\n");
-        hlt();
-    }
-
-    else
-    {
-        init_pic();
-        klog(LOG, "PIC initialised\n");
-    }
+    init_pic();
+    klog(LOG, "PIC initialised\n");
 
     init_idt();
     klog(LOG, "IDT loaded\n");

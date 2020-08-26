@@ -15,32 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _NAVY_X86_ACPI_H
+#define _NAVY_x86_ACPI_H
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "arch/arch.h"
-#include <macro.h>
-#include <multiboot2.h>
+#include <stdint.h>
 
+void init_acpi(uint32_t);
 
-#include "arch/x86/rsdp.h"
-
-void
-kmain(uint32_t addr, uint32_t magic)
-{
-    init_arch(addr);
-
-    if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
-    {
-        klog(ERROR, "Invalid magic number: 0x%x\n", magic);
-        hlt();
-    }
-
-
-    klog(LOG, "Navy started\n");
-    __unused(addr);
-
-    asm("int $0");
-
-    hlt();
-}
+#endif

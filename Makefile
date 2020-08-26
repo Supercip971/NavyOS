@@ -36,7 +36,7 @@ format:
 
 run-qemu: 
 	sh ./make-iso.sh
-	qemu-system-x86_64 -s -cdrom navy.iso -serial stdio --enable-kvm
+	qemu-system-x86_64 -s -cdrom navy.iso -serial stdio 
 
 .PHONY: run-qemu
 .PHONY: format 

@@ -436,11 +436,11 @@ struct multiboot_tag_load_base_addr
 
 #endif                          /* ! ASM_FILE */
 
-// Added for Navy
+/* Added for Navy */
 
 struct multiboot_tag *get_tag(uint32_t, uint32_t);
 
-// 
+/* */
 
 
 #endif                          /* ! MULTIBOOT_HEADER */
