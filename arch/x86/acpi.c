@@ -25,7 +25,7 @@
 #include <multiboot2.h>
 
 
-void *
+void 
 init_acpi(uint32_t addr)
 {
     struct multiboot_tag_old_acpi *acpi =
