@@ -33,7 +33,7 @@ rsdt_checksum(struct ACPISDTHeader *tableHeader)
 }
 
 void *
-find_FACP(void *rootSDT)
+find_SDT(void *rootSDT, char *signature)
 {
     struct RSDT *rsdt = (struct RSDT *) rootSDT;
     int entries = (rsdt->h.Length - sizeof(rsdt->h)) / 4;
@@ -42,7 +42,7 @@ find_FACP(void *rootSDT)
     {
         struct ACPISDTHeader *h = (struct ACPISDTHeader *) rsdt->PointerToOtherSDT[i];
 
-        if (!strncmp(h->Signature, "FACP", 4))
+        if (!strncmp(h->Signature, signature, 4))
             return (void *) h;
     }
 

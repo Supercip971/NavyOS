@@ -42,6 +42,6 @@ struct RSDT
 };
 
 bool rsdt_checksum(struct ACPISDTHeader *);
-void *find_FACP(void *);
+void *find_SDT(void *, char *);
 
 #endif

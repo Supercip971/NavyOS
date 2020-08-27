@@ -16,16 +16,16 @@
  */
 
 #include "arch/x86/acpi.h"
-#include "arch/x86/rsdt.h"
 #include "arch/x86/rsdp.h"
 #include "arch/x86/fadt.h"
+#include "arch/x86/rsdt.h"
 #include "arch/x86/io.h"
 #include "kernel/log.h"
 
 #include <multiboot2.h>
 
 
-void
+void *
 init_acpi(uint32_t addr)
 {
     struct multiboot_tag_old_acpi *acpi =
@@ -55,7 +55,7 @@ init_acpi(uint32_t addr)
             hlt();
         }
 
-        fadt = (struct FADT *) find_FACP(rsdt);
+        fadt = (struct FADT *) find_SDT(rsdt, "FADT");
 
     }
 
@@ -71,4 +71,5 @@ init_acpi(uint32_t addr)
         while ((inw(fadt->PM1aControlBlock) & 1) == 0);
         klog(LOG, "ACPI enabled\n");
     }
+
 }

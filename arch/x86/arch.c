@@ -22,6 +22,7 @@
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
 #include "arch/x86/acpi.h"
+#include "arch/x86/apic.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
 
@@ -62,6 +63,7 @@ init_arch(uint32_t addr)
 
     init_pic();
     klog(LOG, "PIC initialised\n");
+
 
     init_idt();
     klog(LOG, "IDT loaded\n");
