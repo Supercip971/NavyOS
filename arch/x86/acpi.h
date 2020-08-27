@@ -19,7 +19,8 @@
 #define _NAVY_x86_ACPI_H
 
 #include <stdint.h>
+#include "arch/x86/rsdt.h"
 
-void init_acpi(uint32_t);
+struct ACPISDTHeader *init_acpi(uint32_t);
 
 #endif

@@ -22,11 +22,13 @@
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
 #include "arch/x86/acpi.h"
+#include "arch/x86/rsdt.h"
 #include "arch/x86/apic.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
 
 #include "kernel/log.h"
+#include <macro.h>
 #include <multiboot2.h>
 
 
@@ -58,11 +60,23 @@ init_arch(uint32_t addr)
     init_gdt();
     klog(LOG, "GDT loaded\n");
 
-    init_acpi(addr);
+    struct ACPISDTHeader *rsdt = init_acpi(addr);
     klog(LOG, "ACPI initialised\n");
 
-    init_pic();
-    klog(LOG, "PIC initialised\n");
+    if(check_apic())
+    {
+        init_apic(rsdt);
+        klog(LOG, "APIC initialised\n");
+        hlt();
+    }
+
+    else 
+    {
+        init_pic();
+        klog(LOG, "PIC initialised\n");
+
+    }
+
 
 
     init_idt();

@@ -18,20 +18,21 @@
 #include "arch/x86/acpi.h"
 #include "arch/x86/rsdp.h"
 #include "arch/x86/fadt.h"
-#include "arch/x86/rsdt.h"
 #include "arch/x86/io.h"
+
 #include "kernel/log.h"
 
 #include <multiboot2.h>
 
 
-void 
+struct ACPISDTHeader *
 init_acpi(uint32_t addr)
 {
     struct multiboot_tag_old_acpi *acpi =
         (struct multiboot_tag_old_acpi *) get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
 
     klog(OK, "RSDP found on 0x%x\n", acpi->rsdp);
+    struct ACPISDTHeader *rsdt;
     struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) acpi->rsdp;
     struct FADT *fadt;
 
@@ -47,7 +48,7 @@ init_acpi(uint32_t addr)
     else
     {
         klog(LOG, "Using RSDT\n");
-        struct ACPISDTHeader *rsdt = (struct ACPISDTHeader *) rsdp->RsdtAddress;
+        rsdt = (struct ACPISDTHeader *) rsdp->RsdtAddress;
 
         if (!rsdt_checksum(rsdt))
         {
@@ -69,7 +70,8 @@ init_acpi(uint32_t addr)
     {
         outb(fadt->SMI_CommandPort, fadt->AcpiEnable);
         while ((inw(fadt->PM1aControlBlock) & 1) == 0);
-        klog(LOG, "ACPI enabled\n");
     }
+
+    return rsdt;
 
 }

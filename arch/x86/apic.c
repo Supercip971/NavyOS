@@ -18,6 +18,10 @@
 #include "arch/x86/apic.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/cpuid.h"
+#include "arch/x86/madt.h"
+
+#include "arch/arch.h"
+#include "kernel/log.h"
 
 bool
 check_apic(void)
@@ -32,5 +36,13 @@ check_apic(void)
 void
 APIC_sendEOI(void)
 {
+    return;
+}
+
+void 
+init_apic(struct ACPISDTHeader *rsdt)
+{
+    struct MADT *madt = (struct MADT *)find_SDT(rsdt, "APIC");
+    klog(OK, madt->h.Signature);
     return;
 }

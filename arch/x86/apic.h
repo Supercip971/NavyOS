@@ -20,8 +20,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "arch/x86/rsdt.h"
 
 bool check_apic(void);
 void APIC_sendEOI(void);
+void init_apic(struct ACPISDTHeader *);
 
 #endif
