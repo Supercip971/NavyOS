@@ -40,7 +40,7 @@ kmain(uint32_t addr, uint32_t magic)
     klog(LOG, "Navy started\n");
     __unused(addr);
 
-    asm("int $0");
+    __asm__("int $0");
 
     hlt();
 }

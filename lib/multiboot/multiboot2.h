@@ -22,6 +22,10 @@
 
 #ifndef MULTIBOOT_HEADER
 #define MULTIBOOT_HEADER 1
+
+#pragma GCC diagnostic ignored "-Wlong-long"
+#pragma GCC diagnostic ignored "-Wpedantic"
+
 #include <stdint.h>
 
 /*

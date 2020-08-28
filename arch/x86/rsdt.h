@@ -15,8 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef _NAVY_x86_RSDT_H
 #define _NAVY_x86_RSDT_H
+
+#pragma GCC diagnostic ignored "-Wpedantic" /* Just because of the dynamic array for the
+                                             * RSDT struct */
 
 #include <stdint.h>
 #include <stdbool.h>

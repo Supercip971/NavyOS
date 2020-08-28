@@ -24,29 +24,28 @@
 #include <stdlib.h>
 
 static const char *LOG_MSG[] = {
-    "\e[34mLOG\e[39m", "\e[31mERROR\e[39m", "\e[33mWARNING\e[39m",
-    "\e[35mOK\e[39m "
+    "\033[34mLOG\033[39m", "\033[31mERROR\033[39m", "\033[33mWARNING\033[39m",
+    "\033[35mOK\033[39m "
 };
 
 void
-klog(Level level, char *restrict format, ...)
+klog(Level level, char *format, ...)
 {
+    va_list ap;
+    char pad[2];
+    char *ptr = format;
+    char nbr[64];
+    uint32_t padding = 0;
+
+    va_start(ap, format);
+
+
     if (level != NONE)
     {
         debug_print("[ ");
         debug_print(LOG_MSG[level]);
         debug_print(" ] ");
     }
-
-    va_list ap;
-
-    va_start(ap, format);
-
-    char pad[2];
-
-    char *ptr = format;
-    char nbr[64];
-    uint32_t padding = 0;
 
     while (*ptr)
     {

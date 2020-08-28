@@ -20,7 +20,9 @@
 double
 pow(double base, double power)
 {
-    // Ok, I'm also too lazy to make floating point numbers
+    /*
+     * Ok, I'm also too lazy to make floating point numbers 
+     */
     uint64_t iterator;
     double return_value = 1;
 

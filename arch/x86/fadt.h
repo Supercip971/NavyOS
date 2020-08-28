@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef _NAVY_X86_FADT_H
 #define _NAVY_X86_FADT_H
 
@@ -36,7 +36,9 @@ struct FADT
     uint32_t FirmwareCtrl;
     uint32_t Dsdt;
 
-    // field used in ACPI 1.0; no longer in use, for compatibility only
+    /*
+     * field used in ACPI 1.0; no longer in use, for compatibility only 
+     */
     uint8_t Reserved;
 
     uint8_t PreferredPowerManagementProfile;
@@ -72,19 +74,25 @@ struct FADT
     uint8_t MonthAlarm;
     uint8_t Century;
 
-    // reserved in ACPI 1.0; used since ACPI 2.0+
+    /*
+     * reserved in ACPI 1.0; used since ACPI 2.0+ 
+     */
     uint16_t BootArchitectureFlags;
 
     uint8_t Reserved2;
     uint32_t Flags;
 
-    // 12 byte structure; see below for details
+    /*
+     * 12 byte structure; see below for details 
+     */
     struct GenericAddressStructure ResetReg;
 
     uint8_t ResetValue;
     uint8_t Reserved3[3];
 
-    // 64bit pointers - Available on ACPI 2.0+
+    /*
+     * 64bit pointers - Available on ACPI 2.0+ 
+     */
     uint64_t X_FirmwareControl;
     uint64_t X_Dsdt;
 

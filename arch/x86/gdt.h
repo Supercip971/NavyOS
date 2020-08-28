@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#pragma GCC diagnostic ignored "-Wpedantic" /* Just because of the bit field (I'm so sad) 
+                                             */
+
 #ifndef _NAVY_X86_GDT_H
 #define _NAVY_X86_GDT_H
 
@@ -24,13 +27,13 @@
 #include <stddef.h>
 
 struct gdtdesc
-{                               // https://wiki.osdev.org/File:Gdtr.png
+{                               /* https://wiki.osdev.org/File:Gdtr.png */
     uint16_t size;
     uint32_t offset;
 } __attribute__((packed));
 
 struct gdtentry
-{                               // https://wiki.osdev.org/File:GDT_Entry.png
+{                               /* https://wiki.osdev.org/File:GDT_Entry.png */
     uint16_t limit0_15;
     uint16_t base0_15;
     uint8_t base16_23;

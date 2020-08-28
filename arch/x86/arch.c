@@ -53,6 +53,8 @@ debug_clear(void)
 void
 init_arch(uint32_t addr)
 {
+    struct ACPISDTHeader *rsdt;
+
     term_init();
     serial_init(COM1);
     serial_print(COM1, "\033c");
@@ -60,24 +62,23 @@ init_arch(uint32_t addr)
     init_gdt();
     klog(LOG, "GDT loaded\n");
 
-    struct ACPISDTHeader *rsdt = init_acpi(addr);
+    rsdt = init_acpi(addr);
+
     klog(LOG, "ACPI initialised\n");
 
-    if(check_apic())
+    if (check_apic())
     {
+        disable_pic();
         init_apic(rsdt);
         klog(LOG, "APIC initialised\n");
         hlt();
     }
 
-    else 
+    else
     {
         init_pic();
         klog(LOG, "PIC initialised\n");
-
     }
-
-
 
     init_idt();
     klog(LOG, "IDT loaded\n");
@@ -86,11 +87,11 @@ init_arch(uint32_t addr)
 void
 breakpoint(void)
 {
-    asm volatile ("1: jmp 1b");
+    __asm__ volatile ("1: jmp 1b");
 }
 
 void
 hlt(void)
 {
-    asm("hlt");
+    __asm__("hlt");
 }

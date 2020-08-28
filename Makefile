@@ -18,7 +18,10 @@ CFLAGS := \
     -Ilib/libc		            \
     -ffreestanding	            \
     -g			                \
-    -nostdlib			
+    -nostdlib			        \
+    -ansi                       \
+    -pedantic                   \
+    -pedantic-errors
 
 LD := i686-elf-ld
 LDFLAGS :=
@@ -36,7 +39,7 @@ format:
 
 run-qemu: 
 	sh ./make-iso.sh
-	qemu-system-x86_64 -s -cdrom navy.iso -serial stdio 
+	qemu-system-x86_64 -s -cdrom navy.iso -serial stdio -smp cores=4
 
 .PHONY: run-qemu
 .PHONY: format 

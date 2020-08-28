@@ -35,10 +35,11 @@ rsdt_checksum(struct ACPISDTHeader *tableHeader)
 void *
 find_SDT(void *rootSDT, char *signature)
 {
+    int i;
     struct RSDT *rsdt = (struct RSDT *) rootSDT;
     int entries = (rsdt->h.Length - sizeof(rsdt->h)) / 4;
 
-    for (int i = 0; i < entries; i++)
+    for (i = 0; i < entries; i++)
     {
         struct ACPISDTHeader *h = (struct ACPISDTHeader *) rsdt->PointerToOtherSDT[i];
 

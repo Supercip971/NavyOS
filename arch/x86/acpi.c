@@ -28,19 +28,22 @@
 struct ACPISDTHeader *
 init_acpi(uint32_t addr)
 {
+    struct ACPISDTHeader *rsdt;
+    struct FADT *fadt;
     struct multiboot_tag_old_acpi *acpi =
         (struct multiboot_tag_old_acpi *) get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
 
-    klog(OK, "RSDP found on 0x%x\n", acpi->rsdp);
-    struct ACPISDTHeader *rsdt;
     struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) acpi->rsdp;
-    struct FADT *fadt;
+
+    klog(OK, "RSDP found on 0x%x\n", acpi->rsdp);
 
     klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
 
     if (rsdp->Revision == 2)
     {
-        // TODO XSDT
+        /*
+         * TODO XSDT 
+         */
         klog(ERROR, "Not coded yet !\n");
         hlt();
     }

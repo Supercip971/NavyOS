@@ -15,35 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_X86_IDT_H
-#define _NAVY_X86_IDT_H
+#ifndef _NAVY_X86_LAPIC_H
+#define _NAVY_x86_LAPIC_H
 
 #include <stdint.h>
-#include <stddef.h>
 
-struct idtdesc
-{
-    uint16_t offset0_15;        /* Offset bits 0..15 */
-    uint16_t selector;          /* code seg in GDT or LDT */
-    uint8_t zero;
-    uint8_t type_attr;          /* type and attr */
-    uint16_t offset16_31;       /* Offset bits 16..31 */
-} __attribute__((packed));
+uint32_t lapic_read_register(void *, uint32_t);
+void lapic_write_register(void *, uint32_t, uint32_t);
 
-struct idtr
-{
-    uint16_t limite;
-    uint32_t base;
-} __attribute__((packed));
-
-enum type_attr
-{
-    INTGATE = 0x8e
-};
-
-void init_idt_desc(uint16_t, uint32_t, uint8_t, struct idtdesc *);
-void init_idt(void);
-
-extern void idt_flush(uint32_t);
+void lapic_EOI(void);
 
 #endif

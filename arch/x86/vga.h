@@ -38,7 +38,7 @@ enum VGA_COLOR
     LIGHT_RED = 0xC,
     LIGHT_MAGENTA = 0xD,
     LIGHT_BROWN = 0xE,
-    WHITE = 0xF,
+    WHITE = 0xF
 };
 
 typedef enum VGA_COLOR Colors;

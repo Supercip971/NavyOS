@@ -19,9 +19,12 @@
 #include "arch/x86/pic.h"
 #include "arch/x86/cpuid.h"
 #include "arch/x86/madt.h"
+#include "arch/x86/lapic.h"
 
 #include "arch/arch.h"
 #include "kernel/log.h"
+
+#include <macro.h>
 
 bool
 check_apic(void)
@@ -39,10 +42,56 @@ APIC_sendEOI(void)
     return;
 }
 
-void 
+void
 init_apic(struct ACPISDTHeader *rsdt)
 {
-    struct MADT *madt = (struct MADT *)find_SDT(rsdt, "APIC");
-    klog(OK, madt->h.Signature);
+    struct MADT_LAPIC *lapic;
+    struct MADT_IOAPIC *ioapic;
+    struct MADT_ISO *iso;
+    struct MADT_NMI *nmi;
+    struct MADT_LAPIC_IO *lapic_io;
+
+    struct MADT *madt = (struct MADT *) find_SDT(rsdt, "APIC");
+    struct MADT_Entry *entry = (struct MADT_Entry *) ((uint32_t) & madt->entries);
+
+    while ((uint32_t) entry < (uint32_t) & madt->h + (uint32_t) madt->h.Length)
+    {
+        switch (entry->type)
+        {
+            case LAPIC:
+                lapic = (struct MADT_LAPIC *) entry;
+                lapic_write_register(lapic, 0xf0,
+                                     lapic_read_register(lapic, 0xf0) | 0x1ff);
+                klog(OK, "LAPIC !\n");
+                break;
+            case IOAPIC:
+                ioapic = (struct MADT_IOAPIC *) entry;
+                __unused(ioapic);
+                klog(OK, "IOAPIC !\n");
+                break;
+            case ISO:
+                iso = (struct MADT_ISO *) entry;
+                __unused(iso);
+                klog(OK, "ISO !\n");
+                break;
+            case NMI:
+                nmi = (struct MADT_NMI *) entry;
+                __unused(nmi);
+                klog(OK, "NMI !\n");
+                break;
+            case LAPIC_AO:
+                lapic_io = (struct MADT_LAPIC_IO *) entry;
+                __unused(lapic_io);
+                klog(OK, "LAPIC_AO !\n");
+                break;
+            default:
+                klog(ERROR, "Unknown entry, CODE: %d\n", entry->type);
+                hlt();
+        }
+
+        entry = (struct MADT_Entry *) ((uint32_t) entry + entry->length);
+    }
+
+    breakpoint();
     return;
 }

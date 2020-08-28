@@ -21,8 +21,8 @@
 
 
 char *
-itoa(int32_t value, char *str, uint16_t base)   // Took from OSDEV, my
-                                                // implementation was not good
+itoa(int32_t value, char *str, uint16_t base)   /* Took from OSDEV, my implementation was 
+                                                 * not good */
 {
     char *rc;
     char *ptr;
