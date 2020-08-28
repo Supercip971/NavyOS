@@ -76,5 +76,4 @@ init_acpi(uint32_t addr)
     }
 
     return rsdt;
-
 }

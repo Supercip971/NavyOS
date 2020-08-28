@@ -4,7 +4,8 @@
 <img src=".github/logo_qui_est_coule_et_qui_coule.svg" height=256 />
 <br>
 <br>
-A hobbyist kernel and operating system made with :heart:
+A hobbyist kernel and operating system made with :heart:<br>
+Now in ANSI C !
 </p>
 
 ## Interesting facts

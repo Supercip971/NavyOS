@@ -50,9 +50,9 @@ init_apic(struct ACPISDTHeader *rsdt)
     struct MADT_ISO *iso;
     struct MADT_NMI *nmi;
     struct MADT_LAPIC_IO *lapic_io;
-
     struct MADT *madt = (struct MADT *) find_SDT(rsdt, "APIC");
     struct MADT_Entry *entry = (struct MADT_Entry *) ((uint32_t) & madt->entries);
+
 
     while ((uint32_t) entry < (uint32_t) & madt->h + (uint32_t) madt->h.Length)
     {
@@ -60,8 +60,7 @@ init_apic(struct ACPISDTHeader *rsdt)
         {
             case LAPIC:
                 lapic = (struct MADT_LAPIC *) entry;
-                lapic_write_register(lapic, 0xf0,
-                                     lapic_read_register(lapic, 0xf0) | 0x1ff);
+                __unused(lapic);
                 klog(OK, "LAPIC !\n");
                 break;
             case IOAPIC:
@@ -92,6 +91,5 @@ init_apic(struct ACPISDTHeader *rsdt)
         entry = (struct MADT_Entry *) ((uint32_t) entry + entry->length);
     }
 
-    breakpoint();
     return;
 }

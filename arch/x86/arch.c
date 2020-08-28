@@ -71,7 +71,6 @@ init_arch(uint32_t addr)
         disable_pic();
         init_apic(rsdt);
         klog(LOG, "APIC initialised\n");
-        hlt();
     }
 
     else

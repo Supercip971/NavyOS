@@ -46,7 +46,7 @@ init_idt(void)
         init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
     }
 
-    init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[0xff]);
+    init_idt_desc(0x08, __interrupt_vector[255], INTGATE, &kidt[255]);
 
     kidtr.limite = sizeof(struct idtdesc) * 256;
     kidtr.base = (uint32_t) & kidt[0];
