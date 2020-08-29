@@ -26,6 +26,7 @@
 #include "arch/x86/apic.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
+#include "arch/x86/paging.h"
 
 #include "kernel/log.h"
 #include <macro.h>
@@ -61,6 +62,9 @@ init_arch(uint32_t addr)
 
     init_gdt();
     klog(LOG, "GDT loaded\n");
+
+    /*init_paging();
+    klog(LOG, "Paging initialised\n");*/
 
     rsdt = init_acpi(addr);
 
