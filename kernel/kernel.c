@@ -21,9 +21,11 @@
 #include "arch/arch.h"
 #include <macro.h>
 #include <multiboot2.h>
+#include "kernel/ascii.h"
 
 
 #include "arch/x86/rsdp.h"
+
 
 void
 kmain(uint32_t addr, uint32_t magic)
@@ -37,9 +39,9 @@ kmain(uint32_t addr, uint32_t magic)
     }
 
 
-    klog(LOG, "Navy started\n");
+    klog(NONE, ascii_art);
+    vga_print(ascii_art);
 
-    /* __asm__("int $0"); */
 
-    hlt();
+    __asm__("int $0"); 
 }

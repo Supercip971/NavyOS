@@ -103,7 +103,7 @@ term_putc(char c, Colors fg, Colors bg)
 
 
 void
-term_puts(char *s, Colors fg, Colors bg)
+term_puts(const char *s, Colors fg, Colors bg)
 {
     while (*s != 0)
     {

@@ -51,7 +51,7 @@ static const Colors DEFAULT_BGCOLOR = BLACK;
 void term_init(void);
 void term_clear(void);
 void term_putc(char, Colors, Colors);
-void term_puts(char *, Colors, Colors);
+void term_puts(const char *, Colors, Colors);
 
 
 void term_shift(void);

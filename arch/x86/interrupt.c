@@ -106,6 +106,11 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
          * debug_clear(); 
          */
         klog(ERROR, "%s (INT: %x)\n", exceptions[stackframe.intno], stackframe.intno);
+
+        vga_printerr("\n/!\\ KERNEL EXCEPTION /!\\\n");
+        vga_print(exceptions[stackframe.intno]);
+        vga_print("\n\nPlease check the serial port !\n");
+
         klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);
         klog(NONE, "\n\n=== BACKTRACE ===\n\n");

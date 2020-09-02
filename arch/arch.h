@@ -23,6 +23,8 @@
 void debug_print(const char *);
 void debug_putc(const char);
 void debug_clear(void);
+void vga_print(const char *);
+void vga_printerr(const char *);
 void init_arch(uint32_t);
 void breakpoint(void);
 void hlt(void);

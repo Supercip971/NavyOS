@@ -2,6 +2,7 @@
 .DEFAULT_GOAL := all
 
 BUILD_DIRECTORY = $(shell pwd)/build
+
 DIRECTORY_GUARD=@mkdir -p $(@D)
 
 CC := i686-elf-gcc
@@ -21,7 +22,7 @@ CFLAGS := \
     -nostdlib			        \
     -ansi                       \
     -pedantic                   \
-    -pedantic-errors
+    -pedantic-errors            \
 
 LD := i686-elf-ld
 LDFLAGS :=
