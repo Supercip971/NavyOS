@@ -39,16 +39,26 @@ init_pic(void)
     outb(MASTER_DATA, 0x01);
     io_wait();
     outb(SLAVE_DATA, 0x01);
+    io_wait();
 
     outb(MASTER_DATA, 0);
     io_wait();
     outb(SLAVE_DATA, 0);
     io_wait();
+
+    outb(0x21, 0xfd);
+    outb(0xa1, 0xff);
 }
 
 void
-PIC_sendEOI(void)
+PIC_sendEOI(int intno)
 {
+
+    if (intno >= 40)
+    {
+        outb(MASTER_CMD, 0x20);
+
+    }
+
     outb(SLAVE_CMD, 0x20);
-    outb(MASTER_CMD, 0x20);
 }

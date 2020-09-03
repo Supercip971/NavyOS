@@ -42,6 +42,6 @@ kmain(uint32_t addr, uint32_t magic)
     klog(NONE, ascii_art);
     vga_print(ascii_art);
 
-
-    __asm__("int $0"); 
+    __asm__("sti");
+    for (;;);
 }

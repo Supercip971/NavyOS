@@ -40,8 +40,16 @@ format:
 
 run-qemu: 
 	sh ./make-iso.sh
-	qemu-system-x86_64 -s -cdrom navy.iso -serial stdio -smp cores=4
+	qemu-system-i386 -cdrom navy.iso -serial stdio -smp cores=4 
+
+run-debug:
+	sh ./make-iso.sh
+	qemu-system-i386 -s -S -cdrom navy.iso -serial stdio -smp cores=4 
+
+clean:
+	rm -rf build/
 
 .PHONY: run-qemu
 .PHONY: format 
 .PHONY: all
+.PHONY: clean

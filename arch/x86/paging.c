@@ -20,8 +20,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-void 
+void
 init_paging()
 {
-   _asm_enable_paging();
+    _asm_enable_paging();
 }

@@ -29,13 +29,15 @@ static const char *LOG_MSG[] = {
 };
 
 void
-klog(Level level, char *format, ...)
+klog(Level level, const char *format, ...)
 {
     va_list ap;
     char pad[2];
-    char *ptr = format;
-    char nbr[64];
     uint32_t padding = 0;
+    const char *ptr = format;
+    char nbr[64];
+
+    bool is_parsing = false;
 
     va_start(ap, format);
 
@@ -51,52 +53,71 @@ klog(Level level, char *format, ...)
     {
         if (*ptr == '%')
         {
-            ptr++;
-
-            switch (*ptr++)
+            if (is_parsing)
             {
-                case '0':
-                    pad[0] = *ptr++;
-                    pad[1] = '\0';
-                    padding = atoi(pad);
-                    *--ptr = '%';
-                    break;
+                debug_putc('%');
+                is_parsing = false;
+            }
 
-                case 's':
-                    debug_print(va_arg(ap, char *));
-
-                    break;
-                case 'd':
-                    itoa(va_arg(ap, int), nbr, 10);
-
-                    while (padding && padding - strlen(nbr) > 0)
-                    {
-                        debug_print("0");
-                        padding--;
-                    }
-
-                    debug_print(nbr);
-                    break;
-                case 'x':
-                    itoa(va_arg(ap, int), nbr, 16);
-
-                    while (padding && padding - strlen(nbr) > 0)
-                    {
-                        debug_print("0");
-                        padding--;
-                    }
-
-                    debug_print(nbr);
-                    break;
-                case '%':
-                    debug_putc('%');
-                    break;
+            else
+            {
+                is_parsing = true;
+                ptr++;
+                continue;
             }
         }
+
+        if (*ptr == '0' && is_parsing)
+        {
+            pad[0] = *++ptr;
+            pad[1] = '\0';
+            padding = atoi(pad);
+            ptr++;
+        }
+
+        if (*ptr == 's' && is_parsing)
+        {
+            debug_print(va_arg(ap, char *));
+
+            is_parsing = false;
+        }
+
+        if (*ptr == 'd' && is_parsing)
+        {
+            itoa(va_arg(ap, int), nbr, 10);
+
+            while (padding && padding - strlen(nbr) > 0)
+            {
+                debug_print("0");
+                padding--;
+            }
+
+            padding = 0;
+            debug_print(nbr);
+            is_parsing = false;
+            ptr++;
+        }
+
+        if (*ptr == 'x' && is_parsing)
+        {
+            itoa(va_arg(ap, int), nbr, 16);
+
+            while (padding && padding - strlen(nbr) > 0)
+            {
+                debug_print("0");
+                padding--;
+            }
+
+            padding = 0;
+            debug_print(nbr);
+            is_parsing = false;
+        }
+
         else
         {
-            debug_putc(*ptr++);
+            debug_putc(*ptr);
         }
-    }
 
+        ptr++;
+    }
 }

@@ -9,8 +9,10 @@ fi
 mkdir -p isodir/boot/grub
 
 cat << EOF > isodir/boot/grub/grub.cfg
+set timeout=5
+
 menuentry "Navy" {
-	multiboot2 /boot/navy.bin
+	multiboot2 /boot/navy.bin 
 }
 EOF
 

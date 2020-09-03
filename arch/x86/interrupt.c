@@ -65,7 +65,7 @@ const char *exceptions[32] = {
 void
 register_dump(struct InterruptStackFrame stackframe)
 {
-    klog(NONE, " CS=%08x  DS=%08x  ES=%08x  FS=%08x   GS=%08x\n",
+    klog(NONE, " CS=%04x DS=%04x  ES=%04x  FS=%04x   GS=%04x\n",
          stackframe.cs, stackframe.ds, stackframe.es, stackframe.fs, stackframe.gs);
     klog(NONE, "EAX=%08x EBX=%08x ECX=%08x EDX=%08x\n", stackframe.eax,
          stackframe.ebx, stackframe.ecx, stackframe.edx);
@@ -76,12 +76,9 @@ register_dump(struct InterruptStackFrame stackframe)
 }
 
 void
-backtrace()
+backtrace(uint32_t * ebp)
 {
-    uint32_t *ebp;
     uint32_t *eip;
-
-    __asm__ volatile ("mov %%ebp, %0":"=r" (ebp));
 
     while (ebp)
     {
@@ -98,6 +95,8 @@ backtrace()
 void
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
+    uint32_t ebp;
+
     __unused(esp);
 
     if (stackframe.intno < 32)
@@ -105,7 +104,8 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
         /*
          * debug_clear(); 
          */
-        klog(ERROR, "%s (INT: %x)\n", exceptions[stackframe.intno], stackframe.intno);
+        klog(ERROR, "%s (INT: %x, ERR: %08x)\n", exceptions[stackframe.intno],
+             stackframe.intno, stackframe.err);
 
         vga_printerr("\n/!\\ KERNEL EXCEPTION /!\\\n");
         vga_print(exceptions[stackframe.intno]);
@@ -114,8 +114,14 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
         klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);
         klog(NONE, "\n\n=== BACKTRACE ===\n\n");
-        backtrace();
+        ebp = stackframe.ebp;
+        backtrace(&ebp);
         hlt();
+    }
+
+    else if (stackframe.intno < 48)
+    {
+        klog(OK, "IRQ: %d !!!!!\n", stackframe.intno);
     }
 
     if (check_apic())
@@ -124,6 +130,10 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
     }
     else
     {
-        PIC_sendEOI();
+        PIC_sendEOI(stackframe.intno);
     }
+    /*
+     * return esp; 
+     */
+
 }

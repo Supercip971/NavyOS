@@ -56,6 +56,7 @@ init_arch(uint32_t addr)
 {
     struct ACPISDTHeader *rsdt;
 
+
     term_init();
     serial_init(COM1);
     serial_print(COM1, "\033c");
@@ -63,26 +64,26 @@ init_arch(uint32_t addr)
     init_gdt();
     klog(LOG, "GDT loaded\n");
 
-    /*init_paging();
-    klog(LOG, "Paging initialised\n");*/
+    /*
+     * init_paging(); klog(LOG, "Paging initialised\n");
+     */
 
     rsdt = init_acpi(addr);
     __unused(rsdt);
 
     klog(LOG, "ACPI initialised\n");
 
-    /* if (check_apic())
-    {
-        disable_pic();
-        init_apic(rsdt);
-        klog(LOG, "APIC initialised\n");
-    }
-
-    else
-    {*/
+    /*
+     * if (check_apic()) { disable_pic(); init_apic(rsdt); klog(LOG, "APIC
+     * initialised\n"); }
+     * 
+     * else {
+     */
     init_pic();
     klog(LOG, "PIC initialised\n");
-    /* } */
+    /*
+     * } 
+     */
 
     init_idt();
     klog(LOG, "IDT loaded\n");
@@ -97,17 +98,18 @@ breakpoint(void)
 void
 hlt(void)
 {
+    __asm__("cli");
     __asm__("hlt");
 }
 
-void 
+void
 vga_print(const char *s)
 {
     term_puts(s, LIGHT_GREY, BLACK);
 }
 
-void 
-vga_printerr(const char * s)
+void
+vga_printerr(const char *s)
 {
     term_puts(s, WHITE, RED);
 }

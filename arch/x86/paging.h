@@ -16,7 +16,7 @@
  */
 
 
-#ifndef _NAVY_X86_PAGING_H 
+#ifndef _NAVY_X86_PAGING_H
 #define _NAVY_x86_PAGING_H
 
 void init_paging(void);

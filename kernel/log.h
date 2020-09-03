@@ -33,6 +33,6 @@ enum LOG_LEVEL
 
 typedef enum LOG_LEVEL Level;
 
-void klog(Level, char *__restrict, ...);
+void klog(Level, const char *__restrict, ...);
 
 #endif
