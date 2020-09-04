@@ -15,21 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
+
+#ifndef _NAVY_X86_DEVICE_SERIAL_H
+#define _NAVY_X86_DEVICE_SERIAL_H
 
 #include <stdint.h>
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
-void vga_print(const char *);
-void vga_printerr(const char *);
-void disable_vga_cursor(void);
-void init_arch(uint32_t);
-void breakpoint(void);
-void hlt(void);
-void reboot(void);
+enum SERIAL_COM
+{
+    COM1 = 0x3f8,
+    COM2 = 0x2f8,
+    COM3 = 0x3e8,
+    COM4 = 0x2e8
+};
 
+typedef enum SERIAL_COM Com;
+
+void serial_init(Com);
+void serial_putc(Com, char);
+void serial_print(Com, const char *);
+int32_t is_transmit_empty(Com);
 
 #endif

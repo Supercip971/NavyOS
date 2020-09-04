@@ -15,21 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
+#ifndef _NAVY_X86_DEVICE_KEYBOARD_H
+#define _NAVY_X86_DEVICE_KEYBOARD_H
 
 #include <stdint.h>
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
-void vga_print(const char *);
-void vga_printerr(const char *);
-void disable_vga_cursor(void);
-void init_arch(uint32_t);
-void breakpoint(void);
-void hlt(void);
-void reboot(void);
+uint8_t lastKey;
+
+void keycode(void);
+char getLastKeyScan(void);
 
 
 #endif

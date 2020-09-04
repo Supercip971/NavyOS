@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_X86_VGA_H
-#define _NAVY_X86_VGA_H
+#ifndef _NAVY_X86_DEVICE_VGA_H
+#define _NAVY_X86_DEVICE_VGA_H
 #define GDTSIZE 5
 
 #include <stdint.h>
@@ -57,5 +57,6 @@ void term_puts(const char *, Colors, Colors);
 void term_shift(void);
 void move_cursor(uint8_t, uint8_t);
 void movcur(uint8_t, uint8_t);
+void disable_cursor(void);
 
 #endif

@@ -18,6 +18,10 @@
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
 
+#include "kernel/log.h"
+
+#include <macro.h>
+
 void
 init_pic(void)
 {
@@ -45,20 +49,16 @@ init_pic(void)
     io_wait();
     outb(SLAVE_DATA, 0);
     io_wait();
-
-    outb(0x21, 0xfd);
-    outb(0xa1, 0xff);
 }
 
 void
 PIC_sendEOI(int intno)
 {
-
     if (intno >= 40)
     {
-        outb(MASTER_CMD, 0x20);
-
+        outb(SLAVE_CMD, 0x20);
     }
 
-    outb(SLAVE_CMD, 0x20);
+    outb(MASTER_CMD, 0x20);
+
 }

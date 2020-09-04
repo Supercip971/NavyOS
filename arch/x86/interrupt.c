@@ -17,11 +17,12 @@
 
 
 #include "kernel/log.h"
-#include "arch/x86/vga.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/apic.h"
 #include "arch/x86/interrupt.h"
 #include "arch/arch.h"
+#include "arch/x86/device/vga.h"
+#include "arch/x86/device/keyboard.h"
 
 
 #include <macro.h>
@@ -101,39 +102,45 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 
     if (stackframe.intno < 32)
     {
-        /*
-         * debug_clear(); 
-         */
         klog(ERROR, "%s (INT: %x, ERR: %08x)\n", exceptions[stackframe.intno],
              stackframe.intno, stackframe.err);
 
         vga_printerr("\n/!\\ KERNEL EXCEPTION /!\\\n");
         vga_print(exceptions[stackframe.intno]);
         vga_print("\n\nPlease check the serial port !\n");
+        vga_printerr("\n\nPress ENTER to REBOOT");
+
+        disable_vga_cursor();
 
         klog(NONE, "\n\n === CPU DUMP === \n\n");
         register_dump(stackframe);
         klog(NONE, "\n\n=== BACKTRACE ===\n\n");
         ebp = stackframe.ebp;
         backtrace(&ebp);
-        hlt();
+
+        PIC_sendEOI(stackframe.intno);
+
+        while (1)
+        {
+            keycode();
+            if (getLastKeyScan() == 28)
+            {
+                break;
+            }
+        }
+        reboot();
     }
 
     else if (stackframe.intno < 48)
     {
-        klog(OK, "IRQ: %d !!!!!\n", stackframe.intno);
+        uint8_t irq_nbr = stackframe.intno - 32;
+
+        if (irq_nbr == 1)
+        {
+            klog(OK, "input\n");
+            keycode();
+        }
     }
 
-    if (check_apic())
-    {
-        APIC_sendEOI();
-    }
-    else
-    {
-        PIC_sendEOI(stackframe.intno);
-    }
-    /*
-     * return esp; 
-     */
-
+    PIC_sendEOI(stackframe.intno);
 }

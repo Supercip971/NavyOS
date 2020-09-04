@@ -15,25 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "arch/x86/device/keyboard.h"
+#include "arch/x86/io.h"
 
-#ifndef _NAVY_X86_SERIAL_H
-#define _NAVY_X86_SERIAL_H
+#include "kernel/log.h"
 
-#include <stdint.h>
 
-enum SERIAL_COM
+void
+keycode()
 {
-    COM1 = 0x3f8,
-    COM2 = 0x2f8,
-    COM3 = 0x3e8,
-    COM4 = 0x2e8
-};
+    lastKey = inb(0x60);
+}
 
-typedef enum SERIAL_COM Com;
-
-void serial_init(Com);
-void serial_putc(Com, char);
-void serial_print(Com, const char *);
-int32_t is_transmit_empty(Com);
-
-#endif
+char
+getLastKeyScan()
+{
+    return lastKey;
+}

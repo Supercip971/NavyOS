@@ -16,8 +16,8 @@
  */
 
 #include "arch/arch.h"
-#include "arch/x86/vga.h"
-#include "arch/x86/serial.h"
+#include "arch/x86/device/vga.h"
+#include "arch/x86/device/serial.h"
 
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
@@ -109,7 +109,27 @@ vga_print(const char *s)
 }
 
 void
+disable_vga_cursor()
+{
+    disable_cursor();
+}
+
+void
 vga_printerr(const char *s)
 {
     term_puts(s, WHITE, RED);
+}
+
+void
+reboot(void)
+{
+    uint8_t good = 0x2;
+
+    while (good & 0x02)
+    {
+        good = inb(0x64);
+    }
+
+    outb(0x64, 0xFE);
+    hlt();
 }

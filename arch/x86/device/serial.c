@@ -16,7 +16,7 @@
  */
 
 
-#include "arch/x86/serial.h"
+#include "arch/x86/device/serial.h"
 #include "arch/x86/io.h"
 
 

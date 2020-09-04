@@ -15,17 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <macro.h>
+#include <multiboot2.h>
 
 #include "kernel/warning.h"
 #include "kernel/log.h"
-#include "arch/arch.h"
-#include <macro.h>
-#include <multiboot2.h>
 #include "kernel/ascii.h"
-
-
-#include "arch/x86/rsdp.h"
-
+#include "arch/arch.h"
 
 void
 kmain(uint32_t addr, uint32_t magic)
@@ -42,6 +38,5 @@ kmain(uint32_t addr, uint32_t magic)
     klog(NONE, ascii_art);
     vga_print(ascii_art);
 
-    __asm__("sti");
-    for (;;);
+    __asm__("int $0");
 }

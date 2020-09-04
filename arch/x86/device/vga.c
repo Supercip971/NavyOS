@@ -16,7 +16,7 @@
  */
 
 
-#include "arch/x86/vga.h"
+#include "arch/x86/device/vga.h"
 #include "arch/x86/io.h"
 
 uint8_t col;
@@ -131,6 +131,13 @@ movcur(uint8_t x, uint8_t y)
     outb(0x3D5, (uint8_t) (pos & 0xFF));
     outb(0x3D4, 0x0E);
     outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
+
+void
+disable_cursor(void)
+{
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, 0x20);
 }
 
 
