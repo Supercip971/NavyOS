@@ -22,7 +22,7 @@
 #include "arch/x86/interrupt.h"
 #include "arch/arch.h"
 #include "arch/x86/device/vga.h"
-#include "arch/x86/device/keyboard.h"
+#include "arch/x86/device/keyboard.h" 
 
 
 #include <macro.h>
@@ -122,8 +122,8 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 
         while (1)
         {
-            keycode();
-            if (getLastKeyScan() == 28)
+            keyscan();
+            if (getLastKeyCode() == 28)
             {
                 break;
             }
@@ -137,8 +137,7 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 
         if (irq_nbr == 1)
         {
-            klog(OK, "input\n");
-            keycode();
+            keyscan();
         }
     }
 

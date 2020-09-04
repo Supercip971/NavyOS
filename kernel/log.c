@@ -80,6 +80,7 @@ klog(Level level, const char *format, ...)
             debug_print(va_arg(ap, char *));
 
             is_parsing = false;
+            ptr++;
         }
 
         if (*ptr == 'd' && is_parsing)

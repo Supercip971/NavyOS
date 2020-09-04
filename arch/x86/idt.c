@@ -41,11 +41,18 @@ init_idt(void)
 {
     uint16_t i;
 
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < 3; i++)
     {
         init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
     }
 
+    init_idt_desc(0x08, __interrupt_vector[3], TRAPGATE, &kidt[3]);
+    init_idt_desc(0x08, __interrupt_vector[4], TRAPGATE, &kidt[4]);
+
+    for(i = 5; i < 48; i++)
+    {
+        init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
+    }
 
     kidtr.limite = sizeof(struct idtdesc) * 256;
     kidtr.base = (uint32_t) & kidt[0];

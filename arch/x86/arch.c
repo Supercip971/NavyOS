@@ -17,6 +17,7 @@
 
 #include "arch/arch.h"
 #include "arch/x86/device/vga.h"
+#include "arch/x86/device/keyboard.h"
 #include "arch/x86/device/serial.h"
 
 #include "arch/x86/gdt.h"
@@ -27,6 +28,7 @@
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
 #include "arch/x86/paging.h"
+#include "arch/x86/pit.h"
 
 #include "kernel/log.h"
 #include <macro.h>
@@ -87,6 +89,9 @@ init_arch(uint32_t addr)
 
     init_idt();
     klog(LOG, "IDT loaded\n");
+
+    init_pit(1000);
+    klog(LOG, "PIT initialised\n");
 }
 
 void
@@ -120,6 +125,12 @@ vga_printerr(const char *s)
     term_puts(s, WHITE, RED);
 }
 
+void 
+vga_putc(char c)
+{
+    term_putc(c, LIGHT_GREY, BLACK);
+}
+
 void
 reboot(void)
 {
@@ -132,4 +143,16 @@ reboot(void)
 
     outb(0x64, 0xFE);
     hlt();
+}
+
+unsigned char
+kbd_getc(void)
+{
+    return getKeyChar();
+}
+
+char 
+kbd_lastKeyCode(void)
+{
+    return getKeyChar();
 }

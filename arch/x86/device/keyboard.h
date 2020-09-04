@@ -22,8 +22,9 @@
 
 uint8_t lastKey;
 
-void keycode(void);
-char getLastKeyScan(void);
+void keyscan(void);
+char getLastKeyCode(void);
+unsigned char getKeyChar(void);
 
 
 #endif

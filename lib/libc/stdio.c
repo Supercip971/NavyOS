@@ -15,24 +15,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
+#include <stdio.h>
+#include <stddef.h>
 
-#include <stdint.h>
+#include "arch/arch.h"
+#include "kernel/log.h"
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
-void vga_print(const char *);
-void vga_printerr(const char *);
-void vga_putc(char c);
-void disable_vga_cursor(void);
-void init_arch(uint32_t);
-void breakpoint(void);
-void hlt(void);
-void reboot(void);
+int
+getc(void)
+{
+    return (int) kbd_getc();
+}
 
-unsigned char kbd_getc(void);
-char kbd_lastKeyCode(void);
+char *
+gets(char *s)
+{
+    size_t i;
 
-#endif
+    while(kbd_lastKeyCode() != 28)
+    {
+        s[i] = getc();
+        vga_putc(s[i]);
+        klog(LOG, "%d\n", s[i]);
+        i++;  
+    }
+
+    return s;
+}

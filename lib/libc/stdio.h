@@ -15,24 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
 
-#include <stdint.h>
+#ifndef _NAVY_LIBC_STDIO_H
+#define _NAVY_LIBC_STDIO_H
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
-void vga_print(const char *);
-void vga_printerr(const char *);
-void vga_putc(char c);
-void disable_vga_cursor(void);
-void init_arch(uint32_t);
-void breakpoint(void);
-void hlt(void);
-void reboot(void);
-
-unsigned char kbd_getc(void);
-char kbd_lastKeyCode(void);
+int getc(void);
+char *gets(char *);
 
 #endif
