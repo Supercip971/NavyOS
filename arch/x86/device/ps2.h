@@ -15,38 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <macro.h>
-#include <stdio.h>
-#include <multiboot2.h>
+#ifndef _NAVY_X86_DEVICE_PS2
+#define _NAVY_X86_DEVICE_PS2
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "kernel/ascii.h"
-#include "arch/arch.h"
+#define PS2_DATA    0x60
+#define PS2_READ    0x64
+#define PS2_REG     0x64
 
-#include "arch/x86/device/keyboard.h"
+#include "arch/x86/rsdt.h"
 
-void
-kmain(uint32_t addr, uint32_t magic)
-{
-    char s[128];
-    init_arch(addr);
+static bool has_first_channel;
+static bool has_second_channel;
 
-    if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
-    {
-        klog(ERROR, "Invalid magic number: 0x%x\n", magic);
-        disable_interrupts();
-        hlt();
-    }
+void init_ps2(struct ACPISDTHeader *);
+void ps2_wait(void);
 
-
-    klog(NONE, ascii_art);
-    vga_print(ascii_art);
-
-    vga_print("Type something: ");
-    gets(s);
-    klog(WARNING, "You typed: %s\n", s);
-
-    disable_interrupts();
-    hlt();
-}
+#endif

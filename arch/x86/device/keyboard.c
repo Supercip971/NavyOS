@@ -17,6 +17,7 @@
 
 
 #include "arch/x86/device/keyboard.h"
+#include "arch/x86/device/ps2.h"
 #include "arch/x86/io.h"
 
 #include "kernel/log.h"
@@ -63,13 +64,12 @@ unsigned char kdbus[128] =
 
 bool did_twice = true;
 
-
 void
 keyscan()
 {
-    while(inb(0x64) & 0x01 && (inb(0x64) & 0x20) == 0x00) 
+    while(inb(PS2_READ) & 0x01 && (inb(PS2_READ) & 0x20) == 0x00) 
     {
-        lastKey = inb(0x60);
+        lastKey = inb(PS2_DATA);
     }
 }
 
