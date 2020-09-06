@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "arch/x86/device/keyboard.h"
 #include "arch/x86/io.h"
 
@@ -60,10 +61,13 @@ unsigned char kdbus[128] =
     0,	/* All other keys are undefined */
 };	
 
+bool did_twice = true;
+
+
 void
 keyscan()
 {
-    if(inb(0x64) & 0x01) 
+    while(inb(0x64) & 0x01 && (inb(0x64) & 0x20) == 0x00) 
     {
         lastKey = inb(0x60);
     }
@@ -78,9 +82,36 @@ getLastKeyCode()
 unsigned char 
 getKeyChar()
 {
-    uint8_t finalc;
-    while (lastKey > 0x80 || !lastKey);
-    finalc = lastKey;
-    lastKey = 0;
-    return kdbus[finalc];
+   bool has_key;
+   char c;
+
+   disable_interrupts();
+   has_key = lastKey < 80 && lastKey;
+   enable_interrupts();
+
+   while (!has_key)
+   {
+      hlt();
+
+      disable_interrupts();
+      has_key = lastKey < 80 && lastKey;
+      enable_interrupts();
+   }
+
+    disable_interrupts();
+    c = kdbus[lastKey];
+
+    if(!did_twice) /* FIX ME */
+    {
+      lastKey = 0;
+      did_twice = true;
+    } 
+
+    else 
+    {
+      did_twice = false;
+    }
+
+    enable_interrupts();
+    return c;
 }

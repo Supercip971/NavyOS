@@ -19,6 +19,7 @@
 #include "arch/x86/device/vga.h"
 #include "arch/x86/device/keyboard.h"
 #include "arch/x86/device/serial.h"
+#include "arch/x86/device/ps2.h"
 
 #include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
@@ -71,7 +72,6 @@ init_arch(uint32_t addr)
      */
 
     rsdt = init_acpi(addr);
-    __unused(rsdt);
 
     klog(LOG, "ACPI initialised\n");
 
@@ -81,6 +81,9 @@ init_arch(uint32_t addr)
      * 
      * else {
      */
+    init_ps2(rsdt);
+    klog(LOG, "PS2 initialised\n");
+
     init_pic();
     klog(LOG, "PIC initialised\n");
     /*
@@ -89,6 +92,7 @@ init_arch(uint32_t addr)
 
     init_idt();
     klog(LOG, "IDT loaded\n");
+
 
     init_pit(1000);
     klog(LOG, "PIT initialised\n");
@@ -103,8 +107,19 @@ breakpoint(void)
 void
 hlt(void)
 {
-    __asm__("cli");
     __asm__("hlt");
+}
+
+void 
+disable_interrupts(void)
+{
+    __asm__("cli");
+}
+
+void 
+enable_interrupts(void)
+{
+    __asm__("sti");
 }
 
 void

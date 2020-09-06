@@ -18,27 +18,29 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#include "arch/arch.h"
+#include "arch/arch.h" 
 #include "kernel/log.h"
 
 int
-getc(void)
+getchar(void)
 {
-    return (int) kbd_getc();
+    char c = kbd_getc();
+    klog(OK, "%c\n", c);
+    return (int) c;
 }
 
 char *
 gets(char *s)
 {
-    size_t i;
+    size_t i = 0;
 
-    while(kbd_lastKeyCode() != 28)
+    while(getchar() != '\n')
     {
-        s[i] = getc();
-        vga_putc(s[i]);
-        klog(LOG, "%d\n", s[i]);
+        s[i] = getchar();
         i++;  
     }
+
+    s[i++] = '\0';
 
     return s;
 }

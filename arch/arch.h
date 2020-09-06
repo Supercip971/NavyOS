@@ -20,16 +20,22 @@
 
 #include <stdint.h>
 
+
 void debug_print(const char *);
 void debug_putc(const char);
 void debug_clear(void);
+
 void vga_print(const char *);
 void vga_printerr(const char *);
 void vga_putc(char c);
 void disable_vga_cursor(void);
+
 void init_arch(uint32_t);
+
 void breakpoint(void);
 void hlt(void);
+void disable_interrupts(void);
+void enable_interrupts(void);
 void reboot(void);
 
 unsigned char kbd_getc(void);

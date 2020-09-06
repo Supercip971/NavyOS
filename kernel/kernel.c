@@ -35,6 +35,7 @@ kmain(uint32_t addr, uint32_t magic)
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
     {
         klog(ERROR, "Invalid magic number: 0x%x\n", magic);
+        disable_interrupts();
         hlt();
     }
 
@@ -44,5 +45,5 @@ kmain(uint32_t addr, uint32_t magic)
 
     vga_print("Type something: ");
     gets(s);
-
+    klog(WARNING, "You typed: %s\n", s);
 }

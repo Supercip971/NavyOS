@@ -19,12 +19,13 @@
 #define _NAVY_X86_DEVICE_KEYBOARD_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 uint8_t lastKey;
+bool did_twice;
 
 void keyscan(void);
 char getLastKeyCode(void);
 unsigned char getKeyChar(void);
-
 
 #endif
