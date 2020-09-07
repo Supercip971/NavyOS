@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_X86_PIT 
+#ifndef _NAVY_X86_PIT
 #define _NAVY_X86_PIT
 
 #include <stdint.h>

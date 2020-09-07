@@ -18,14 +18,14 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#include "arch/arch.h" 
+#include "arch/arch.h"
 #include "kernel/log.h"
 
 int
 getchar(void)
 {
     char c = kbd_getc();
-    klog(OK, "%c\n", c);
+
     return (int) c;
 }
 
@@ -34,10 +34,11 @@ gets(char *s)
 {
     size_t i = 0;
 
-    while(getchar() != '\n')
+    while (getchar() != '\n')
     {
         s[i] = getchar();
-        i++;  
+        vga_putc(s[i]);
+        i++;
     }
 
     s[i++] = '\0';

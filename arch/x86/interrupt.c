@@ -22,7 +22,7 @@
 #include "arch/x86/interrupt.h"
 #include "arch/arch.h"
 #include "arch/x86/device/vga.h"
-#include "arch/x86/device/keyboard.h" 
+#include "arch/x86/device/keyboard.h"
 
 
 #include <macro.h>

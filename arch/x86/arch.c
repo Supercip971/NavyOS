@@ -82,7 +82,6 @@ init_arch(uint32_t addr)
      * else {
      */
     init_ps2(rsdt);
-    klog(LOG, "PS2 initialised\n");
 
     init_pic();
     klog(LOG, "PIC initialised\n");
@@ -110,13 +109,13 @@ hlt(void)
     __asm__("hlt");
 }
 
-void 
+void
 disable_interrupts(void)
 {
     __asm__("cli");
 }
 
-void 
+void
 enable_interrupts(void)
 {
     __asm__("sti");
@@ -140,7 +139,7 @@ vga_printerr(const char *s)
     term_puts(s, WHITE, RED);
 }
 
-void 
+void
 vga_putc(char c)
 {
     term_putc(c, LIGHT_GREY, BLACK);
@@ -166,7 +165,7 @@ kbd_getc(void)
     return getKeyChar();
 }
 
-char 
+char
 kbd_lastKeyCode(void)
 {
     return getKeyChar();

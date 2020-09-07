@@ -18,7 +18,7 @@
 #include "arch/x86/pit.h"
 #include "arch/x86/io.h"
 
-void 
+void
 init_pit(uint16_t hz)
 {
     uint16_t freq = 1193182 / hz;

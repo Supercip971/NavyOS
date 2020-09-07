@@ -22,52 +22,51 @@
 
 #include "kernel/log.h"
 
-unsigned char kdbus[128] = 
-{
-    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
-  '9', '0', '-', '=', '\b',	/* Backspace */
-  '\t',			/* Tab */
-  'q', 'w', 'e', 'r',	/* 19 */
-  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
-    0,			/* 29   - Control */
-  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
- '\'', '`',   0,		/* Left shift */
- '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
-  'm', ',', '.', '/',   0,				/* Right shift */
-  '*',
-    0,	/* Alt */
-  ' ',	/* Space bar */
-    0,	/* Caps lock */
-    0,	/* 59 - F1 key ... > */
-    0,   0,   0,   0,   0,   0,   0,   0,
-    0,	/* < ... F10 */
-    0,	/* 69 - Num lock*/
-    0,	/* Scroll Lock */
-    0,	/* Home key */
-    0,	/* Up Arrow */
-    0,	/* Page Up */
-  '-',
-    0,	/* Left Arrow */
+unsigned char kdbus[128] = {
+    0, 27, '1', '2', '3', '4', '5', '6', '7', '8',  /* 9 */
+    '9', '0', '-', '=', '\b',   /* Backspace */
+    '\t',                       /* Tab */
+    'q', 'w', 'e', 'r',         /* 19 */
+    't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',   /* Enter key */
+    0,                          /* 29 - Control */
+    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',   /* 39 */
+    '\'', '`', 0,               /* Left shift */
+    '\\', 'z', 'x', 'c', 'v', 'b', 'n', /* 49 */
+    'm', ',', '.', '/', 0,      /* Right shift */
+    '*',
+    0,                          /* Alt */
+    ' ',                        /* Space bar */
+    0,                          /* Caps lock */
+    0,                          /* 59 - F1 key ... > */
+    0, 0, 0, 0, 0, 0, 0, 0,
+    0,                          /* < ... F10 */
+    0,                          /* 69 - Num lock */
+    0,                          /* Scroll Lock */
+    0,                          /* Home key */
+    0,                          /* Up Arrow */
+    0,                          /* Page Up */
+    '-',
+    0,                          /* Left Arrow */
     0,
-    0,	/* Right Arrow */
-  '+',
-    0,	/* 79 - End key*/
-    0,	/* Down Arrow */
-    0,	/* Page Down */
-    0,	/* Insert Key */
-    0,	/* Delete Key */
-    0,   0,   0,
-    0,	/* F11 Key */
-    0,	/* F12 Key */
-    0,	/* All other keys are undefined */
-};	
+    0,                          /* Right Arrow */
+    '+',
+    0,                          /* 79 - End key */
+    0,                          /* Down Arrow */
+    0,                          /* Page Down */
+    0,                          /* Insert Key */
+    0,                          /* Delete Key */
+    0, 0, 0,
+    0,                          /* F11 Key */
+    0,                          /* F12 Key */
+    0,                          /* All other keys are undefined */
+};
 
 bool did_twice = true;
 
 void
 keyscan()
 {
-    while(inb(PS2_READ) & 0x01 && (inb(PS2_READ) & 0x20) == 0x00) 
+    while (inb(PS2_READ) & 0x01 && (inb(PS2_READ) & 0x20) == 0x00)
     {
         lastKey = inb(PS2_DATA);
     }
@@ -79,37 +78,37 @@ getLastKeyCode()
     return lastKey;
 }
 
-unsigned char 
+unsigned char
 getKeyChar()
 {
-   bool has_key;
-   char c;
+    bool has_key;
+    char c;
 
-   disable_interrupts();
-   has_key = lastKey < 80 && lastKey;
-   enable_interrupts();
+    disable_interrupts();
+    has_key = lastKey < 80 && lastKey;
+    enable_interrupts();
 
-   while (!has_key)
-   {
-      hlt();
+    while (!has_key)
+    {
+        hlt();
 
-      disable_interrupts();
-      has_key = lastKey < 80 && lastKey;
-      enable_interrupts();
-   }
+        disable_interrupts();
+        has_key = lastKey < 80 && lastKey;
+        enable_interrupts();
+    }
 
     disable_interrupts();
     c = kdbus[lastKey];
 
-    if(!did_twice) /* FIX ME */
+    if (!did_twice)             /* FIX ME */
     {
-      lastKey = 0;
-      did_twice = true;
-    } 
+        lastKey = 0;
+        did_twice = true;
+    }
 
-    else 
+    else
     {
-      did_twice = false;
+        did_twice = false;
     }
 
     enable_interrupts();

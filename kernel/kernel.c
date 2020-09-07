@@ -30,6 +30,7 @@ void
 kmain(uint32_t addr, uint32_t magic)
 {
     char s[128];
+
     init_arch(addr);
 
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)

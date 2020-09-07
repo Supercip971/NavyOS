@@ -99,9 +99,10 @@ klog(Level level, const char *format, ...)
             ptr++;
         }
 
-        if(*ptr == 'c' && is_parsing)
+        if (*ptr == 'c' && is_parsing)
         {
             debug_putc((char) va_arg(ap, int));
+
             is_parsing = false;
             ptr++;
         }

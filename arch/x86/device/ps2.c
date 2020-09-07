@@ -22,16 +22,17 @@
 
 #include "arch/arch.h"
 
-void 
+void
 ps2_wait(void)
 {
     uint8_t status = inb(PS2_READ);
-    while(status & 0x2);
+
+    while (status & 0x2);
 
     return;
 }
 
-void 
+void
 init_ps2(struct ACPISDTHeader *rsdt)
 {
     struct FADT *fadt;
@@ -40,10 +41,13 @@ init_ps2(struct ACPISDTHeader *rsdt)
 
     has_second_channel = true;
     has_first_channel = true;
+
     fadt = find_SDT(rsdt, "FADT");
 
-    /* Step 2: PS/2 exists ? */
-    if(fadt->BootArchitectureFlags < 32768)
+    /*
+     * Step 2: PS/2 exists ? 
+     */
+    if (fadt->BootArchitectureFlags < 32768)
     {
         has_first_channel = false;
         has_second_channel = false;
@@ -51,30 +55,38 @@ init_ps2(struct ACPISDTHeader *rsdt)
         return;
     }
 
-    /* Step 3: Disable devices */
+    /*
+     * Step 3: Disable devices 
+     */
     outb(PS2_REG, 0xad);
     outb(PS2_REG, 0xa8);
-    
-    /* Step 4: Flush output buffer */
+
+    /*
+     * Step 4: Flush output buffer 
+     */
     inb(PS2_DATA);
 
-    /* Step 5: Set the controller config byte */
+    /*
+     * Step 5: Set the controller config byte 
+     */
     outb(PS2_REG, 0x20);
     byte_0_ram = inb(PS2_DATA);
     outb(PS2_REG, 0x60);
     outb(PS2_DATA, byte_0_ram & 0xdc);
 
-    if((byte_0_ram & 0x10) == 0)
+    if ((byte_0_ram & 0x10) == 0)
     {
         has_second_channel = false;
         klog(WARNING, "NO DUAL PS2 !\n");
     }
-    
-    /* Step 6: Perform Controller Self Test */
+
+    /*
+     * Step 6: Perform Controller Self Test 
+     */
     outb(PS2_REG, 0xaa);
     ps2_wait();
 
-    if(inb(0x60) == 0xfc)
+    if (inb(0x60) == 0xfc)
     {
         klog(ERROR, "PS2 Test failed !\n");
         has_second_channel = false;
@@ -83,52 +95,72 @@ init_ps2(struct ACPISDTHeader *rsdt)
         return;
     }
 
-    /* Step 7: Check dual channel */
-    if(has_second_channel)
+    /*
+     * Step 7: Check dual channel 
+     */
+    if (has_second_channel)
     {
         outb(PS2_REG, 0xa8);
         byte_0_ram = inb(PS2_DATA);
 
-        if(byte_0_ram & 0x10)
+        if (byte_0_ram & 0x10)
         {
             has_second_channel = false;
             klog(WARNING, "NO DUAL PS2 !\n");
         }
 
-        else 
+        else
         {
             outb(PS2_REG, 0xa7);
         }
     }
 
-    /* Step 8: Perform Interface Test */
+    /*
+     * Step 8: Perform Interface Test 
+     */
     outb(PS2_REG, 0xab);
-    if(inb(PS2_DATA) == 0xfc)
+    if (inb(PS2_DATA) == 0xfc)
     {
         klog(ERROR, "Couldn't check the first channel of the PS2 controller\n");
         has_first_channel = false;
     }
 
-    if(has_second_channel)
+    if (has_second_channel)
     {
         outb(PS2_REG, 0xa9);
 
-        if(inb(PS2_DATA) == 0xfc)
+        if (inb(PS2_DATA) == 0xfc)
         {
             klog(ERROR, "Couldn't check the second channel fo the PS2 controller\n");
             has_second_channel = false;
         }
     }
 
-    /* Step 9: Enable device */
+    /*
+     * Step 9: Enable device 
+     */
 
-    if(has_first_channel)
+    if (has_first_channel)
     {
         outb(PS2_REG, 0xae);
+
+        outb(PS2_REG, 0x20);
+        byte_0_ram = inb(PS2_DATA);
+
+        outb(PS2_REG, 0x60);
+        outb(PS2_DATA, byte_0_ram | 0x41);
+        klog(OK, "First channel PS2 initialised\n");
     }
 
-    if(has_second_channel)
+    if (has_second_channel)
     {
         outb(PS2_REG, 0xa8);
+
+        outb(PS2_REG, 0x20);
+        byte_0_ram = inb(PS2_DATA);
+
+        outb(PS2_REG, 0x60);
+        outb(PS2_DATA, byte_0_ram | 0x20);
+        klog(OK, "Second channel PS2 initialised\n");
     }
 }

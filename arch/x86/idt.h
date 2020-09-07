@@ -38,7 +38,7 @@ struct idtr
 
 enum type_attr
 {
-    INTGATE = 0x8e, 
+    INTGATE = 0x8e,
     TRAPGATE = 0xef
 };
 
