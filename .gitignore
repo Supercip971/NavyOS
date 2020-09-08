@@ -5,6 +5,7 @@ build/
 # Debug files
 *.log
 *.sym
+peda-session-kernel.bin.txt
 
 # Iso 
 navy.iso
