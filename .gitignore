@@ -6,6 +6,7 @@ build/
 *.log
 *.sym
 peda-session-kernel.bin.txt
+.gdb_history
 
 # Iso 
 navy.iso
