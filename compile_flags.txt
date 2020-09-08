@@ -1,0 +1,7 @@
+-I.
+-Ilibgmultiboot
+-Ilibglibc
+-ansi
+-pedantic
+-pedantic-errors
+-m32

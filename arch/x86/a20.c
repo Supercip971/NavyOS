@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,16 +15,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_LIBC_STRING_H
-#define _NAVY_LIBC_STRING_H
+#include "arch/x86/a20.h"
+#include "arch/x86/device/ps2.h"
+#include "arch/x86/io.h"
+#include "arch/arch.h"
 
-#include <stdint.h>
-#include <stddef.h>
+#include "kernel/log.h"
 
-size_t strlen(const char *);
-char *strcat(char *, const char *);
-char *memcpy(void *, const void *, size_t);
-void *memset(void *, int, size_t);
-int memcmp(const void *, const void *, size_t);
-int strncmp(const char *, const char *, size_t);
-#endif
+void
+init_a20(void)
+{
+    uint8_t a;
+
+    disable_interrupts();
+    ps2_wait();
+
+    outb(PS2_REG, 0xad);
+    ps2_wait();
+
+    a = inb(PS2_DATA);
+    ps2_wait();
+
+    outb(PS2_REG, 0xd1);
+    ps2_wait();
+
+    outb(PS2_REG, a | 2);
+    ps2_wait();
+
+    outb(PS2_REG, 0xae);
+    enable_interrupts();
+
+    return;
+}

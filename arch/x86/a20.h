@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,16 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NAVY_LIBC_STRING_H
-#define _NAVY_LIBC_STRING_H
+#ifndef _NAVY_X86_A20_H
+#define _NAVY_X86_A20_H
 
-#include <stdint.h>
-#include <stddef.h>
+#include <stdbool.h>
 
-size_t strlen(const char *);
-char *strcat(char *, const char *);
-char *memcpy(void *, const void *, size_t);
-void *memset(void *, int, size_t);
-int memcmp(const void *, const void *, size_t);
-int strncmp(const char *, const char *, size_t);
+extern bool check_a20();
+void init_a20();
+
 #endif

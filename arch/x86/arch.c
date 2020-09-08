@@ -30,6 +30,7 @@
 #include "arch/x86/io.h"
 #include "arch/x86/paging.h"
 #include "arch/x86/pit.h"
+#include "arch/x86/a20.h"
 
 #include "kernel/log.h"
 #include <macro.h>
@@ -59,7 +60,6 @@ init_arch(uint32_t addr)
 {
     struct ACPISDTHeader *rsdt;
 
-
     term_init();
     serial_init(COM1);
     serial_print(COM1, "\033c");
@@ -67,34 +67,35 @@ init_arch(uint32_t addr)
     init_gdt();
     klog(LOG, "GDT loaded\n");
 
-    /*
-     * init_paging(); klog(LOG, "Paging initialised\n");
-     */
-
     rsdt = init_acpi(addr);
-
     klog(LOG, "ACPI initialised\n");
 
-    /*
-     * if (check_apic()) { disable_pic(); init_apic(rsdt); klog(LOG, "APIC
-     * initialised\n"); }
-     * 
-     * else {
-     */
     init_ps2(rsdt);
 
     init_pic();
     klog(LOG, "PIC initialised\n");
-    /*
-     * } 
-     */
 
     init_idt();
     klog(LOG, "IDT loaded\n");
 
-
     init_pit(1000);
     klog(LOG, "PIT initialised\n");
+
+    if (check_a20())
+    {
+        klog(LOG, "A20 Line already enabled\n");
+    }
+
+    else
+    {
+        init_a20();
+        if (!check_a20())
+        {
+            klog(ERROR, "Couldn't enable A20 Line !\n");
+            disable_interrupts();
+            hlt();
+        }
+    }
 }
 
 void

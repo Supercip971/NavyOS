@@ -1,4 +1,5 @@
 KERNEL_SOURCES = \
+	$(wildcard kernel/*/*.c) \
 	$(wildcard kernel/*.c) \
 	$(wildcard arch/x86/*.c) \
 	$(wildcard arch/x86/device/*.c)

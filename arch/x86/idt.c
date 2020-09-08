@@ -41,6 +41,8 @@ init_idt(void)
 {
     uint16_t i;
 
+    memset(kidt, 0, 256 * sizeof(struct idtdesc));
+
     for (i = 0; i < 3; i++)
     {
         init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
@@ -53,6 +55,8 @@ init_idt(void)
     {
         init_idt_desc(0x08, __interrupt_vector[i], INTGATE, &kidt[i]);
     }
+
+    init_idt_desc(0x08, __interrupt_vector[48], INTGATE, &kidt[69]);
 
     kidtr.limite = sizeof(struct idtdesc) * 256;
     kidtr.base = (uint32_t) & kidt[0];

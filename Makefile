@@ -46,6 +46,10 @@ run-debug:
 	sh ./make-iso.sh
 	qemu-system-i386 -s -S -cdrom navy.iso -serial stdio -smp cores=4 
 
+run-bochs:
+	sh ./make-iso.sh
+	bochs -q
+
 clean:
 	rm -rf build/
 
@@ -53,3 +57,4 @@ clean:
 .PHONY: format 
 .PHONY: all
 .PHONY: clean
+.PHONY: run-bochs

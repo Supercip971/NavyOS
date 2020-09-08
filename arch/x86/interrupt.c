@@ -17,6 +17,7 @@
 
 
 #include "kernel/log.h"
+#include "kernel/abi/syscall.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/apic.h"
 #include "arch/x86/interrupt.h"
@@ -24,6 +25,7 @@
 #include "arch/x86/device/vga.h"
 #include "arch/x86/device/keyboard.h"
 
+#include <stdlib.h>
 
 #include <macro.h>
 #include <stdint.h>
@@ -97,6 +99,7 @@ void
 interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
 {
     uint32_t ebp;
+    char eip[9];
 
     __unused(esp);
 
@@ -105,8 +108,12 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
         klog(ERROR, "%s (INT: %x, ERR: %08x)\n", exceptions[stackframe.intno],
              stackframe.intno, stackframe.err);
 
+        itoa(stackframe.eip, eip, 16);
         vga_printerr("\n/!\\ KERNEL EXCEPTION /!\\\n");
         vga_print(exceptions[stackframe.intno]);
+        vga_print("\nEIP:");
+        vga_print(eip);
+        vga_print("\n");
         vga_print("\n\nPlease check the serial port !\n");
         vga_printerr("\n\nPress ENTER to REBOOT");
 
@@ -139,6 +146,12 @@ interrupts_handler(uint32_t esp, struct InterruptStackFrame stackframe)
         {
             keyscan();
         }
+    }
+
+    else if (stackframe.intno == 69)
+    {
+        klog(OK, "GOT SYSCALL !\n");
+        syscall(stackframe.eax, stackframe.ebx, stackframe.ecx);
     }
 
     PIC_sendEOI(stackframe.intno);
