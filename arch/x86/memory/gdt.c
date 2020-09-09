@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/gdt.h"
+#include "arch/x86/memory/gdt.h"
 #include "arch/arch.h"
 
 #include <string.h>

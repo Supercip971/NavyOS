@@ -21,16 +21,17 @@
 #include "arch/x86/device/serial.h"
 #include "arch/x86/device/ps2.h"
 
-#include "arch/x86/gdt.h"
 #include "arch/x86/idt.h"
 #include "arch/x86/acpi.h"
 #include "arch/x86/rsdt.h"
 #include "arch/x86/apic.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/io.h"
-#include "arch/x86/paging.h"
 #include "arch/x86/pit.h"
-#include "arch/x86/a20.h"
+
+#include "arch/x86/memory/a20.h"
+#include "arch/x86/memory/gdt.h"
+#include "arch/x86/memory/paging.h"
 
 #include "kernel/log.h"
 #include <macro.h>

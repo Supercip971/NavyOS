@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/a20.h"
+#include "arch/x86/memory/a20.h"
 #include "arch/x86/device/ps2.h"
 #include "arch/x86/io.h"
 #include "arch/arch.h"

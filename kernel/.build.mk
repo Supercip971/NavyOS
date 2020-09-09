@@ -2,10 +2,11 @@ KERNEL_SOURCES = \
 	$(wildcard kernel/*/*.c) \
 	$(wildcard kernel/*.c) \
 	$(wildcard arch/x86/*.c) \
-	$(wildcard arch/x86/device/*.c)
+	$(wildcard arch/x86/*/*.c) \
 
 KERNEL_ASSEMBLY_SOURCES = \
-	$(wildcard arch/*/*.asm)
+	$(wildcard arch/*/*.asm) \
+	$(wildcard arch/*/*/*.asm)
 
 KERNEL_LIBRARIES_SOURCES = \
 	$(wildcard lib/libc/*.c) \

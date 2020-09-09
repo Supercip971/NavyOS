@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/paging.h"
+#include "arch/x86/memory/paging.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -27,9 +27,9 @@ init_paging()
 {
     size_t i;
 
-    for(i = 0; i < 1024; i++)
+    for (i = 0; i < 1024; i++)
     {
-        page_dir[i] = 2;    /* Set as not present */
+        page_dir[i] = 2;        /* Set as not present */
     }
 
     _asm_load_directory(page_dir);
