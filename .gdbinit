@@ -1,3 +1,3 @@
 file ./kernel.bin
-b check_a20
+b init_paging
 target remote localhost:1234

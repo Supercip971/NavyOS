@@ -96,6 +96,8 @@ init_arch(uint32_t addr)
             hlt();
         }
     }
+
+    init_paging();
 }
 
 void

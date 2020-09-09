@@ -1,2 +1,2 @@
-break check_a20
+break init_paging
 

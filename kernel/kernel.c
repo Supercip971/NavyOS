@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <macro.h>
-#include <stdio.h>
 #include <multiboot2.h>
 
 #include "kernel/warning.h"

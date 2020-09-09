@@ -20,8 +20,17 @@
 #include <stdint.h>
 #include <stddef.h>
 
+static uint32_t page_dir[1024] __attribute__((aligned(4096)));
+
 void
 init_paging()
 {
-    _asm_enable_paging();
+    size_t i;
+
+    for(i = 0; i < 1024; i++)
+    {
+        page_dir[i] = 2;    /* Set as not present */
+    }
+
+    _asm_load_directory(page_dir);
 }

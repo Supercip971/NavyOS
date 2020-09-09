@@ -16,8 +16,6 @@
 ;
 
 
-[ GLOBAL _asm_enable_paging ]
-_asm_enable_paging:
-    mov eax, cr0 
-    or eax, 0x80000000 
-    mov cr0, eax
+[GLOBAL _asm_load_directory]
+_asm_load_directory:
+    ret
