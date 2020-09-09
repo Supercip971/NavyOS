@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2020 Jordan DALCQ & contributors
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -56,6 +55,7 @@ klog(Level level, const char *format, ...)
             if (is_parsing)
             {
                 debug_putc('%');
+                ptr++;
                 is_parsing = false;
             }
 

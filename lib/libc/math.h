@@ -21,5 +21,8 @@
 #include <stdint.h>
 
 double pow(double, double);
+double factorial(double);
+double exp(double);
+int abs(int);
 
 #endif

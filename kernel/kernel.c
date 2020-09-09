@@ -24,13 +24,9 @@
 #include "kernel/ascii.h"
 #include "arch/arch.h"
 
-#include "arch/x86/device/keyboard.h"
-
 void
 kmain(uint32_t addr, uint32_t magic)
 {
-    char s[128];
-
     init_arch(addr);
 
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
@@ -43,10 +39,6 @@ kmain(uint32_t addr, uint32_t magic)
 
     klog(NONE, ascii_art);
     vga_print(ascii_art);
-
-    vga_print("Type something: ");
-    gets(s);
-    klog(WARNING, "You typed: %s\n", s);
 
     disable_interrupts();
     hlt();

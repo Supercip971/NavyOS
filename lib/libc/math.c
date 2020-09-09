@@ -16,6 +16,9 @@
  */
 
 #include <math.h>
+#include <stddef.h>
+#include "kernel/log.h"
+#define precision 100
 
 double
 pow(double base, double power)
@@ -26,10 +29,53 @@ pow(double base, double power)
     uint64_t iterator;
     double return_value = 1;
 
+
     for (iterator = 0; iterator < power; iterator++)
     {
         return_value *= base;
     }
 
     return return_value;
+}
+
+double
+factorial(double number)
+{
+    double i;
+    double return_value = 1;
+
+    for (i = 1; i < number; i++)
+    {
+        return_value *= i;
+    }
+
+    return return_value;
+}
+
+double
+exp(double x)
+{
+    size_t k;
+    double return_value = 0;
+
+    for (k = 0; k < precision; k++)
+    {
+        return_value += (pow(x, k) / factorial(k));
+    }
+
+    return return_value;
+}
+
+int
+abs(int j)
+{
+    if (j < 0)
+    {
+        return j * -1;
+    }
+
+    else
+    {
+        return j;
+    }
 }
