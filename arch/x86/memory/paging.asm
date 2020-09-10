@@ -15,7 +15,24 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ;
 
+[ GLOBAL _asm_init_paging ]
+_asm_init_paging:
+    push ebp 
+    mov ebp, esp
+    mov eax, cr0
+    or eax, 0x80000000
+    mov cr0, eax
+    mov esp, ebp 
+    pop ebp
+    ret
 
-[GLOBAL _asm_load_directory]
-_asm_load_directory:
+
+[ GLOBAL _asm_load_pagedir ]
+_asm_load_pagedir:
+    push ebp
+    mov ebp, esp
+    mov eax, [ esp + 8 ]
+    mov cr3, eax 
+    mov esp, ebp 
+    pop ebp 
     ret

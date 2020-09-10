@@ -21,48 +21,50 @@
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 #include <stdint.h>
+#include <stdbool.h>
+
+
+struct PAGE_DIR_ENTRY
+{
+    bool present:1;
+    bool read_write:1;
+    bool user_supervisor:1;
+    bool write_trough:1;
+    bool cache_disabled:1;
+    bool accessed:1;
+    bool zero:1;
+    bool page_size:1;
+    bool ignored:1;
+    uint8_t available:3;
+    uint32_t page_framenbr:20;
+}__attribute__((packed));
+
+
+struct PAGE_DIR {
+    struct PAGE_DIR_ENTRY entries[1024];
+};
+
+struct PAGE_TABLE_ENTRY
+{
+    bool present:1;
+    bool read_write:1;
+    bool user_supervisor:1;
+    bool write_trough:1;
+    bool cache_disabled:1;
+    bool accessed:1;
+    bool dirty:1;
+    bool PAT:1;
+    bool global:1;
+    uint8_t available:3;
+    uint32_t page_framenbr:20;
+}__attribute__((packed));
+
+struct PAGE_TABLE {
+    struct PAGE_TABLE_ENTRY entries[1024];
+};
 
 void init_paging(void);
-extern void _asm_load_directory(uint32_t *);
-
-union PAGE_DIR
-{
-    struct
-    {
-        uint32_t page_align:20;
-        uint8_t available:2;
-        uint8_t ignored:1;
-        uint8_t page_size:1;
-        uint8_t zero:1;
-        uint8_t accessed:1;
-        uint8_t cache_disabled:1;
-        uint8_t write_trough:1;
-        uint8_t user_supervisor:1;
-        uint8_t read_write:1;
-        uint8_t present:1;
-    } bits;
-
-    uint32_t content:31;
-};
-
-union PAGE_ENTRY
-{
-    struct
-    {
-        uint32_t page_align:20;
-        uint8_t available:2;
-        uint8_t global:1;
-        uint8_t PAT:1;
-        uint8_t dirty:1;
-        uint8_t accessed:1;
-        uint8_t cache_disabled:1;
-        uint8_t write_trough:1;
-        uint8_t user_supervisor:1;
-        uint8_t read_write:1;
-        uint8_t present:1;
-    } bits;
-
-    uint32_t content:31;
-};
+extern void _asm_init_paging(void);
+extern void _asm_load_pagedir(struct PAGE_DIR_ENTRY *);
 
 #endif

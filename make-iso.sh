@@ -1,5 +1,4 @@
 #!/bin/sh
-
 make
 
 if [ -d isodir/ ]; then
