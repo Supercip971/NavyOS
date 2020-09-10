@@ -1,4 +1,0 @@
-break init_paging
-break _asm_init_paging
-break _asm_load_pagedir
-
