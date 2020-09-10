@@ -37,10 +37,11 @@ struct PAGE_DIR_ENTRY
     bool ignored:1;
     uint8_t available:3;
     uint32_t page_framenbr:20;
-}__attribute__((packed));
+} __attribute__((packed));
 
 
-struct PAGE_DIR {
+struct PAGE_DIR
+{
     struct PAGE_DIR_ENTRY entries[1024];
 };
 
@@ -57,9 +58,10 @@ struct PAGE_TABLE_ENTRY
     bool global:1;
     uint8_t available:3;
     uint32_t page_framenbr:20;
-}__attribute__((packed));
+} __attribute__((packed));
 
-struct PAGE_TABLE {
+struct PAGE_TABLE
+{
     struct PAGE_TABLE_ENTRY entries[1024];
 };
 

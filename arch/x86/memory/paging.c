@@ -23,32 +23,32 @@
 static struct PAGE_DIR page_dir __attribute__((aligned(4096)));
 static struct PAGE_TABLE page_table[256] __attribute__((aligned(4096)));
 
-void 
+void
 __init_page_dir(struct PAGE_DIR *page_dir)
 {
     size_t i;
 
-    for(i = 0; i < 256; i++)
+    for (i = 0; i < 256; i++)
     {
         page_dir->entries[i].present = 1;
         page_dir->entries[i].read_write = 1;
         page_dir->entries[i].user_supervisor = 0;
-        page_dir->entries[i].page_framenbr = (uintptr_t)(&page_table[i]) >> 12;
+        page_dir->entries[i].page_framenbr = (uintptr_t) (&page_table[i]) >> 12;
     }
 }
 
-void 
+void
 __paging_ident(struct PAGE_TABLE *page_table, size_t index)
 {
-   size_t i;
+    size_t i;
 
-   for(i = 0; i < 1024; i++)
-   {
+    for (i = 0; i < 1024; i++)
+    {
         page_table->entries[i].read_write = 1;
         page_table->entries[i].user_supervisor = 0;
-        page_table->entries[i].page_framenbr= index * 1024 + i;
+        page_table->entries[i].page_framenbr = index * 1024 + i;
         page_table->entries[i].present = 1;
-   } 
+    }
 }
 
 void
@@ -59,12 +59,11 @@ init_paging()
     __init_page_dir(&page_dir);
 
 
-    for(i = 0; i < 256; i++)
+    for (i = 0; i < 256; i++)
     {
-        __paging_ident(&page_table[i], i);     
+        __paging_ident(&page_table[i], i);
     }
 
     _asm_load_pagedir(page_dir.entries);
     _asm_init_paging();
 }
-

@@ -20,14 +20,15 @@
 #include "arch/x86/device/keyboard.h"
 #include "arch/x86/device/serial.h"
 #include "arch/x86/device/ps2.h"
+#include "arch/x86/device/pit.h"
 
-#include "arch/x86/idt.h"
+#include "arch/x86/interrupt/idt.h"
+#include "arch/x86/interrupt/apic.h"
+#include "arch/x86/interrupt/pic.h"
+
 #include "arch/x86/acpi.h"
 #include "arch/x86/rsdt.h"
-#include "arch/x86/apic.h"
-#include "arch/x86/pic.h"
 #include "arch/x86/io.h"
-#include "arch/x86/pit.h"
 
 #include "arch/x86/memory/a20.h"
 #include "arch/x86/memory/gdt.h"
