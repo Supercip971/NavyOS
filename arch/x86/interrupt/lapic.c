@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/lapic.h"
+#include "arch/x86/interrupt/lapic.h"
 #include <stddef.h>
 
 uint32_t

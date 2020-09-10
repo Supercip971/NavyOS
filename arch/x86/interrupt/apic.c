@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/apic.h"
-#include "arch/x86/pic.h"
 #include "arch/x86/cpuid.h"
 #include "arch/x86/madt.h"
-#include "arch/x86/lapic.h"
+
+#include "arch/x86/interrupt/lapic.h"
+#include "arch/x86/interrupt/apic.h"
+#include "arch/x86/interrupt/pic.h"
 
 #include "arch/arch.h"
 #include "kernel/log.h"

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/pit.h"
 #include "arch/x86/io.h"
+#include "arch/x86/device/pit.h"
 
 void
 init_pit(uint16_t hz)

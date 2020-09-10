@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/x86/idt.h"
+#include "arch/x86/interrupt/idt.h"
 #include "arch/x86/io.h"
 
 #include <string.h>

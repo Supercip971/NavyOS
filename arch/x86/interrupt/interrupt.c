@@ -18,15 +18,15 @@
 
 #include "kernel/log.h"
 #include "kernel/abi/syscall.h"
-#include "arch/x86/pic.h"
-#include "arch/x86/apic.h"
-#include "arch/x86/interrupt.h"
+
 #include "arch/arch.h"
 #include "arch/x86/device/vga.h"
 #include "arch/x86/device/keyboard.h"
+#include "arch/x86/interrupt/apic.h"
+#include "arch/x86/interrupt/pic.h"
+#include "arch/x86/interrupt/interrupt.h"
 
 #include <stdlib.h>
-
 #include <macro.h>
 #include <stdint.h>
 
