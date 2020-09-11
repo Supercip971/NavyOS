@@ -22,6 +22,9 @@
 
 #include "arch/arch.h"
 
+static bool has_first_channel;
+static bool has_second_channel;
+
 void
 ps2_wait(void)
 {

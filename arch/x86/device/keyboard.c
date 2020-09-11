@@ -22,6 +22,12 @@
 
 #include "kernel/log.h"
 
+#include <stdint.h>
+#include <stdbool.h>
+
+static bool did_twice = true;
+static uint8_t lastKey;
+
 unsigned char kdbus[128] = {
     0, 27, '1', '2', '3', '4', '5', '6', '7', '8',  /* 9 */
     '9', '0', '-', '=', '\b',   /* Backspace */
@@ -60,8 +66,6 @@ unsigned char kdbus[128] = {
     0,                          /* F12 Key */
     0,                          /* All other keys are undefined */
 };
-
-bool did_twice = true;
 
 void
 keyscan()

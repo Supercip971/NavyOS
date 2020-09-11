@@ -24,9 +24,6 @@
 
 #include "arch/x86/rsdt.h"
 
-bool has_first_channel;
-bool has_second_channel;
-
 void init_ps2(struct ACPISDTHeader *);
 void ps2_wait(void);
 
