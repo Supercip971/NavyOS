@@ -67,25 +67,25 @@ init_arch(uint32_t addr)
     serial_print(COM1, "\033c");
 
     init_gdt();
-    klog(LOG, "GDT loaded\n");
+    klog(OK, "GDT loaded\n");
 
     rsdt = init_acpi(addr);
-    klog(LOG, "ACPI initialised\n");
+    klog(OK, "ACPI initialised\n");
 
     init_ps2(rsdt);
 
     init_pic();
-    klog(LOG, "PIC initialised\n");
+    klog(OK, "PIC initialised\n");
 
     init_idt();
-    klog(LOG, "IDT loaded\n");
+    klog(OK, "IDT loaded\n");
 
     init_pit(1000);
-    klog(LOG, "PIT initialised\n");
+    klog(OK, "PIT initialised\n");
 
     if (check_a20())
     {
-        klog(LOG, "A20 Line already enabled\n");
+        klog(OK, "A20 Line already enabled\n");
     }
 
     else
@@ -100,6 +100,7 @@ init_arch(uint32_t addr)
     }
 
     init_paging();
+    klog(OK, "Paging enabled\n");
 }
 
 void

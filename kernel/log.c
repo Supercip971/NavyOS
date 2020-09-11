@@ -24,7 +24,7 @@
 
 static const char *LOG_MSG[] = {
     "\033[34mLOG\033[39m", "\033[31mERROR\033[39m", "\033[33mWARNING\033[39m",
-    "\033[35mOK\033[39m "
+    "\033[35mOK\033[39m"
 };
 
 void
