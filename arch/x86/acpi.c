@@ -60,7 +60,6 @@ init_acpi(uint32_t addr)
         }
 
         fadt = (struct FADT *) find_SDT(rsdt, "FADT");
-
     }
 
     if (fadt->SMI_CommandPort == 0 || (fadt->AcpiEnable == 0 && fadt->AcpiDisable == 0))

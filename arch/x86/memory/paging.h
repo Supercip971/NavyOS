@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
- *
+ * Copyright (C) 2020 Jordan DALCQ & contributors 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -65,7 +64,7 @@ struct PAGE_TABLE
     struct PAGE_TABLE_ENTRY entries[1024];
 };
 
-void init_paging(void);
+void init_paging(uint32_t);
 extern void _asm_init_paging(void);
 extern void _asm_load_pagedir(struct PAGE_DIR_ENTRY *);
 
