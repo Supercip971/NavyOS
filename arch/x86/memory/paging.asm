@@ -36,3 +36,9 @@ _asm_load_pagedir:
     mov esp, ebp 
     pop ebp 
     ret
+
+
+[ GLOBAL _asm_reload_pagedir ]
+_asm_reload_pagedir:
+    mov eax, cr3 
+    mov cr3, eax

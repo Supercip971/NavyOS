@@ -31,7 +31,7 @@
 
 #include "arch/x86/memory/a20.h"
 #include "arch/x86/memory/gdt.h"
-#include "arch/x86/memory/paging.h"
+#include "arch/x86/memory/memory.h"
 
 #include "kernel/log.h"
 #include <macro.h>
@@ -98,8 +98,7 @@ init_arch(uint32_t addr)
         }
     }
 
-    init_paging(addr);
-    klog(OK, "Paging enabled\n");
+    init_memory(addr);
 }
 
 void

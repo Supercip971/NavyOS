@@ -14,6 +14,7 @@
  */
 
 #include "arch/x86/memory/paging.h"
+#include "kernel/memory/alloc.h"
 #include "kernel/log.h"
 
 #include <stdint.h>
@@ -21,15 +22,10 @@
 #include <macro.h>
 #include <multiboot2.h>
 
-#define FREE    0x00
-#define TAKEN   0xff
 
 static struct PAGE_DIR page_dir __attribute__((aligned(4096)));
 static struct PAGE_TABLE page_table[256] __attribute__((aligned(4096)));
-static uint8_t page_bitmap[0x10000];
 
-extern uint32_t __start;
-extern uint32_t __end;
 
 void
 __init_page_dir(struct PAGE_DIR *page_dir)
@@ -45,13 +41,14 @@ __init_page_dir(struct PAGE_DIR *page_dir)
     }
 }
 
+
 void
 __paging_ident(struct PAGE_TABLE *page_table, size_t index)
 {
     size_t i;
 
     for (i = 0; i < 1024; i++)
-    {   
+    {
         page_table->entries[i].read_write = 1;
         page_table->entries[i].user_supervisor = 0;
         page_table->entries[i].page_framenbr = index * 1024 + i;
@@ -59,19 +56,13 @@ __paging_ident(struct PAGE_TABLE *page_table, size_t index)
     }
 }
 
+
 void
-init_paging(uint32_t addr)
+init_paging(void)
 {
     size_t i;
-    struct multiboot_tag_mmap *mmap =
-        (struct multiboot_tag_mmap *) get_tag(MULTIBOOT_TAG_TYPE_MMAP, addr);
-
-    klog(OK, "0x%x\t0x%x", &__start, &__end);
 
     __init_page_dir(&page_dir);
-    __unused(page_bitmap);
-    __unused(mmap);
-
     for (i = 0; i < 256; i++)
     {
         __paging_ident(&page_table[i], i);
@@ -80,3 +71,10 @@ init_paging(uint32_t addr)
     _asm_load_pagedir(page_dir.entries);
     _asm_init_paging();
 }
+
+/*
+ * TODO + Physical2Virtual & Vice Versa void allocate_page(size_t pagenbr) { uintptr_t
+ * addr;
+ * 
+ * addr = allocate_memory(pagenbr); } 
+ */

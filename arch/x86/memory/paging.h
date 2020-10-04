@@ -64,8 +64,9 @@ struct PAGE_TABLE
     struct PAGE_TABLE_ENTRY entries[1024];
 };
 
-void init_paging(uint32_t);
+void init_paging(void);
 extern void _asm_init_paging(void);
 extern void _asm_load_pagedir(struct PAGE_DIR_ENTRY *);
+extern void _asm_reload_pagedir(void);
 
 #endif
