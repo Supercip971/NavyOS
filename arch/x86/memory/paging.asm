@@ -42,3 +42,4 @@ _asm_load_pagedir:
 _asm_reload_pagedir:
     mov eax, cr3 
     mov cr3, eax
+    ret
