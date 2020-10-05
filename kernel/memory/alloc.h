@@ -20,14 +20,16 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include <Navy/range.h>
+
 #define FREE    0x00
 #define USED    0xff
 #define BITLENGTH 0x10000
 
 void init_bitmap(void);
-void set_status_bitmap(uintptr_t, uintptr_t, uint8_t);
+void set_status_bitmap(Range, uint8_t);
 size_t get_index_bitmap(uintptr_t);
 
-uintptr_t allocate_memory(size_t);
+Range allocate_memory(size_t);
 
 #endif

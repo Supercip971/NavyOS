@@ -21,6 +21,8 @@
 #include "arch/x86/memory/paging.h"
 #include "kernel/memory/alloc.h"
 
+#include <Navy/range.h>
+
 #include <multiboot2.h>
 #include <stddef.h>
 
@@ -33,6 +35,7 @@ _parse_mmap(struct multiboot_tag_mmap *mmap)
     size_t i;
     uintptr_t lastaddr;
     struct multiboot_mmap_entry entry;
+    Range mmap_range;
 
     lastaddr = (uintptr_t) mmap;
     for (i = 0; i < mmap->entry_size; i++)
@@ -41,7 +44,9 @@ _parse_mmap(struct multiboot_tag_mmap *mmap)
 
         if (entry.type == 1)
         {
-            set_status_bitmap(lastaddr, lastaddr + entry.len, FREE);
+            mmap_range.begin = lastaddr;
+            mmap_range.end = lastaddr + entry.len;
+            set_status_bitmap(mmap_range, FREE);
         }
 
         if (entry.type == 5)
@@ -56,12 +61,18 @@ _parse_mmap(struct multiboot_tag_mmap *mmap)
 void
 init_memory(uint32_t addr)
 {
+    Range kernel_range;
+
     struct multiboot_tag_mmap *mmap =
         (struct multiboot_tag_mmap *) get_tag(MULTIBOOT_TAG_TYPE_MMAP, addr);
+
+
+    kernel_range.begin = (uintptr_t) & __start;
+    kernel_range.end = (uintptr_t) & __end;
 
     init_paging();
     klog(OK, "Paging enabled !");
 
-    set_status_bitmap((uintptr_t) & __start, (uintptr_t) & __end, USED);
+    set_status_bitmap(kernel_range, USED);
     _parse_mmap(mmap);
 }

@@ -17,6 +17,7 @@ CFLAGS := \
     -I.                         \
     -Ilib/multiboot             \
     -Ilib/libc		            \
+	-Ilib						\
     -ffreestanding	            \
     -g			                \
     -nostdlib			        \

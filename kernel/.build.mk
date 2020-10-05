@@ -10,7 +10,8 @@ KERNEL_ASSEMBLY_SOURCES = \
 
 KERNEL_LIBRARIES_SOURCES = \
 	$(wildcard lib/libc/*.c) \
-	$(wildcard lib/multiboot/*.c)
+	$(wildcard lib/multiboot/*.c) \
+	$(wildcard lib/Navy/*.c)
 	
 
 KERNEL_BINARY = kernel.bin

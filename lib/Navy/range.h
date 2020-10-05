@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,32 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <multiboot2.h>
 
-#include "kernel/warning.h"
-#include "kernel/log.h"
-#include "kernel/ascii.h"
-#include "arch/x86/memory/paging.h"
-#include "arch/arch.h"
+#ifndef NAVY_LIB_RANGE_H
+#define NAVY_LIB_RANGE_H
 
-void
-kmain(uint32_t addr, uint32_t magic)
+#include <stddef.h>
+
+typedef struct RANGE
 {
-    init_arch(addr);
+    uintptr_t begin;
+    uintptr_t end;
+} Range;
 
-    if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
-    {
-        klog(ERROR, "Invalid magic number: 0x%x\n", magic);
-        disable_interrupts();
-        hlt();
-    }
-
-
-    klog(NONE, ascii_art);
-    vga_print(ascii_art);
-
-    allocate_page(3);
-
-    disable_interrupts();
-    hlt();
-}
+#endif

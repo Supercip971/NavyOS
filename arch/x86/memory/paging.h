@@ -20,6 +20,7 @@
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 
 
@@ -65,6 +66,7 @@ struct PAGE_TABLE
 };
 
 void init_paging(void);
+void allocate_page(size_t);
 extern void _asm_init_paging(void);
 extern void _asm_load_pagedir(struct PAGE_DIR_ENTRY *);
 extern void _asm_reload_pagedir(void);

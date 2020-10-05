@@ -1,17 +1,20 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.  
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 #include "arch/x86/memory/paging.h"
 #include "kernel/memory/alloc.h"
@@ -25,6 +28,7 @@
 
 static struct PAGE_DIR page_dir __attribute__((aligned(4096)));
 static struct PAGE_TABLE page_table[256] __attribute__((aligned(4096)));
+size_t page_table_index = 0;
 
 
 void
@@ -72,9 +76,12 @@ init_paging(void)
     _asm_init_paging();
 }
 
-/*
- * TODO + Physical2Virtual & Vice Versa void allocate_page(size_t pagenbr) { uintptr_t
- * addr;
- * 
- * addr = allocate_memory(pagenbr); } 
- */
+
+void
+allocate_page(size_t pagenbr)
+{
+    Range mem_range;
+
+    mem_range = allocate_memory(pagenbr);
+    klog(OK, "0x%x -> 0x%x\n", mem_range.begin, mem_range.end);
+}

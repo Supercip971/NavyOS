@@ -1,19 +1,25 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.  
+ * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "kernel/memory/alloc.h"
+#include "kernel/log.h"
+
+#include <Navy/range.h>
 
 uint8_t page_bitmap[BITLENGTH];
 
@@ -29,14 +35,14 @@ init_bitmap(void)
 }
 
 void
-set_status_bitmap(uintptr_t start, uintptr_t end, uint8_t status)
+set_status_bitmap(Range range, uint8_t status)
 {
     size_t start_bitmap;
     size_t end_bitmap;
     size_t i;
 
-    start_bitmap = (start / 4096) / 8;
-    end_bitmap = (end / 4096) / 8;
+    start_bitmap = (range.begin / 4096) / 8;
+    end_bitmap = (range.end / 4096) / 8;
 
     for (i = start_bitmap; i < end_bitmap; i++)
     {
@@ -50,12 +56,12 @@ get_index_bitmap(uintptr_t addr)
     return (addr / 4096) / 8;
 }
 
-uintptr_t
-allocate_page(size_t pagenbr)
+Range
+allocate_memory(size_t pagenbr)
 {
     size_t i;
-    uintptr_t addr;
     size_t free_page = 0;
+    Range range;
 
     for (i = 0; i < BITLENGTH; i++)
     {
@@ -75,8 +81,10 @@ allocate_page(size_t pagenbr)
         }
     }
 
-    addr = i * 8;
-    set_status_bitmap(addr, addr + (8 * pagenbr), USED);
+    range.end = (i + 1) * 8;
+    i -= pagenbr - 1;
+    range.begin = i * 8;
+    set_status_bitmap(range, USED);
 
-    return addr;
+    return range;
 }
