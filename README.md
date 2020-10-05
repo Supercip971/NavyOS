@@ -1,19 +1,25 @@
 <h1 align="center"><img src=".github/logo_qui_est_coule_et_qui_coule.svg" height=256 /></h1>
 <p align="center">A hobbyist kernel and operating system made with :heart: <br /> Now in ANSI C !</p>
-<p>
+<p align="center">
   <a href="https://github.com/Project-Navy/NavyOS/blob/master/LICENSE" target="_blank">
     <img alt="License: GPL--3" src="https://img.shields.io/badge/License-GPL--3-yellow.svg" />
   </a>
-  <a href="https://twitter.com/0nclejojo" target="_blank">
-    <img alt="Twitter: 0nclejojo" src="https://img.shields.io/twitter/follow/0nclejojo.svg?style=social" />
+  
+  <a href="https://github.com/Project-Navy/NavyOS/" target="_blank">
+    <img alt="Commits: NavyOS" src="https://img.shields.io/github/last-commit/Project-Navy/NavyOS" />
+  </a>
+  
+  <a href="https://github.com/Project-Navy/NavyOS/issues" target="_blank">
+    <img alt="Issues: NavyOS" src="https://img.shields.io/github/issues-raw/Project-Navy/NavyOS" />
+  </a>
+  
+  <a href="https://github.com/Project-Navy/NavyOS/pulls" target="_blank">
+    <img alt="Pulls: NavyOS" src="https://img.shields.io/github/issues-pr/Project-Navy/NavyOS" />
   </a>
 </p>
 
 
-
-### 🏠 [Homepage](https://github.com/Project-Navy/NavyOS)
-
-## Compile & Run
+## ⚙ Compile & Run
 
 ```sh
 make run-qemu
@@ -35,7 +41,7 @@ make run-qemu
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/Project-Navy/NavyOS/issues).
 
-## Show your support
+## :heart: Show your support
 
 Give a ⭐ if this project helped you!
 
