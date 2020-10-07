@@ -29,8 +29,8 @@ make run-qemu
 
 👤 **Jordan Dalcq**
 
-* Twitter: [@0nclejojo](https://twitter.com/0nclejojo)
-* Github: [@0v3rl0w](https://github.com/0v3rl0w)
+* Twitter: [@KeyboardSlayer](https://twitter.com/KeyboardSlayer)
+* Github: [@Keyboard-Slayer](https://github.com/Keyboard-Slayer)
 
 ## Contributors
 <a href="https://github.com/Project-Navy/NavyOS/graphs/contributors">
@@ -47,5 +47,5 @@ Give a ⭐ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2020 [Jordan Dalcq](https://github.com/0v3rl0w).<br />
+Copyright © 2020 [Jordan Dalcq](https://github.com/Keyboard-Slayer).<br />
 This project is [GPL-3](https://github.com/Project-Navy/NavyOS/blob/master/LICENSE) licensed.
