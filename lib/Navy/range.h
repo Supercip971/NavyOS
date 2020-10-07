@@ -20,11 +20,16 @@
 #define NAVY_LIB_RANGE_H
 
 #include <stddef.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 typedef struct RANGE
 {
     uintptr_t begin;
     uintptr_t end;
 } Range;
+
+bool is_range_page_aligned(Range);
+size_t get_range_size(Range);
 
 #endif

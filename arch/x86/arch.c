@@ -34,11 +34,11 @@
 #include "arch/x86/memory/a20.h"
 #include "arch/x86/memory/gdt.h"
 #include "arch/x86/memory/memory.h"
+#include "arch/x86/memory/paging.h"
 
 #include "kernel/log.h"
 #include <macro.h>
 #include <multiboot2.h>
-
 
 void
 debug_print(const char *msg)
@@ -175,4 +175,10 @@ char
 kbd_lastKeyCode(void)
 {
     return getKeyChar();
+}
+
+bool
+is_page_aligned(size_t x)
+{
+    return x % 4096 == 0;
 }

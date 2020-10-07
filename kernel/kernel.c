@@ -39,8 +39,6 @@ kmain(uint32_t addr, uint32_t magic)
     klog(NONE, ascii_art);
     vga_print(ascii_art);
 
-    allocate_page(3);
-
     disable_interrupts();
     hlt();
 }

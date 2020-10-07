@@ -17,6 +17,7 @@
 #define _NAVY_X86_MEMORY_H
 
 #include <stdint.h>
+#include <Navy/range.h>
 
 void init_memory(uint32_t);
 

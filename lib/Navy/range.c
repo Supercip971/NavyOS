@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,36 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NAVY_ARCH_H
-#define NAVY_ARCH_H
+#include <Navy/range.h>
 
-#include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
 
-#if defined(__i386__)
-#define PAGE_SIZE 4096
-#endif
+#include "arch/arch.h"
+#include "kernel/log.h"
 
-void debug_print(const char *);
-void debug_putc(const char);
-void debug_clear(void);
+size_t
+get_range_size(Range range)
+{
+    return range.end - range.begin;
+}
 
-void vga_print(const char *);
-void vga_printerr(const char *);
-void vga_putc(char c);
-void disable_vga_cursor(void);
-
-void init_arch(uint32_t);
-
-void breakpoint(void);
-void hlt(void);
-void disable_interrupts(void);
-void enable_interrupts(void);
-void reboot(void);
-
-unsigned char kbd_getc(void);
-char kbd_lastKeyCode(void);
-bool is_page_aligned(size_t);
-
-#endif
+bool
+is_range_page_aligned(Range range)
+{
+    return (range.begin % PAGE_SIZE == 0) && (get_range_size(range) % PAGE_SIZE == 0);
+}

@@ -24,7 +24,7 @@
 
 #define FREE    0x00
 #define USED    0xff
-#define BITLENGTH 0x10000
+#define BITLENGTH 0x20000
 
 void init_bitmap(void);
 void set_status_bitmap(Range, uint8_t);
