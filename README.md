@@ -29,8 +29,9 @@ make run-qemu
 
 👤 **Jordan Dalcq**
 
-* Twitter: [@KeyboardSlayer](https://twitter.com/KeyboardSlayer)
-* Github: [@Keyboard-Slayer](https://github.com/Keyboard-Slayer)
+* Twitter : [@KeyboardSlayer](https://twitter.com/KeyboardSlayer)
+* Github : [@Keyboard-Slayer](https://github.com/Keyboard-Slayer)
+* Mail : [keyboard-slayer@navy-os.tech)(mailto:keyboard-slayer@navy-os.tech)
 
 ## Contributors
 <a href="https://github.com/Project-Navy/NavyOS/graphs/contributors">
