@@ -1,4 +1,4 @@
-<h1 align="center"><img src=".github/logo_qui_est_coule_et_qui_coule.svg" height=256 /></h1>
+<h1 align="center"><img src="https://raw.githubusercontent.com/Project-Navy/NavyOS/master/.github/logo_qui_est_coule_et_qui_coule.svg" height=256 /></h1>
 <p align="center">A hobbyist kernel and operating system made with :heart: <br /> Now in ANSI C !</p>
 <p align="center">
   <a href="https://github.com/Project-Navy/NavyOS/blob/master/LICENSE" target="_blank">
@@ -31,7 +31,7 @@ make run-qemu
 
 * Twitter : [@KeyboardSlayer](https://twitter.com/KeyboardSlayer)
 * Github : [@Keyboard-Slayer](https://github.com/Keyboard-Slayer)
-* Mail : [keyboard-slayer@navy-os.tech)(mailto:keyboard-slayer@navy-os.tech)
+* Mail : [keyboard-slayer@navy-os.tech](mailto:keyboard-slayer@navy-os.tech)
 
 ## Contributors
 <a href="https://github.com/Project-Navy/NavyOS/graphs/contributors">
