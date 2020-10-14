@@ -11,8 +11,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: action/checkout@v2
-
             - name: Installing packages
               run: |
                 sudo apt update
