@@ -14,18 +14,18 @@ jobs:
             -uses: action/checkout@v2
 
             -name: Installing packages
-            run: |
+             run: |
                 sudo apt update
                 sudo apt install -y nasm build-essential xorriso mtools wget unzip
         
             -name: Getting cross-compiler
-            run: |
+             run: |
                 wget https://github.com/lordmilko/i686-elf-tools/releases/download/7.1.0/i686-elf-tools-linux.zip
                 mkdir toolchain
                 unzip i686-elf-tools-linux.zip -d toolchain/
             
             - name: Building NavyOS
-            - run: |
+              run: |
                 export PATH=$PATH:$(pwd)/toolchain/
                 make clean 
                 make all
