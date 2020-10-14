@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2020 Jordan DALCQ & Contributors
+ * Copyright (C) 2020  Jordan DALCQ & contributors
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -13,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -50,7 +52,7 @@ itoa(int32_t value, char *str, uint16_t base)
     } while(value);
 
     str[index] = '\0';
-    str = strrev(str);
+    str = strrev(str); 
 
     return str;
 

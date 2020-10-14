@@ -71,10 +71,16 @@ memcmp(const void *aptr, const void *bptr, size_t size)
     for (i = 0; i < size; i++)
     {
         if (a[i] < b[i])
+        {
             return -1;
+        }
+
         else if (b[i] < a[i])
+        {
             return 1;
+        }
     }
+
     return 0;
 }
 
@@ -121,7 +127,7 @@ strrev(char *s)
     int8_t i;
     int8_t length = strlen(s)-1;
     
-    for (i = length; i > -1 ; i--)
+    for (i = length; i > 0 ; i--)
     {
         tmp = s[i];
         s[i] = s[length-i];
