@@ -25,7 +25,6 @@ jobs:
             - name: Building NavyOS
               run: |
                 export PATH=$PATH:$(pwd)/toolchain/
-                make clean 
                 make all
         
         
