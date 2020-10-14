@@ -9,8 +9,8 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-
         steps:
+            - uses: actions/checkout@v2
             - name: Installing packages
               run: |
                 sudo apt update
@@ -22,9 +22,14 @@ jobs:
                 mkdir toolchain
                 unzip i686-elf-tools-linux.zip -d toolchain/
             
+            
+            - name: Getting source code 
+              run:
+
             - name: Building NavyOS
               run: |
                 export PATH=$PATH:$(pwd)/toolchain/
+                make clean 
                 make all
         
         
