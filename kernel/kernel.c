@@ -16,6 +16,7 @@
  */
 
 #include <multiboot2.h>
+#include <string.h>
 
 #include "kernel/warning.h"
 #include "kernel/log.h"
@@ -34,7 +35,6 @@ kmain(uint32_t addr, uint32_t magic)
         disable_interrupts();
         hlt();
     }
-
 
     klog(NONE, ascii_art);
     vga_print(ascii_art);

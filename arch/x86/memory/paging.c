@@ -151,6 +151,7 @@ virtual_map(struct PAGE_DIR *page_dir, Range range, uintptr_t addr, Mode mode)
     PageTableEntry table_entry;
     struct PAGE_TABLE *table;
 
+    __unused(success);
     __unused(table_entry);
 
     for (i = 0; i < get_range_size(range) / PAGE_SIZE; i++)

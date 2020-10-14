@@ -17,6 +17,8 @@
 
 
 #include <string.h>
+#include <stdint.h>
+#include "kernel/log.h"
 
 
 size_t
@@ -107,6 +109,23 @@ memset(void *s, int c, size_t n)
     for (i = 0; i < n; i++)
     {
         buf[i] = (unsigned char) c;
+    }
+
+    return s;
+}
+
+char *
+strrev(char *s)
+{
+    char tmp;
+    int8_t i;
+    int8_t length = strlen(s)-1;
+    
+    for (i = length; i > -1 ; i--)
+    {
+        tmp = s[i];
+        s[i] = s[length-i];
+        s[length-i] = tmp;
     }
 
     return s;

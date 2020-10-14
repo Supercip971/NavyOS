@@ -15,47 +15,45 @@
  */
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
 
 char *
-itoa(int32_t value, char *str, uint16_t base)   /* Took from OSDEV, my implementation was 
-                                                 * not good */
+itoa(int32_t value, char *str, uint16_t base)   
 {
-    char *rc;
-    char *ptr;
-    char *low;
+    size_t index = 0;
+    int8_t digit;
 
-    if (base < 2 || base > 36)
+    if (value < 0)
     {
-        *str = '\0';
-        return str;
+        str[index++] = '-';
     }
-    rc = ptr = str;
-    if (value < 0 && base == 10)
+
+    do 
     {
-        *ptr++ = '-';
-    }
-    low = ptr;
-    do
-    {
-        *ptr++ =
-            "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
-            [35 + value % base];
+        digit = value % base;
         value /= base;
-    }
-    while (value);
-    *ptr-- = '\0';
-    while (low < ptr)
-    {
-        char tmp = *low;
+        
+        if (digit < 0xa)
+        {
+            str[index++] = digit + '0';
+        }
 
-        *low++ = *ptr;
-        *ptr-- = tmp;
-    }
-    return rc;
+        else 
+        {
+            str[index++] = (digit - 0xa) + 'A';
+        }
+
+    } while(value);
+
+    str[index] = '\0';
+    str = strrev(str);
+
+    return str;
+
 }
 
 int32_t
