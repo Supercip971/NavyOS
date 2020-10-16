@@ -32,12 +32,9 @@
 
 #define PAGE_SIZE 4096
 
-typedef enum
-{
-    MEMORY_NONE,
-    USER,
-    CLEAR,
-} Mode;
+#define MEMORY_NONE (0)
+#define MEMORY_USER (1 << 0)
+#define MEMORY_CLEAR (1 << 1)
 
 union PAGE_DIR_ENTRY
 {

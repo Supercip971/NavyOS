@@ -70,7 +70,6 @@ void *kernel_space_address_space()
     return &kernel_page_dir;
 }
 
-
 void
 init_paging(BootInfo *info)
 {
@@ -109,6 +108,7 @@ init_paging(BootInfo *info)
 
     set_total_memory(info->memory_usable);
 
+    align_range(&kernel_range);
     memory_map_identity(kernel_space_address_space(), kernel_range, MEMORY_NONE); 
     klog(OK, "Kernel mapped\n");
     
@@ -116,7 +116,6 @@ init_paging(BootInfo *info)
     {
         memory_map_identity(kernel_space_address_space(), info->modules[i].range, MEMORY_NONE);
     }
-
     klog(OK, "Modules mapped\n");
 
     virtual_free(kernel_space_address_space(), page_zero);
@@ -124,12 +123,13 @@ init_paging(BootInfo *info)
 
     address_space_switch(kernel_space_address_space());
     _asm_init_paging();
-    
+    klog(OK, "Paging enabled !\n"); 
 }
 
 void 
 address_space_switch(void *address_space)
 {
+    klog(WARNING, "V2P: %x\n", virtual_to_physical(kernel_space_address_space(), (uintptr_t) address_space));
     _asm_load_pagedir(virtual_to_physical(kernel_space_address_space(), (uintptr_t) address_space));
 }
 
@@ -200,7 +200,7 @@ memory_alloc_identity(void *address_space, uint8_t mode, uintptr_t * out_addr)
             virtual_map(address_space, mem_range, mem_range.begin, mode);
         }
 
-        if (mode & CLEAR)
+        if (mode & MEMORY_CLEAR)
         {
             memset((void *) mem_range.begin, 0, PAGE_SIZE);
         }
@@ -218,45 +218,44 @@ memory_alloc_identity(void *address_space, uint8_t mode, uintptr_t * out_addr)
 int
 virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
 {
-    size_t i;
     size_t offset;
-    size_t dir_index;
-    size_t table_index;
+    size_t i;
+    int page_directory_index;
+    int page_table_index;
 
-    PageDirEntry dir_entry;
-    PageTableEntry table_entry;
-    struct PAGE_TABLE *table;
-    struct PAGE_DIR *page_dir = (struct PAGE_DIR *) (address_space);
-
-    __unused(table_entry);
+    PageDirEntry page_dir_entry;
+    PageTableEntry page_table_entry;
+    struct PAGE_TABLE *page_table;
+    struct PAGE_DIR *page_dir = (struct PAGE_DIR *) address_space;
 
     for (i = 0; i < get_range_size(range) / PAGE_SIZE; i++)
     {
         offset = i * PAGE_SIZE;
-        dir_index = __pd_index(addr + offset);
-        dir_entry = page_dir->entries[dir_index];
 
-        table = (struct PAGE_TABLE *) (dir_entry.page_framenbr * PAGE_SIZE);
+        page_directory_index = __pd_index(addr + offset);
+        page_dir_entry = page_dir->entries[page_directory_index];
+        page_table = (struct PAGE_TABLE *) (page_dir_entry.page_framenbr * PAGE_SIZE);
 
-        if (!dir_entry.present)
+        if (!page_dir_entry.present)
         {
-            memory_alloc_identity(page_dir, CLEAR, (uintptr_t *) & kernel_page_table);
-
-            dir_entry.present = 1;
-            dir_entry.read_write = 1;
-            dir_entry.user_supervisor = 1;  
-            dir_entry.page_framenbr = (uint32_t) (table) >> 12;
+            memory_alloc_identity(page_dir, MEMORY_CLEAR, (uintptr_t *)&page_table);
         }
 
-        table_index = __pt_index(addr + offset);
-        table_entry = table->entries[table_index];
-
-        table_entry.present = 1;
-        table_entry.read_write = 1;
-        table_entry.user_supervisor = mode & USER;
-        table_entry.page_framenbr = (range.begin + offset) >> 12;
+        page_dir_entry.present = 1;
+        page_dir_entry.read_write = 1;
+        page_dir_entry.user_supervisor = 1;
+        page_dir_entry.page_framenbr = (uint32_t) (page_table) >> 12;
     }
 
+    page_table_index = __pt_index(addr + offset);
+    page_table_entry = page_table->entries[page_table_index];
+
+    page_table_entry.present = 1;
+    page_table_entry.read_write = 1;
+    page_table_entry.user_supervisor = mode & MEMORY_USER;
+    page_table_entry.page_framenbr = (range.begin + offset) >> 12;
+
+    __unused(page_table_entry);
     _asm_reload_pagedir();
     return 0;
 }
@@ -274,7 +273,7 @@ memory_map_identity(void *address_space, Range range, uint8_t mode)
     physical_set_used(range);
     virtual_map(address_space, range, range.begin, mode);
 
-    if (mode & CLEAR)
+    if (mode & MEMORY_CLEAR)
     {
         memset((void *) range.begin, 0, get_range_size(range));
     }
@@ -298,6 +297,7 @@ virtual_to_physical(void *address_space, uintptr_t addr)
 
     if (!page_dir_entry.present)
     {
+        klog(ERROR, "PAGE DIR ENTRY NOT PRESENT\n");
         return 0;
     }
 
@@ -308,6 +308,7 @@ virtual_to_physical(void *address_space, uintptr_t addr)
 
     if (!page_table_entry.present)
     {
+        klog(ERROR, "PAGE TABLE ENTRY NOT PRESENT\n");
         return 0;
     }
 
