@@ -41,8 +41,8 @@ union PAGE_DIR_ENTRY
     struct
     {
         bool present:1;
-        bool read_write:1;
-        bool user_supervisor:1;
+        bool write:1;
+        bool user:1;
         bool write_trough:1;
         bool cache_disabled:1;
         bool accessed:1;
@@ -69,8 +69,8 @@ union TABLE_ENTRY
     struct
     {
         bool present:1;
-        bool read_write:1;
-        bool user_supervisor:1;
+        bool write:1;
+        bool user:1;
         bool write_trough:1;
         bool cache_disabled:1;
         bool accessed:1;
@@ -97,7 +97,6 @@ void memory_map_identity(void *, Range, uint8_t);
 void virtual_free(void *, Range);
 void address_space_switch(void *);
 
-bool is_virtual_free(void *, uintptr_t);
 bool is_virtual_present(void *, uintptr_t);
 int virtual_map(void *, Range, uintptr_t, uint8_t);
 uintptr_t virtual_to_physical(void *, uintptr_t);

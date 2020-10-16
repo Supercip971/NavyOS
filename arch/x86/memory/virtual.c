@@ -87,6 +87,15 @@ init_paging(BootInfo *info)
 
     init_bitmap();
 
+    for (i = 0; i < 256; i++)
+    {
+        dir_entry = &kernel_page_dir.entries[i];
+        dir_entry->user = 0;
+        dir_entry->write = 1;
+        dir_entry->present = 1;
+        dir_entry->page_framenbr = (size_t) &kernel_page_table[i] / PAGE_SIZE;
+    }
+
     for (i = 0; i < info->memory_map_size; i++)
     {
         MemoryMapEntry *entry = &info->mmap[i];
@@ -95,15 +104,6 @@ init_paging(BootInfo *info)
         {
             physical_set_free(entry->range);
         }
-    }
-
-    for (i = 0; i < 256; i++)
-    {
-        dir_entry = &kernel_page_dir.entries[i];
-        dir_entry->user_supervisor = 0;
-        dir_entry->read_write = 1;
-        dir_entry->present = 1;
-        dir_entry->page_framenbr = (size_t) &kernel_page_table[i] / PAGE_SIZE;
     }
 
     set_total_memory(info->memory_usable);
@@ -116,6 +116,7 @@ init_paging(BootInfo *info)
     {
         memory_map_identity(kernel_space_address_space(), info->modules[i].range, MEMORY_NONE);
     }
+    
     klog(OK, "Modules mapped\n");
 
     virtual_free(kernel_space_address_space(), page_zero);
@@ -141,6 +142,7 @@ is_virtual_present(void *addr_space, uintptr_t virtual_addr)
     PageTableEntry page_table_entry;
 
     struct PAGE_DIR *page_directory = (struct PAGE_DIR *) (addr_space);
+
     int page_directory_index = __pd_index(virtual_addr);
     PageDirEntry page_dir_entry = page_directory->entries[page_directory_index];
 
@@ -150,35 +152,11 @@ is_virtual_present(void *addr_space, uintptr_t virtual_addr)
     }
 
     page_table = *(struct PAGE_TABLE *) (page_dir_entry.page_framenbr * PAGE_SIZE);
+
     page_table_index = __pt_index(virtual_addr);
     page_table_entry = page_table.entries[page_table_index];
 
     return page_table_entry.present;
-}
-
-bool
-is_virtual_free(void *address_space, uintptr_t addr)
-{
-    size_t directory_index;
-    size_t table_index;
-    PageDirEntry page_dir_entry;
-    PageTableEntry page_table_entry;
-    struct PAGE_TABLE *page_table;
-
-    struct PAGE_DIR *page_dir = (struct PAGE_DIR *) (address_space);
-    directory_index = __pd_index(addr);
-    page_dir_entry = page_dir->entries[directory_index];
-
-    if (!page_dir_entry.present)
-    {
-        return false;
-    }
-
-    page_table = (struct PAGE_TABLE *) (page_dir_entry.page_framenbr * PAGE_SIZE);
-    table_index = __pt_index(addr);
-    page_table_entry = page_table->entries[table_index];
-
-    return !page_table_entry.present;
 }
 
 void
@@ -239,21 +217,21 @@ virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
         if (!page_dir_entry.present)
         {
             memory_alloc_identity(page_dir, MEMORY_CLEAR, (uintptr_t *)&page_table);
+            
+            page_dir_entry.present = 1;
+            page_dir_entry.write = 1;
+            page_dir_entry.user = 1;
+            page_dir_entry.page_framenbr = (uint32_t) (page_table) >> 12;
         }
 
-        page_dir_entry.present = 1;
-        page_dir_entry.read_write = 1;
-        page_dir_entry.user_supervisor = 1;
-        page_dir_entry.page_framenbr = (uint32_t) (page_table) >> 12;
+        page_table_index = __pt_index(addr + offset);
+        page_table_entry = page_table->entries[page_table_index];
+
+        page_table_entry.present = 1;
+        page_table_entry.write = 1;
+        page_table_entry.user = mode & MEMORY_USER;
+        page_table_entry.page_framenbr = (range.begin + offset) >> 12;
     }
-
-    page_table_index = __pt_index(addr + offset);
-    page_table_entry = page_table->entries[page_table_index];
-
-    page_table_entry.present = 1;
-    page_table_entry.read_write = 1;
-    page_table_entry.user_supervisor = mode & MEMORY_USER;
-    page_table_entry.page_framenbr = (range.begin + offset) >> 12;
 
     __unused(page_table_entry);
     _asm_reload_pagedir();
@@ -289,7 +267,6 @@ virtual_to_physical(void *address_space, uintptr_t addr)
     PageTableEntry page_table_entry;
 
     struct PAGE_TABLE page_table;
-
     struct PAGE_DIR *page_dir = (struct PAGE_DIR *) (address_space);
 
     page_dir_index = __pd_index(addr);
@@ -313,5 +290,4 @@ virtual_to_physical(void *address_space, uintptr_t addr)
     }
 
     return (page_table_entry.page_framenbr * PAGE_SIZE) + (addr & 0xfff);
-
 }
