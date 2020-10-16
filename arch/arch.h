@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <Navy/libmultiboot.h>
 
 #if defined(__i386__)
 #define PAGE_SIZE 4096
@@ -35,7 +36,7 @@ void vga_printerr(const char *);
 void vga_putc(char c);
 void disable_vga_cursor(void);
 
-void init_arch(uint32_t);
+void init_arch(BootInfo *);
 
 void breakpoint(void);
 void hlt(void);

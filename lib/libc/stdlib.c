@@ -24,7 +24,7 @@
 
 
 char *
-itoa(int32_t value, char *str, uint16_t base)   
+itoa(int32_t value, char *str, uint16_t base)
 {
     size_t index = 0;
     int8_t digit;
@@ -34,25 +34,26 @@ itoa(int32_t value, char *str, uint16_t base)
         str[index++] = '-';
     }
 
-    do 
+    do
     {
         digit = value % base;
         value /= base;
-        
+
         if (digit < 0xa)
         {
             str[index++] = digit + '0';
         }
 
-        else 
+        else
         {
             str[index++] = (digit - 0xa) + 'A';
         }
 
-    } while(value);
+    }
+    while (value);
 
     str[index] = '\0';
-    str = strrev(str); 
+    str = strrev(str);
 
     return str;
 

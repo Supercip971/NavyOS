@@ -60,6 +60,25 @@ memcpy(void *dst, const void *src, size_t count)
     return dst;
 }
 
+char *
+strncpy(char *dest, const char *src, size_t n)
+{
+    size_t i;
+
+    for (i = 0; i < n && src[i]; i++)
+    {
+        dest[i] = src[i];
+    }
+
+    for(; i < n; i++)
+    {
+        dest[i] = 0;
+    }
+
+    return dest;
+}
+
+
 int
 memcmp(const void *aptr, const void *bptr, size_t size)
 {
@@ -125,13 +144,13 @@ strrev(char *s)
 {
     char tmp;
     int8_t i;
-    int8_t length = strlen(s)-1;
-    
-    for (i = length; i > 0 ; i--)
+    int8_t length = strlen(s) - 1;
+
+    for (i = length; i > 0; i--)
     {
         tmp = s[i];
-        s[i] = s[length-i];
-        s[length-i] = tmp;
+        s[i] = s[length - i];
+        s[length - i] = tmp;
     }
 
     return s;

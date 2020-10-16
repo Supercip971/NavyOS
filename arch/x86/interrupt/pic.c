@@ -20,7 +20,7 @@
 
 #include "kernel/log.h"
 
-#include <macro.h>
+#include <Navy/macro.h>
 
 void
 init_pic(void)

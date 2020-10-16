@@ -41,7 +41,7 @@ format:
 
 run-qemu: 
 	sh ./make-iso.sh
-	qemu-system-i386 -cdrom navy.iso -serial stdio -smp cores=4 
+	qemu-system-i386 -cdrom navy.iso -serial stdio -smp cores=4  
 
 run-gdb:
 	sh ./make-iso.sh

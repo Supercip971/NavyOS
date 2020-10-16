@@ -23,20 +23,18 @@
 #include "kernel/log.h"
 
 #include <multiboot2.h>
+#include <Navy/libmultiboot.h>
 
 
 struct ACPISDTHeader *
-init_acpi(uint32_t addr)
+init_acpi(BootInfo *info)
 {
     struct ACPISDTHeader *rsdt;
     struct FADT *fadt;
-    struct multiboot_tag_old_acpi *acpi =
-        (struct multiboot_tag_old_acpi *) get_tag(MULTIBOOT_TAG_TYPE_ACPI_OLD, addr);
 
-    struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) acpi->rsdp;
+    struct RSDPDescriptor *rsdp = (struct RSDPDescriptor *) info->rsdp;
 
-    klog(OK, "RSDP found on 0x%x\n", acpi->rsdp);
-
+    klog(OK, "RSDP found on 0x%x\n", info->rsdp);
     klog(LOG, "ACPI Revision number %d\n", rsdp->Revision);
 
     if (rsdp->Revision == 2)

@@ -19,8 +19,9 @@
 #define _NAVY_x86_ACPI_H
 
 #include <stdint.h>
+#include <Navy/libmultiboot.h>
 #include "arch/x86/rsdt.h"
 
-struct ACPISDTHeader *init_acpi(uint32_t);
+struct ACPISDTHeader *init_acpi(BootInfo *);
 
 #endif

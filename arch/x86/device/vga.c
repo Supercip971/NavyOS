@@ -30,6 +30,8 @@ void
 term_init(void)
 {
 
+    uint16_t index;
+
     /*
      * Init the cursor 
      */
@@ -46,7 +48,7 @@ term_init(void)
     {
         for (row = 0; row < VGA_ROW; row++)
         {
-            uint16_t index = (VGA_COL * row) + col;
+            index = (VGA_COL * row) + col;
 
             vga_buffer[index] = ((uint16_t) default_color << 8) | ' ';
         }

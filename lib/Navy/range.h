@@ -31,5 +31,6 @@ typedef struct RANGE
 
 bool is_range_page_aligned(Range);
 size_t get_range_size(Range);
+void align_range(Range *);
 
 #endif

@@ -15,38 +15,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Navy/range.h>
+#ifndef _NAVY_LIBMULTIBOOT_H
+#define _NAVY_LIBMULTIBOOT_H
 
-#include <stdbool.h>
+#include <stdint.h>
 #include <stddef.h>
+#include <Navy/range.h>
+#include <multiboot2.h>
 
-#include "arch/arch.h"
-#include "kernel/log.h"
+#define LIMIT_CMD_SIZE 256
+#define LIMIT_MEMORY_MAP_SIZE 64
+#define LIMIT_MODULES_SIZE 16
 
-size_t
-get_range_size(Range range)
+struct MMAP_ENTRY
 {
-    return range.end - range.begin;
-}
+    Range range;
+    uint8_t type;
+};
 
-bool
-is_range_page_aligned(Range range)
+typedef struct MMAP_ENTRY MemoryMapEntry;
+
+struct MODULE
 {
-    return (range.begin % PAGE_SIZE == 0) && (get_range_size(range) % PAGE_SIZE == 0);
-}
+    Range range;
+    char cmd[LIMIT_CMD_SIZE];
+};
 
-void
-align_range(Range *range)
+typedef struct MODULE Module;
+
+struct BOOTINFO
 {
-    size_t align = PAGE_SIZE - range->begin % PAGE_SIZE;
+    size_t memory_map_size;
+    size_t modules_size;
+    size_t memory_usable;
 
-    if (range->begin % PAGE_SIZE == 0)
-    {
-        align = 0;
-    }
+    uintptr_t rsdp;
 
-    range->begin += align;
-    range->end -= align;
+    MemoryMapEntry mmap[LIMIT_MEMORY_MAP_SIZE];
+    Module modules[LIMIT_MODULES_SIZE];
+};
 
-    range->end -= range->end % PAGE_SIZE;
-}
+typedef struct BOOTINFO BootInfo;
+
+void multiboot2_parse_header(BootInfo *, uintptr_t);
+
+#endif

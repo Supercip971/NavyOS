@@ -15,8 +15,8 @@
  */
 
 
-#ifndef _NAVY_X86_PAGING_H
-#define _NAVY_x86_PAGING_H
+#ifndef _NAVY_X86_VIRTUAL_H
+#define _NAVY_x86_VIRTUAL_H
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 #define __pd_index(x) ((x) >> 22)
@@ -25,6 +25,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <multiboot2.h>
+#include <Navy/libmultiboot.h>
 
 #include <Navy/range.h>
 
@@ -32,7 +34,7 @@
 
 typedef enum
 {
-    KERNEL,
+    MEMORY_NONE,
     USER,
     CLEAR,
 } Mode;
@@ -92,15 +94,18 @@ struct PAGE_TABLE
     PageTableEntry entries[1024];
 };
 
-void init_paging(void);
+void init_paging(BootInfo *);
 void allocate_page(size_t);
-void map_memory(Range, Mode);
-void virtual_free(struct PAGE_DIR *page_dir, Range);
+void memory_map_identity(void *, Range, uint8_t);
+void virtual_free(void *, Range);
+void address_space_switch(void *);
 
-bool is_virtual_free(struct PAGE_DIR *, uintptr_t);
-int virtual_map(struct PAGE_DIR *, Range, uintptr_t, Mode);
+bool is_virtual_free(void *, uintptr_t);
+bool is_virtual_present(void *, uintptr_t);
+int virtual_map(void *, Range, uintptr_t, uint8_t);
+uintptr_t virtual_to_physical(void *, uintptr_t);
 extern void _asm_init_paging(void);
-extern void _asm_load_pagedir(PageDirEntry *);
+extern void _asm_load_pagedir(uintptr_t);
 extern void _asm_reload_pagedir(void);
 
 #endif

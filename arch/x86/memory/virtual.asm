@@ -17,26 +17,16 @@
 
 [ GLOBAL _asm_init_paging ]
 _asm_init_paging:
-    push ebp 
-    mov ebp, esp
     mov eax, cr0
-    or eax, 0x80000001
-    mov cr0, eax
-    mov esp, ebp 
-    pop ebp
+    or eax, 0x80000000
+    mov cr0, eax 
     ret
-
 
 [ GLOBAL _asm_load_pagedir ]
 _asm_load_pagedir:
-    push ebp
-    mov ebp, esp
-    mov eax, [ esp + 8 ]
+    mov eax, [esp + 4]
     mov cr3, eax 
-    mov esp, ebp 
-    pop ebp 
     ret
-
 
 [ GLOBAL _asm_reload_pagedir ]
 _asm_reload_pagedir:

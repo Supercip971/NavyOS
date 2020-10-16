@@ -23,6 +23,7 @@
 
 size_t strlen(const char *);
 char *strcat(char *, const char *);
+char *strncpy(char *, const char *, size_t);
 char *memcpy(void *, const void *, size_t);
 void *memset(void *, int, size_t);
 char *strrev(char *);

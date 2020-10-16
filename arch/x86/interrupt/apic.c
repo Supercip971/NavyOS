@@ -25,7 +25,7 @@
 #include "arch/arch.h"
 #include "kernel/log.h"
 
-#include <macro.h>
+#include <Navy/macro.h>
 
 bool
 check_apic(void)

@@ -15,19 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stddef.h>
+#include <stdint.h>
 #include <multiboot2.h>
-#include <string.h>
+#include <Navy/libmultiboot.h>
+
 
 #include "kernel/warning.h"
 #include "kernel/log.h"
 #include "kernel/ascii.h"
-#include "arch/x86/memory/paging.h"
 #include "arch/arch.h"
 
 void
-kmain(uint32_t addr, uint32_t magic)
+kmain(uintptr_t addr, uint32_t magic)
 {
-    init_arch(addr);
+    BootInfo info;
 
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
     {
@@ -36,7 +38,13 @@ kmain(uint32_t addr, uint32_t magic)
         hlt();
     }
 
+    multiboot2_parse_header(&info, addr);
+
+
+    init_arch(&info);
+
     klog(NONE, ascii_art);
+    klog(OK, "Available memory: %dMib\n", info.memory_usable / (1024 * 1024));
     vga_print(ascii_art);
 
     disable_interrupts();

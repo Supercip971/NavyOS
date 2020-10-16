@@ -33,12 +33,12 @@
 
 #include "arch/x86/memory/a20.h"
 #include "arch/x86/memory/gdt.h"
-#include "arch/x86/memory/memory.h"
-#include "arch/x86/memory/paging.h"
+#include "arch/x86/memory/virtual.h"
 
 #include "kernel/log.h"
-#include <macro.h>
+#include <Navy/macro.h>
 #include <multiboot2.h>
+#include <Navy/libmultiboot.h>
 
 void
 debug_print(const char *msg)
@@ -59,18 +59,18 @@ debug_clear(void)
 }
 
 void
-init_arch(uint32_t addr)
+init_arch(BootInfo *info)
 {
     struct ACPISDTHeader *rsdt;
 
     term_init();
     serial_init(COM1);
-    serial_print(COM1, "\033c");
+    serial_print(COM1, "\033c"); 
 
     init_gdt();
     klog(OK, "GDT loaded\n");
 
-    rsdt = init_acpi(addr);
+    rsdt = init_acpi(info);
     klog(OK, "ACPI initialised\n");
 
     init_ps2(rsdt);
@@ -100,7 +100,7 @@ init_arch(uint32_t addr)
         }
     }
 
-    init_memory(addr);
+    init_paging(info);
 }
 
 void
