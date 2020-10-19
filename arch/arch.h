@@ -24,7 +24,7 @@
 #include <Navy/libmultiboot.h>
 
 #if defined(__i386__)
-#define PAGE_SIZE 4096
+#define PAGE_SIZE (4096)
 #endif
 
 void debug_print(const char *);

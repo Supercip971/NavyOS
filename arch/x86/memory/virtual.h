@@ -20,7 +20,7 @@
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 #define __pd_index(x) ((x) >> 22)
-#define __pt_index(x) ((x) >> 12 & 0x03FF)
+#define __pt_index(x) (((x) >> 12) & 0x03FF)
 
 #include <stdint.h>
 #include <stddef.h>
@@ -29,8 +29,6 @@
 #include <Navy/libmultiboot.h>
 
 #include <Navy/range.h>
-
-#define PAGE_SIZE 4096
 
 #define MEMORY_NONE (0)
 #define MEMORY_USER (1 << 0)
@@ -46,10 +44,9 @@ union PAGE_DIR_ENTRY
         bool write_trough:1;
         bool cache_disabled:1;
         bool accessed:1;
-        bool zero:1;
-        bool page_size:1;
-        bool ignored:1;
-        uint8_t available:3;
+        bool dirty:1;
+        bool pat:1;
+        uint32_t ignored:4;
         uint32_t page_framenbr:20;
     } __attribute__((packed));
 
@@ -62,7 +59,7 @@ typedef union PAGE_DIR_ENTRY PageDirEntry;
 struct PAGE_DIR
 {
     PageDirEntry entries[1024];
-};
+} __attribute__((packed));
 
 union TABLE_ENTRY
 {
@@ -74,10 +71,9 @@ union TABLE_ENTRY
         bool write_trough:1;
         bool cache_disabled:1;
         bool accessed:1;
-        bool dirty:1;
-        bool PAT:1;
-        bool global:1;
-        uint8_t available:3;
+        bool ignored1 :1;
+        bool LargePage:1;
+        uint32_t Ignored2 :3;
         uint32_t page_framenbr:20;
     } __attribute__((packed));
 
@@ -89,7 +85,7 @@ typedef union TABLE_ENTRY PageTableEntry;
 struct PAGE_TABLE
 {
     PageTableEntry entries[1024];
-};
+}__attribute__((packed));
 
 void init_paging(BootInfo *);
 void allocate_page(size_t);

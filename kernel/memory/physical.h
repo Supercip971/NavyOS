@@ -24,7 +24,6 @@
 
 #define FREE    0x00
 #define USED    0xff
-#define BITLENGTH 0x20000
 
 void init_bitmap(void);
 void physical_set_used(Range);
@@ -32,10 +31,9 @@ bool physical_is_used(Range);
 bool physical_page_is_used(uintptr_t);
 void physical_page_set_used(uintptr_t);
 void physical_set_free(Range);
+void physical_page_set_free(uintptr_t);
 void set_total_memory(size_t);
 size_t get_total_memory(void);
-size_t get_index_bitmap(uintptr_t);
-
 Range allocate_memory(size_t);
 
 #endif

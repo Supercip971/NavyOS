@@ -27,7 +27,7 @@
 
 
 struct ACPISDTHeader *
-init_acpi(BootInfo *info)
+init_acpi(BootInfo * info)
 {
     struct ACPISDTHeader *rsdt;
     struct FADT *fadt;

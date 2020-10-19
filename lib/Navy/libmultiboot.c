@@ -27,7 +27,7 @@
 #include "kernel/log.h"
 
 void
-multiboot2_parse_mmap(BootInfo *info, struct multiboot_tag_mmap *tag)
+multiboot2_parse_mmap(BootInfo * info, struct multiboot_tag_mmap *tag)
 {
     Range range;
     MemoryMapEntry *entry;
@@ -59,7 +59,7 @@ multiboot2_parse_mmap(BootInfo *info, struct multiboot_tag_mmap *tag)
         entry = &info->mmap[info->memory_map_size];
 
         range.begin = mmap->addr;
-        range.end = mmap->addr + mmap->len;
+        range.size = mmap->len;
 
         align_range(&range);
 
@@ -70,7 +70,8 @@ multiboot2_parse_mmap(BootInfo *info, struct multiboot_tag_mmap *tag)
     }
 }
 
-void multiboot2_parse_module(BootInfo *info, struct multiboot_tag_module *m)
+void
+multiboot2_parse_module(BootInfo * info, struct multiboot_tag_module *m)
 {
     Module *module;
     Range range;
@@ -85,7 +86,7 @@ void multiboot2_parse_module(BootInfo *info, struct multiboot_tag_module *m)
     module = &info->modules[info->modules_size];
 
     range.begin = m->mod_start;
-    range.end = m->mod_end;
+    range.size = m->mod_end - m->mod_start;
     align_range(&range);
 
     strncpy(module->cmd, (const char *) m->cmdline, LIMIT_CMD_SIZE);
@@ -95,7 +96,7 @@ void multiboot2_parse_module(BootInfo *info, struct multiboot_tag_module *m)
 
 
 void
-multiboot2_parse_header(BootInfo *info, uintptr_t addr)
+multiboot2_parse_header(BootInfo * info, uintptr_t addr)
 {
     struct multiboot_tag *tag = (struct multiboot_tag *) addr + 8;
 

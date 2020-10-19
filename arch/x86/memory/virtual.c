@@ -26,12 +26,11 @@
 #include <string.h>
 #include <Navy/macro.h>
 
-extern uint32_t __start;
-extern uint32_t __end;
+extern int __start;
+extern int __end;
 
-static struct PAGE_DIR kernel_page_dir __attribute__((aligned(PAGE_SIZE))) = {};
-static struct PAGE_TABLE kernel_page_table[256] __attribute__((aligned(PAGE_SIZE))) = {};
-size_t page_table_index = 0;
+static struct PAGE_DIR kernel_page_dir __attribute__((aligned(PAGE_SIZE))) = { };
+static struct PAGE_TABLE kernel_page_table[256] __attribute__((aligned(PAGE_SIZE))) = { };
 
 void
 virtual_free(void *address_space, Range range)
@@ -53,6 +52,11 @@ virtual_free(void *address_space, Range range)
         dir_index = __pd_index(range.begin + offset);
         dir_entry = &page_dir->entries[dir_index];
 
+        if (!dir_entry->present)
+        {
+            continue;
+        }
+
         table = (struct PAGE_TABLE *) (dir_entry->page_framenbr * PAGE_SIZE);
 
         table_index = __pt_index(range.begin + offset);
@@ -63,15 +67,16 @@ virtual_free(void *address_space, Range range)
             table_entry->as_uint = 0;
         }
     }
-} 
+}
 
-void *kernel_space_address_space()
+void *
+kernel_address_space()
 {
     return &kernel_page_dir;
 }
 
 void
-init_paging(BootInfo *info)
+init_paging(BootInfo * info)
 {
     Range kernel_range;
     Range page_zero;
@@ -79,22 +84,13 @@ init_paging(BootInfo *info)
     size_t i;
     PageDirEntry *dir_entry;
 
-    kernel_range.begin = (uintptr_t) & __start;
-    kernel_range.end = (uintptr_t) & __end;
-
-    page_zero.begin = 0;
-    page_zero.end = PAGE_SIZE;
-
     init_bitmap();
 
-    for (i = 0; i < 256; i++)
-    {
-        dir_entry = &kernel_page_dir.entries[i];
-        dir_entry->user = 0;
-        dir_entry->write = 1;
-        dir_entry->present = 1;
-        dir_entry->page_framenbr = (size_t) &kernel_page_table[i] / PAGE_SIZE;
-    }
+    kernel_range.begin = (uintptr_t) (&__start);
+    kernel_range.size = (size_t) (&__end) - (size_t) (&__start);
+
+    page_zero.begin = 0;
+    page_zero.size = PAGE_SIZE;
 
     for (i = 0; i < info->memory_map_size; i++)
     {
@@ -106,32 +102,41 @@ init_paging(BootInfo *info)
         }
     }
 
-    set_total_memory(info->memory_usable);
+    for (i = 0; i < 256; i++)
+    {
+        dir_entry = &kernel_page_dir.entries[i];
+        dir_entry->user = 0;
+        dir_entry->write = 1;
+        dir_entry->present = 1;
+        dir_entry->page_framenbr = (size_t) &kernel_page_table[i] / PAGE_SIZE;
+    }
 
+    set_total_memory(info->memory_usable);
     align_range(&kernel_range);
-    memory_map_identity(kernel_space_address_space(), kernel_range, MEMORY_NONE); 
+
+    memory_map_identity(kernel_address_space(), kernel_range, MEMORY_NONE);
     klog(OK, "Kernel mapped\n");
-    
+
     for (i = 0; i < info->modules_size; i++)
     {
-        memory_map_identity(kernel_space_address_space(), info->modules[i].range, MEMORY_NONE);
+        memory_map_identity(kernel_address_space(), info->modules[i].range, MEMORY_NONE);
     }
-    
+
     klog(OK, "Modules mapped\n");
 
-    virtual_free(kernel_space_address_space(), page_zero);
+    virtual_free(kernel_address_space(), page_zero);
     physical_set_used(page_zero);
 
-    address_space_switch(kernel_space_address_space());
+    address_space_switch(kernel_address_space());
     _asm_init_paging();
-    klog(OK, "Paging enabled !\n"); 
+    klog(OK, "Paging enabled !\n");
 }
 
-void 
+void
 address_space_switch(void *address_space)
 {
-    klog(WARNING, "V2P: %x\n", virtual_to_physical(kernel_space_address_space(), (uintptr_t) address_space));
-    _asm_load_pagedir(virtual_to_physical(kernel_space_address_space(), (uintptr_t) address_space));
+    _asm_load_pagedir(virtual_to_physical
+                      (kernel_address_space(), (uintptr_t) address_space));
 }
 
 bool
@@ -169,7 +174,7 @@ memory_alloc_identity(void *address_space, uint8_t mode, uintptr_t * out_addr)
         Range mem_range;
 
         mem_range.begin = i * PAGE_SIZE;
-        mem_range.end = PAGE_SIZE;
+        mem_range.size = PAGE_SIZE;
 
         if (!is_virtual_present(address_space, mem_range.begin)
             && !physical_is_used(mem_range))
@@ -206,7 +211,7 @@ virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
     struct PAGE_TABLE *page_table;
     struct PAGE_DIR *page_dir = (struct PAGE_DIR *) address_space;
 
-    for (i = 0; i < get_range_size(range) / PAGE_SIZE; i++)
+    for (i = 0; i < range.size / PAGE_SIZE; i++)
     {
         offset = i * PAGE_SIZE;
 
@@ -216,8 +221,8 @@ virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
 
         if (!page_dir_entry.present)
         {
-            memory_alloc_identity(page_dir, MEMORY_CLEAR, (uintptr_t *)&page_table);
-            
+            memory_alloc_identity(page_dir, MEMORY_CLEAR, (uintptr_t *) &page_table);
+
             page_dir_entry.present = 1;
             page_dir_entry.write = 1;
             page_dir_entry.user = 1;
@@ -238,12 +243,13 @@ virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
     return 0;
 }
 
-void 
+void
 memory_map_identity(void *address_space, Range range, uint8_t mode)
 {
     if (!is_range_page_aligned(range))
     {
-        klog(ERROR, "This memory range is not page aligned ! (START: 0%x, LEN: %d)", range.begin, get_range_size(range));
+        klog(ERROR, "This memory range is not page aligned ! (START: 0%x, LEN: %d)",
+             range.begin, range.size);
         disable_interrupts();
         hlt();
     }
@@ -253,11 +259,11 @@ memory_map_identity(void *address_space, Range range, uint8_t mode)
 
     if (mode & MEMORY_CLEAR)
     {
-        memset((void *) range.begin, 0, get_range_size(range));
+        memset((void *) range.begin, 0, range.size);
     }
 }
 
-uintptr_t 
+uintptr_t
 virtual_to_physical(void *address_space, uintptr_t addr)
 {
     int page_dir_index;
@@ -282,6 +288,8 @@ virtual_to_physical(void *address_space, uintptr_t addr)
 
     page_table_index = __pt_index(addr);
     page_table_entry = (PageTableEntry) page_table.entries[page_table_index];
+
+    klog(WARNING, "%d\n", addr);
 
     if (!page_table_entry.present)
     {

@@ -59,13 +59,13 @@ debug_clear(void)
 }
 
 void
-init_arch(BootInfo *info)
+init_arch(BootInfo * info)
 {
     struct ACPISDTHeader *rsdt;
 
     term_init();
     serial_init(COM1);
-    serial_print(COM1, "\033c"); 
+    serial_print(COM1, "\033c");
 
     init_gdt();
     klog(OK, "GDT loaded\n");

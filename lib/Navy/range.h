@@ -26,11 +26,10 @@
 typedef struct RANGE
 {
     uintptr_t begin;
-    uintptr_t end;
+    size_t size;
 } Range;
 
 bool is_range_page_aligned(Range);
-size_t get_range_size(Range);
 void align_range(Range *);
 
 #endif

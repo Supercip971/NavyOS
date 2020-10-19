@@ -23,30 +23,19 @@
 #include "arch/arch.h"
 #include "kernel/log.h"
 
-size_t
-get_range_size(Range range)
-{
-    return range.end - range.begin;
-}
-
 bool
 is_range_page_aligned(Range range)
 {
-    return (range.begin % PAGE_SIZE == 0) && (get_range_size(range) % PAGE_SIZE == 0);
+    return (range.begin % PAGE_SIZE == 0) && (range.size % PAGE_SIZE == 0);
 }
 
 void
-align_range(Range *range)
+align_range(Range * range)
 {
-    size_t align = PAGE_SIZE - range->begin % PAGE_SIZE;
+    size_t align = range->begin % PAGE_SIZE;
 
-    if (range->begin % PAGE_SIZE == 0)
-    {
-        align = 0;
-    }
+    range->begin -= align;
+    range->size += align;
 
-    range->begin += align;
-    range->end -= align;
-
-    range->end -= range->end % PAGE_SIZE;
+    range->size += PAGE_SIZE - range->size % PAGE_SIZE;
 }
