@@ -22,7 +22,6 @@
 #include <string.h>
 #include <math.h>
 
-
 char *
 itoa(int32_t value, char *str, uint16_t base)
 {
@@ -37,6 +36,7 @@ itoa(int32_t value, char *str, uint16_t base)
     do
     {
         digit = value % base;
+
         value /= base;
 
         if (digit < 0xa)

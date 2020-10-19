@@ -19,6 +19,10 @@
 #define _NAVY_x86_VIRTUAL_H
 #pragma GCC diagnostic ignored "-Wpedantic"
 
+#ifndef PAGE_SIZE
+#define PAGE_SIZE (4096)
+#endif
+
 #define __pd_index(x) ((x) >> 22)
 #define __pt_index(x) (((x) >> 12) & 0x03FF)
 
@@ -71,9 +75,9 @@ union TABLE_ENTRY
         bool write_trough:1;
         bool cache_disabled:1;
         bool accessed:1;
-        bool ignored1 :1;
+        bool ignored1:1;
         bool LargePage:1;
-        uint32_t Ignored2 :3;
+        uint32_t Ignored2:3;
         uint32_t page_framenbr:20;
     } __attribute__((packed));
 
@@ -85,17 +89,18 @@ typedef union TABLE_ENTRY PageTableEntry;
 struct PAGE_TABLE
 {
     PageTableEntry entries[1024];
-}__attribute__((packed));
+} __attribute__((packed));
 
 void init_paging(BootInfo *);
 void allocate_page(size_t);
 void memory_map_identity(void *, Range, uint8_t);
 void virtual_free(void *, Range);
-void address_space_switch(void *);
+int address_space_switch(void *);
 
 bool is_virtual_present(void *, uintptr_t);
 int virtual_map(void *, Range, uintptr_t, uint8_t);
 uintptr_t virtual_to_physical(void *, uintptr_t);
+
 extern void _asm_init_paging(void);
 extern void _asm_load_pagedir(uintptr_t);
 extern void _asm_reload_pagedir(void);

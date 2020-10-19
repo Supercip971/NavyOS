@@ -25,7 +25,8 @@
 size_t USED_MEMORY = 0;
 size_t TOTAL_MEMORY = 0;
 
-uint8_t page_bitmap[1024 * 1024 / 8] = {};
+uint8_t page_bitmap[1024 * 1024 / 8] = { };
+
 size_t best_bet = 0;
 
 void
@@ -137,7 +138,7 @@ physical_set_used(Range range)
     }
 }
 
-void 
+void
 physical_page_set_free(uintptr_t addr)
 {
     uintptr_t page = addr / PAGE_SIZE;

@@ -82,6 +82,7 @@ init_paging(BootInfo * info)
     Range page_zero;
 
     size_t i;
+    uint32_t cr3;
     PageDirEntry *dir_entry;
 
     init_bitmap();
@@ -127,16 +128,35 @@ init_paging(BootInfo * info)
     virtual_free(kernel_address_space(), page_zero);
     physical_set_used(page_zero);
 
-    address_space_switch(kernel_address_space());
-    _asm_init_paging();
-    klog(OK, "Paging enabled !\n");
+    if (!address_space_switch(kernel_address_space()))
+    {
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+        klog(OK, "Valeur de CR3 = %x\n", cr3);
+        _asm_init_paging();
+        klog(OK, "Paging enabled !\n");
+    }
+
+    else 
+    {
+        klog(ERROR, "Couldn't enable paging\n");
+        disable_interrupts();
+        hlt();
+    }
 }
 
-void
+int
 address_space_switch(void *address_space)
 {
-    _asm_load_pagedir(virtual_to_physical
-                      (kernel_address_space(), (uintptr_t) address_space));
+    uintptr_t addr = virtual_to_physical(kernel_address_space(), (uintptr_t) address_space);
+
+    if(addr)
+    {
+        /*_asm_load_pagedir(addr); */
+        __asm__ volatile("mov %0, %%cr3" :: "r"(addr));
+        return 0;
+    }
+
+    return 1;
 }
 
 bool
@@ -181,14 +201,16 @@ memory_alloc_identity(void *address_space, uint8_t mode, uintptr_t * out_addr)
         {
             physical_set_used(mem_range);
             virtual_map(address_space, mem_range, mem_range.begin, mode);
+
+            if (mode & MEMORY_CLEAR)
+            {
+                memset((void *) mem_range.begin, 0, PAGE_SIZE);
+            }
+
+            *out_addr = mem_range.begin;
+            return;
         }
 
-        if (mode & MEMORY_CLEAR)
-        {
-            memset((void *) mem_range.begin, 0, PAGE_SIZE);
-        }
-
-        *out_addr = mem_range.begin;
     }
 
     klog(ERROR, "Failed to allocate identity mapped page !\n");
@@ -206,8 +228,8 @@ virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
     int page_directory_index;
     int page_table_index;
 
-    PageDirEntry page_dir_entry;
-    PageTableEntry page_table_entry;
+    PageDirEntry *page_dir_entry;
+    PageTableEntry *page_table_entry;
     struct PAGE_TABLE *page_table;
     struct PAGE_DIR *page_dir = (struct PAGE_DIR *) address_space;
 
@@ -216,26 +238,26 @@ virtual_map(void *address_space, Range range, uintptr_t addr, uint8_t mode)
         offset = i * PAGE_SIZE;
 
         page_directory_index = __pd_index(addr + offset);
-        page_dir_entry = page_dir->entries[page_directory_index];
-        page_table = (struct PAGE_TABLE *) (page_dir_entry.page_framenbr * PAGE_SIZE);
+        page_dir_entry = &page_dir->entries[page_directory_index];
+        page_table = (struct PAGE_TABLE *) (page_dir_entry->page_framenbr * PAGE_SIZE);
 
-        if (!page_dir_entry.present)
+        if (!page_dir_entry->present)
         {
-            memory_alloc_identity(page_dir, MEMORY_CLEAR, (uintptr_t *) &page_table);
+            memory_alloc_identity(page_dir, MEMORY_CLEAR, (uintptr_t *) & page_table);
 
-            page_dir_entry.present = 1;
-            page_dir_entry.write = 1;
-            page_dir_entry.user = 1;
-            page_dir_entry.page_framenbr = (uint32_t) (page_table) >> 12;
+            page_dir_entry->present = 1;
+            page_dir_entry->write = 1;
+            page_dir_entry->user = 1;
+            page_dir_entry->page_framenbr = (uint32_t) (page_table) >> 12;
         }
 
         page_table_index = __pt_index(addr + offset);
-        page_table_entry = page_table->entries[page_table_index];
+        page_table_entry = &page_table->entries[page_table_index];
 
-        page_table_entry.present = 1;
-        page_table_entry.write = 1;
-        page_table_entry.user = mode & MEMORY_USER;
-        page_table_entry.page_framenbr = (range.begin + offset) >> 12;
+        page_table_entry->present = 1;
+        page_table_entry->write = 1;
+        page_table_entry->user = mode & MEMORY_USER;
+        page_table_entry->page_framenbr = (range.begin + offset) >> 12;
     }
 
     __unused(page_table_entry);
@@ -288,8 +310,6 @@ virtual_to_physical(void *address_space, uintptr_t addr)
 
     page_table_index = __pt_index(addr);
     page_table_entry = (PageTableEntry) page_table.entries[page_table_index];
-
-    klog(WARNING, "%d\n", addr);
 
     if (!page_table_entry.present)
     {

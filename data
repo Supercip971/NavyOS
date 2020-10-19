@@ -1,4 +1,0 @@
-sh ./make-iso.sh
-make[1]: Entering directory '/home/jordan/Documents/Prog/NavyOS'
-make[1]: Nothing to be done for 'all'.
-make[1]: Leaving directory '/home/jordan/Documents/Prog/NavyOS'
