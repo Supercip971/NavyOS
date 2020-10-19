@@ -25,7 +25,7 @@
 #include <multiboot2.h>
 #include <string.h>
 #include <Navy/macro.h>
-
+ 
 extern int __start;
 extern int __end;
 
@@ -102,7 +102,7 @@ init_paging(BootInfo * info)
             physical_set_free(entry->range);
         }
     }
-
+    
     for (i = 0; i < 256; i++)
     {
         dir_entry = &kernel_page_dir.entries[i];
@@ -130,9 +130,18 @@ init_paging(BootInfo * info)
 
     if (!address_space_switch(kernel_address_space()))
     {
+
+
+        klog(OK, "addr space = %x\n", kernel_address_space());
+
         __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
         klog(OK, "Valeur de CR3 = %x\n", cr3);
-        _asm_init_paging();
+
+
+        __asm__ volatile("mov %%cr0, %0" : "=r"(cr3));
+        cr3 |= 0x80000000;
+        __asm__ volatile("mov %0, %%cr0" :: "r"(cr3));
+        
         klog(OK, "Paging enabled !\n");
     }
 

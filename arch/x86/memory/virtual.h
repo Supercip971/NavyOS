@@ -77,7 +77,7 @@ union TABLE_ENTRY
         bool accessed:1;
         bool ignored1:1;
         bool LargePage:1;
-        uint32_t Ignored2:3;
+        uint32_t Ignored2:4;
         uint32_t page_framenbr:20;
     } __attribute__((packed));
 
